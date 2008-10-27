@@ -41,12 +41,6 @@ sub root_object {
     $self->objects->[0];
 }
 
-has push_thumbs => (
-    isa     => 'Bool',
-    is      => 'rw',
-    default => sub { 0 },
-);
-
 sub load_class {
     my ( $self, $name ) = @_;
     Class::MOP::load_class($name);
@@ -61,7 +55,6 @@ sub get_class_name {
       : $self->namespace;
     return $namespace . '::' . ucfirst $name;
 }
-
 
 sub render {
     warn shift->root_object->dump;
