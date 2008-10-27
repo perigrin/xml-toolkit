@@ -56,6 +56,40 @@ sub get_class_name {
     return $namespace . '::' . ucfirst $name;
 }
 
+augment 'start_element' => sub {
+    my ( $self, $el ) = @_;
+
+    my $classname = $self->get_class_name( $el->{Name} );
+    $el->{classname} = $classname;
+    my $class = $self->load_class($classname);
+
+    return unless $class;
+    my %params =
+      map { $_->{Name} => $_->{Value} } values %{ $el->{Attributes} };
+
+    my $obj = $class->new(%params);
+    $self->add_object($obj);
+};
+
+augment 'end_element' => sub {
+    my ( $self, $el ) = @_;
+
+    if ( my $parent = $self->parent_object ) {
+
+        if ( $self->text ) {
+            $self->current_object->text( $self->text )
+              if $self->current_object->can('text');
+        }
+
+        my $name = $el->{Name};
+        if ( my $method = $parent->can($name) ) {
+            $parent->$method( $self->current_object );
+        }
+
+    }
+    $self->objects->pop unless $self->current_object == $self->root_object;
+};
+
 sub render {
     warn shift->root_object->dump;
 }
