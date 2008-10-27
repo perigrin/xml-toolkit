@@ -1,29 +1,35 @@
 #!/usr/bin/env perl
+use Test::More no_plan => undef;
+
+BEGIN { use_ok('XML::Toolkit::Loader') }
 
 package XML::Toolkit::Tests::Base;
 use Moose;
 use MooseX::Types::Path::Class qw(Dir);
+use XML::Toolkit::Loader;
 
 has test_dir => (
-    isa => Dir,
-    is  => 'ro',    
-    default =>  sub { value }, 
+    isa     => Dir,
+    is      => 'ro',
+    coerce  => 1,
+    default => sub { 't/data' },
+    handles => [qw(file)],
 );
 
 has loader => (
-    isa     => 'XML::Toolkit::Loader',
-    is      => 'ro',
-    handles => [qw(parse_uri root_object render output)],
+    isa        => 'XML::Toolkit::Loader',
+    is         => 'ro',
+    lazy_build => 1,
+    handles    => [qw(parse_string root_object render output)],
 );
 
-sub _build_loader { XML::Toolkit::Loader->new() }
+sub _build_loader { XML::Toolkit::Loader->new( namespace => __PACKAGE__ ) }
 
-sub load {
+sub run {
     my ( $self, $filename ) = @_;
-    $self->parse_uri( $self->file($filename)->stringify );
-    $self->render;
+    ::ok( $self->loader->parser,          'we can haz parser' );
+    ::ok( $self->parse_string('<foo />'), 'parse_string' );
+    ::ok( $self->render,                  'we can render' );
 }
 
-my $xt = new __PACKAGE__;
-
-$xt->load()
+__PACKAGE__->new->run

@@ -1,4 +1,4 @@
-package XML::Toolkit::Parser;
+package XML::Toolkit::Loader::Parser;
 use Moose;
 use MooseX::AttributeHelpers;
 use Moose::Autobox;

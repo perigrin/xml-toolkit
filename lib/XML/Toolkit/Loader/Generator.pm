@@ -1,4 +1,4 @@
-package XML::Toolkit::Generator;
+package XML::Toolkit::Loader::Generator;
 use Moose;
 use Encode;
 extends qw(XML::Generator::Moose);
@@ -100,15 +100,8 @@ sub parse_object {
 
 sub _get_sorted_filtered_attributes {
     my ( $self, $meta ) = @_;
-    sort {
-
-        # NOTE:
-        # EVERYTHING MUST HAVE SORT ORDER!@!!
-        # (I hate flash weenies who access XML
-        # nodes by position)
-        # - SL
-        $a->metadescription->sort_order <=> $b->metadescription->sort_order
-      } grep { !$_->does('XML::Toolkit::Trait::NoXML') }
+    sort { $a->metadescription->sort_order <=> $b->metadescription->sort_order }
+      grep { !$_->does('XML::Toolkit::Trait::NoXML') }
       $meta->compute_all_applicable_attributes;
 }
 
