@@ -1,8 +1,7 @@
-package XML::Toolkit::Loader;
+package XML::Toolkit::Builder;
 use Moose;
 use XML::SAX::Writer;
-use XML::Toolkit::Loader::Parser;
-use XML::Toolkit::Loader::Generator;
+use XML::Filter::Moose::Class;
 use XML::SAX::ParserFactory;
 
 has namespace => (
@@ -21,34 +20,15 @@ has output => (
     auto_deref => 1,
 );
 
-has handler => (
-    isa        => 'Object',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-sub _build_handler { XML::SAX::Writer->new( Output => scalar $_[0]->output ) }
-
 has filter => (
-    isa        => 'XML::Toolkit::Filter::Moose::Class',
+    isa        => 'XML::Filter::Moose::Class',
     is         => 'ro',
     lazy_build => 1,
-    handles    => [qw(root_object)],
+    handles    => [qw(render)],
 );
 
 sub _build_filter {
-    XML::Toolkit::Filter::Moose::Class->new( namespace => shift->namespace );
-}
-
-has generator => (
-    isa        => 'XML::Toolkit::Loader::Generator',
-    is         => 'ro',
-    lazy_build => 1,
-    handles    => { render_xml => 'parse' },
-);
-
-sub _build_generator {
-    XML::Toolkit::Generator->new( Handler => $_[0]->handler );
+    XML::Filter::Moose::Class->new( namespace => $_[0]->namespace );
 }
 
 has parser => (
@@ -59,11 +39,6 @@ has parser => (
 
 sub _build_parser {
     XML::SAX::ParserFactory->parser( Handler => $_[0]->filter );
-}
-
-sub render {
-    my ( $self, $object ) = @_;
-    $self->render_xml( $self->root_object );
 }
 
 no Moose;

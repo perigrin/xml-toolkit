@@ -1,11 +1,15 @@
 #!/usr/bin/env perl
 use Test::More no_plan => undef;
 
-BEGIN { use_ok('XML::Toolkit::Loader') }
+BEGIN {
+    use_ok('XML::Toolkit::Builder');
+    use_ok('XML::Toolkit::Loader');
+}
 
 package XML::Toolkit::Tests::Base;
 use Moose;
 use MooseX::Types::Path::Class qw(Dir);
+use XML::Toolkit::Builder;
 use XML::Toolkit::Loader;
 
 has test_dir => (
@@ -16,20 +20,32 @@ has test_dir => (
     handles => [qw(file)],
 );
 
+has builder => (
+    isa        => 'XML::Toolkit::Builder',
+    is         => 'ro',
+    lazy_build => 1,
+    handles    => [qw(build_class)],
+);
+
+sub _build_builder { XML::Toolkit::Builder->new() }
+
 has loader => (
     isa        => 'XML::Toolkit::Loader',
     is         => 'ro',
     lazy_build => 1,
-    handles    => [qw(parse_string root_object render output)],
+    handles    => [qw()],
 );
 
 sub _build_loader { XML::Toolkit::Loader->new( namespace => __PACKAGE__ ) }
 
 sub run {
     my ( $self, $filename ) = @_;
-    ::ok( $self->loader->parser,          'we can haz parser' );
-    ::ok( $self->parse_string('<foo />'), 'parse_string' );
-    ::ok( $self->render,                  'we can render' );
+    $self->builder->parse_string('<foo><bar /></foo>');
+	my $class = $self->builder->render;
+	::diag $class;
+    ::ok( defined $class, 'build a class' );
+
+    #    ::ok( $self->loader->parse_string('<foo />'), 'parse_string' );
 }
 
 __PACKAGE__->new->run
