@@ -37,6 +37,7 @@ sub add_attribute {
     }
     $class->add_attribute( $name => $attr )
       unless $class->has_attribute($name);
+
 }
 
 augment 'start_element' => sub {

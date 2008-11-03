@@ -27,7 +27,7 @@ has builder => (
     handles    => [qw(build_class)],
 );
 
-sub _build_builder { XML::Toolkit::Builder->new() }
+sub _build_builder { XML::Toolkit::Builder->new( namespace => __PACKAGE__  ) }
 
 has loader => (
     isa        => 'XML::Toolkit::Loader',
@@ -40,12 +40,11 @@ sub _build_loader { XML::Toolkit::Loader->new( namespace => __PACKAGE__ ) }
 
 sub run {
     my ( $self, $filename ) = @_;
-    $self->builder->parse_string('<foo><bar /></foo>');
+    $self->builder->parse_string('<foo><bar/></foo>');
 	my $class = $self->builder->render;
-	::diag $class;
     ::ok( defined $class, 'build a class' );
-
-    #    ::ok( $self->loader->parse_string('<foo />'), 'parse_string' );
+    eval "$class";
+    ::ok( $self->loader->parse_string('<foo><bar /></foo>'), 'parse_string' );
 }
 
 __PACKAGE__->new->run

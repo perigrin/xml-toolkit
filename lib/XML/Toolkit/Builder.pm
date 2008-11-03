@@ -34,7 +34,7 @@ sub _build_filter {
 has parser => (
     is         => 'ro',
     lazy_build => 1,
-    handles    => [qw(parse_uri parse_string)]
+    handles    => [qw(parse_uri parse_file parse_string)]
 );
 
 sub _build_parser {
