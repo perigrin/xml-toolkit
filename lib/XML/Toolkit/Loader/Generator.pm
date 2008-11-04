@@ -87,8 +87,6 @@ sub parse_object {
             else {
                 unless ( ref $child ) {
                     $self->cdata($child);
-
-                    #$self->cdata( encode( 'UTF-8', $child ) );
                 }
             }
         }

@@ -12,6 +12,11 @@ has namespace => (
 
 sub _build_namespace { 'MyApp' }
 
+has template => (
+    isa => 'Str',
+    is  => 'ro',
+);
+
 has output => (
     isa        => 'ArrayRef',
     is         => 'ro',
@@ -28,7 +33,9 @@ has filter => (
 );
 
 sub _build_filter {
-    XML::Filter::Moose::Class->new( namespace => $_[0]->namespace );
+    my %params = ( namespace => $_[0]->namespace, );
+    $params{template} = $_[0]->template if defined $_[0]->template;
+    XML::Filter::Moose::Class->new(%params);
 }
 
 has parser => (

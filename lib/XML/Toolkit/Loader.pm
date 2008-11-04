@@ -48,7 +48,7 @@ has generator => (
 );
 
 sub _build_generator {
-    XML::Toolkit::Generator->new( Handler => $_[0]->handler );
+    XML::Toolkit::Loader::Generator->new( Handler => $_[0]->handler );
 }
 
 has parser => (

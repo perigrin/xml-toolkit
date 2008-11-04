@@ -24,27 +24,35 @@ has builder => (
     isa        => 'XML::Toolkit::Builder',
     is         => 'ro',
     lazy_build => 1,
-    handles    => [qw(build_class)],
 );
 
-sub _build_builder { XML::Toolkit::Builder->new( namespace => __PACKAGE__  ) }
+sub _build_builder { XML::Toolkit::Builder->new( namespace => __PACKAGE__ ) }
 
 has loader => (
     isa        => 'XML::Toolkit::Loader',
     is         => 'ro',
     lazy_build => 1,
-    handles    => [qw()],
 );
 
 sub _build_loader { XML::Toolkit::Loader->new( namespace => __PACKAGE__ ) }
 
 sub run {
     my ( $self, $filename ) = @_;
-    $self->builder->parse_string('<foo><bar/></foo>');
-	my $class = $self->builder->render;
+    $self->builder->parse_string('<foo><bar /></foo>');
+    my $class = $self->builder->render;
     ::ok( defined $class, 'build a class' );
     eval "$class";
-    ::ok( $self->loader->parse_string('<foo><bar /></foo>'), 'parse_string' );
+    $self->loader->parse_string('<foo><bar /></foo>');
+    my $tree = $self->loader->render;
+    ::ok( $tree, 'parse_string' );
+    my $tree2 = XML::Toolkit::Tests::Base::Foo->new(
+        bar => [
+            XML::Toolkit::Tests::Base::Foo::Bar->new(),
+            XML::Toolkit::Tests::Base::Foo::Bar->new()
+        ]
+    );
+
+
 }
 
 __PACKAGE__->new->run

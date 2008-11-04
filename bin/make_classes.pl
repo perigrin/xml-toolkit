@@ -3,6 +3,8 @@ package XML::Toolkit::Script::MakeClasses;
 use Moose;
 use XML::Toolkit::Builder;
 use MooseX::Types::Path::Class qw(File);
+use Moose::Util::TypeConstraints;
+
 with qw(MooseX::Getopt);
 
 has input => (
@@ -20,6 +22,12 @@ has namespace => (
 
 sub _build_namespace { 'MyApp' }
 
+has template => (
+    isa    => File,
+    is     => 'ro',
+    coerce => 1,
+);
+
 has _builder => (
     reader     => 'builder',
     isa        => 'XML::Toolkit::Builder',
@@ -28,7 +36,11 @@ has _builder => (
     handles    => [qw(build_class)],
 );
 
-sub _build__builder { XML::Toolkit::Builder->new( namespace => $_[0]->namespace ) }
+sub _build__builder {
+    my %params = ( namespace => $_[0]->namespace );
+    $params{template} = $_[0]->template->slurp if $_[0]->template;
+    XML::Toolkit::Builder->new( %params );
+}
 
 sub run {
     my ($self) = @_;
