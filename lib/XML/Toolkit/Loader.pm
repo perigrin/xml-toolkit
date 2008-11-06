@@ -2,7 +2,7 @@ package XML::Toolkit::Loader;
 use Moose;
 use XML::SAX::Writer;
 use XML::Toolkit::Loader::Parser;
-use XML::Toolkit::Loader::Generator;
+use XML::Toolkit::Generator;
 use XML::SAX::ParserFactory;
 
 has namespace => (
@@ -12,22 +12,6 @@ has namespace => (
 );
 
 sub _build_namespace { 'MyApp' }
-
-has output => (
-    isa        => 'ArrayRef',
-    is         => 'ro',
-    default    => sub { [] },
-    lazy       => 1,
-    auto_deref => 1,
-);
-
-has handler => (
-    isa        => 'Object',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-sub _build_handler { XML::SAX::Writer->new( Output => scalar $_[0]->output ) }
 
 has filter => (
     isa        => 'XML::Toolkit::Loader::Parser',
@@ -41,14 +25,14 @@ sub _build_filter {
 }
 
 has generator => (
-    isa        => 'XML::Toolkit::Loader::Generator',
+    isa        => 'XML::Toolkit::Generator',
     is         => 'ro',
     lazy_build => 1,
-    handles    => { render_xml => 'parse' },
+    handles    => [qw(render_object output)],
 );
 
 sub _build_generator {
-    XML::Toolkit::Loader::Generator->new( Handler => $_[0]->handler );
+    XML::Toolkit::Generator->new();
 }
 
 has parser => (
@@ -62,8 +46,8 @@ sub _build_parser {
 }
 
 sub render {
-    my ( $self, $object ) = @_;
-    $self->render_xml( $self->root_object );
+    my ($self) = @_;
+    $self->render_object( $self->root_object );
 }
 
 no Moose;

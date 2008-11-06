@@ -1,7 +1,8 @@
-package XML::Toolkit::Loader::Generator;
+package XML::Toolkit::Generator::Default;
 use Moose;
 use Encode;
 extends qw(XML::Generator::Moose);
+with qw(XML::Toolkit::Generator::Interface);
 
 after 'xml_decl' => sub { shift->newline };
 
