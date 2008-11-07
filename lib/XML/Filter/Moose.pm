@@ -18,6 +18,7 @@ has text => (
     metaclass => 'String',
     lazy      => 1,
     clearer   => 'reset_text',
+    predicate => 'has_text',
     default   => sub { '' },
     provides  => { append => 'append_text', },
 );

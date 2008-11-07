@@ -40,6 +40,17 @@ sub add_attribute {
       unless $class->has_attribute($name);
 }
 
+sub add_text_attribute {
+    my ( $self, $class ) = @_;
+    $class->add_attribute(
+        'text' => {
+            isa         => 'Str',
+            is          => 'rw',
+            description => { node_type => 'character' },
+        }
+    );
+}
+
 augment 'start_element' => sub {
     my ( $self, $el ) = @_;
     my $classname = $self->get_class_name( $el->{Name} );
@@ -74,6 +85,8 @@ augment 'start_element' => sub {
 augment 'end_element' => sub {
     my ( $self, $el ) = @_;
     my $top = $self->current_element;
+    $self->add_text_attribute( $self->get_class( $top->{classname} ) )
+      if $self->has_text;
     confess "INVALID PARSE: $el->{Name} ne $top->{Name}"
       unless $el->{Name} eq $top->{Name};
 
