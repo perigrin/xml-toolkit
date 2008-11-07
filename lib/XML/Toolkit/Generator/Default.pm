@@ -99,8 +99,7 @@ sub parse_object {
 
 sub _get_sorted_filtered_attributes {
     my ( $self, $meta ) = @_;
-    sort { $a->metadescription->sort_order <=> $b->metadescription->sort_order }
-      grep { !$_->does('XML::Toolkit::Trait::NoXML') }
+    grep { !$_->does('XML::Toolkit::Trait::NoXML') }
       $meta->compute_all_applicable_attributes;
 }
 

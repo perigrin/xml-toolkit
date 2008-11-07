@@ -26,6 +26,7 @@ sub add_attribute {
     my $name = $attr->{Name};
     $name = $name . '_collection' if $type eq 'child';
     $attr->{isa} ||= 'Str';
+    $attr->{traits} = ['XML::Toolkit::MetaDescription::Trait'];
     unless ( $type eq 'child' ) {
         $attr->{description} = {
             node_type    => $type,
@@ -37,7 +38,6 @@ sub add_attribute {
     }
     $class->add_attribute( $name => $attr )
       unless $class->has_attribute($name);
-
 }
 
 augment 'start_element' => sub {

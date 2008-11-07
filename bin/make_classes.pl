@@ -1,5 +1,5 @@
 #!/usr/bin/env perl 
-package XML::Toolkit::Script::MakeClasses;
+package App::XML::Toolkit::Script::MakeClasses;
 use Moose;
 use XML::Toolkit::Builder;
 use MooseX::Types::Path::Class qw(File);
@@ -39,7 +39,7 @@ has _builder => (
 sub _build__builder {
     my %params = ( namespace => $_[0]->namespace );
     $params{template} = $_[0]->template->slurp if $_[0]->template;
-    XML::Toolkit::Builder->new( %params );
+    XML::Toolkit::Builder->new(%params);
 }
 
 sub run {
@@ -48,7 +48,7 @@ sub run {
     print $self->builder->render;
 }
 
-$XML::SAX::ParserPackage = "XML::SAX::ExpatXS";
+$XML::SAX::ParserPackage = "XML::LibXML::SAX";
 __PACKAGE__->new_with_options->run unless caller;
 
 no Moose;
