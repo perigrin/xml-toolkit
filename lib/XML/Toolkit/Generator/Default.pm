@@ -87,7 +87,7 @@ sub parse_object {
             }
             else {
                 unless ( ref $child ) {
-                    $self->cdata($child);
+                    $self->characters($child);
                 }
             }
         }
