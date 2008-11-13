@@ -18,7 +18,7 @@ sub _build_template {
     [%- attr = meta.get_attribute(attr_name) -%]
     has '[% attr_name %]' => (
             isa         => '[% attr.type_constraint.name %]',
-            is          => '[% IF attr.has_accessor %]rw[% ELSE %]rw[%END%]',
+            is          => '[% IF attr.has_accessor %]rw[% ELSE %]ro[%END%]',
 
         [%- IF attr.type_constraint.is_subtype_of("ArrayRef") -%]
             metaclass   => 'Collection::Array',
