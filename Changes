@@ -1,5 +1,9 @@
 Revision history for XML-Toolkit
 
+0.02   2008-11-12 21:33
+	   + Fix Missing Dep
+	   + Add Dep Version Numbers
+	
 0.0.1  Tue Apr 22 11:58:53 2008
        Initial release.
 
