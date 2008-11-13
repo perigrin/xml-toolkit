@@ -1,5 +1,7 @@
 Revision history for XML-Toolkit
-
+0.03   2008-11-13
+     + Fix a bug in the ClassTemplate noticed by Confound
+     
 0.02   2008-11-12 21:33
 	   + Fix Missing Dep
 	   + Add Dep Version Numbers
