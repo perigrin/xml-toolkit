@@ -10,10 +10,11 @@ requires 'Moose'                      => '0.60';
 requires 'Moose::Autobox'             => '0.08';
 requires 'MooseX::AttributeHelpers'   => '0.13';
 requires 'XML::SAX'                   => '0.96';
-requires 'MooseX::Types::Path::Class' => undef;
-requires 'XML::SAX::Writer'           => undef;
-requires 'Encode'                     => undef;
-requires 'Template'                   => undef;
+requires 'MooseX::MetaDescription'    => '0.03';
+requires 'MooseX::Types::Path::Class' => '0.04';
+requires 'XML::SAX::Writer'           => '0.50';
+requires 'Encode'                     => '2.26';
+requires 'Template'                   => '2.20';
 
 build_requires 'Test::More' => '0.42';
 
