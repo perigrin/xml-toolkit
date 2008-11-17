@@ -15,7 +15,18 @@ has handler => (
     lazy_build => 1,
 );
 
-sub _build_handler { XML::SAX::Writer->new( Output => scalar $_[0]->output ) }
+has quote_charecter => (
+    isa     => 'Str',
+    is      => 'ro',
+    default => q['],
+);
+
+sub _build_handler {
+    XML::SAX::Writer->new(
+        Output         => scalar $_[0]->output,
+        QuoteCharecter => $_[0]->quote_charecter,
+    );
+}
 
 has generator => (
     does       => 'XML::Toolkit::Generator::Interface',
