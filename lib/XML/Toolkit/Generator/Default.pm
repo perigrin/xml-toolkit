@@ -54,15 +54,14 @@ sub is_attribute_node {
 
 sub get_attrs {
     my ( $self, $meta, $obj ) = @_;
-    my @attrs =
-      grep { $self->is_attribute_node($_) }
-      grep { defined $_->get_value($obj) }
-      map  { $meta->get_attribute($_) } $meta->get_attribute_list;
+    my @attrs = grep { $self->is_attribute_node($_) }
+        grep { defined $_->get_value($obj) }
+        map  { $meta->get_attribute($_) } $meta->get_attribute_list;
     return map {
-            '{'
-          . $_->description->{Prefix} . '}'
-          . $_->description->{LocalName} =>
-          { %{ $_->description }, Value => $_->get_value($obj) }
+              '{'
+            . $_->description->{Prefix} . '}'
+            . $_->description->{LocalName} =>
+            { %{ $_->description }, Value => $_->get_value($obj) }
     } @attrs;
 }
 
@@ -79,7 +78,7 @@ sub parse_object {
         my $el = $self->get_element_name($attr);
 
         $self->start_element($el)
-          if $el && !blessed $attr->get_value($obj);
+            if $el && !blessed $attr->get_value($obj);
         for my $child ( $attr->get_value($obj) ) {
             next unless $child;
             if ( blessed $child) {
@@ -92,15 +91,20 @@ sub parse_object {
             }
         }
         $self->end_element($el)
-          if $el && !blessed $attr->get_value($obj);
+            if $el && !blessed $attr->get_value($obj);
     }
     $self->end_element($name);
 }
 
 sub _get_sorted_filtered_attributes {
     my ( $self, $meta ) = @_;
-    grep { !$_->does('XML::Toolkit::Trait::NoXML') }
-      $meta->compute_all_applicable_attributes;
+    sort {
+        return -1 unless exists $a->description->{sort_order};
+        return 1  unless exists $b->description->{sort_order};
+        return $a->description->{sort_order} <=> $b->description->{sort_order}
+        }
+        grep { !$_->does('XML::Toolkit::Trait::NoXML') }
+        $meta->compute_all_applicable_attributes;
 }
 
 no Moose;
