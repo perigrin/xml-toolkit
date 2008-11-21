@@ -1,4 +1,6 @@
 Revision history for XML-Toolkit
+0.04   2008-11-19
+     + Fix typo in API of upstream XML::SAX::Filter
 0.03   2008-11-13
      + Fix a bug in the ClassTemplate noticed by Confound
      + Update to use the QuoteCharecter option in XML::SAX::Writer 0.51 
