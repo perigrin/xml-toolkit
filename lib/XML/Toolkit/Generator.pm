@@ -24,7 +24,7 @@ has quote_charecter => (
 sub _build_handler {
     XML::SAX::Writer->new(
         Output         => scalar $_[0]->output,
-        QuoteCharecter => $_[0]->quote_charecter,
+        QuoteCharacter => $_[0]->quote_charecter,
     );
 }
 
