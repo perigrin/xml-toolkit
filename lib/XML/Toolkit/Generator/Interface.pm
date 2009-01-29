@@ -5,3 +5,4 @@ requires qw(parse);
 
 no Moose::Role;
 1;
+__END__
