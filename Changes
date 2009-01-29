@@ -1,6 +1,6 @@
 Revision history for XML-Toolkit
-0.05   ???
-	 + Lots of Documentation
+0.05   2009-01-29
+	 + Added Documentation
 	
 0.04   2008-11-19
      + Fix typo in API of upstream XML::SAX::Filter
