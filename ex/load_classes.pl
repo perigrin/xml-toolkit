@@ -38,7 +38,6 @@ sub run {
     print join '', @{ $self->loader->render };
 }
 
-$XML::SAX::ParserPackage = "XML::SAX::ExpatXS";
 __PACKAGE__->new_with_options->run unless caller;
 
 no Moose;

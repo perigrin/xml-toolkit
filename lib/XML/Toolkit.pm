@@ -1,6 +1,6 @@
 package XML::Toolkit;
 use strict;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 1;    # Magic true value required at end of module
 __END__
@@ -12,15 +12,21 @@ XML::Toolkit - A set of tools for dealing with XML with the Way of the Moose.
 
 =head1 VERSION
 
-This document describes XML::Toolkit version 0.0.1
+This document describes XML::Toolkit version 0.0.5
 
 
 =head1 SYNOPSIS
 
   use XML::Toolkit::Loader;
-  my $loader = XML::Toolkit::Loader->new( namespace => $namespace );
+  my $loader = XML::Toolkit::Loader->new( namespace => 'MyApp' );
   $loader->parse_file( $$file );
   print join '', @{ $loader->render };
+
+or
+    use XML::Toolkit::Builder;
+    my $builder = XML::Toolkit::Builder->new( namespace => 'MyApp' );
+    $self->builder->parse_file( $file );
+    say $builder->render;
   
   
 =head1 DESCRIPTION
@@ -37,7 +43,6 @@ significant documentation (beyond what you're reading now).
 
 XML::Toolkit requires no configuration files or environment variables.
 
-
 =head1 DEPENDENCIES
 
 'Moose', 'Moose::Autobox','MooseX::AttributeHelpers', 'XML::SAX',
@@ -46,7 +51,6 @@ XML::Toolkit requires no configuration files or environment variables.
 =head1 INCOMPATIBILITIES
 
 None reported.
-
 
 =head1 BUGS AND LIMITATIONS
 
@@ -69,12 +73,12 @@ L<http://rt.cpan.org>.
 
 =head1 AUTHOR
 
-Chris Prather  C<< <perigrin@cpan.org> >>
+Chris Prather  C<< <chris@prather.org> >>
 
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2008, Chris Prather C<< <perigrin@cpan.org> >>. Some rights reserved.
+Copyright (c) 2008, Chris Prather C<< <chris@prather.org> >>. Some rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.
