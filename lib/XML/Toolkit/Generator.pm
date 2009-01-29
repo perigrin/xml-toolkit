@@ -42,3 +42,64 @@ sub _build_generator {
 
 no Moose;
 1;
+__END__
+
+=head1 NAME
+
+XML::Toolkit::Generator - A set of tools for converting Moose Objects into XML
+
+=head1 SYNOPSIS
+
+    use XML::Toolkit::Generator;
+    my $generator =     XML::Toolkit::Generator->new();
+    $generator->render_object( $object );
+    say for $generator->output;
+
+=head1 ATTRIBUTES
+
+=over
+
+=item output - Output Buffer
+
+An ArrayRef that contains all of the output.
+
+=item handler - An XML::SAX Filter
+
+This is the class that renders the parsed events into XML. XML::SAX::Writer is
+the default implementation.
+
+=item quote_charecter - String for XML::SAX::Writer
+
+String to pass to XML::SAX::Writer to define the attribute quoting mechanisim.
+This will default to single quotes (q[']).
+
+=item generator - An XML::Toolkit::Generator
+
+This must do the XML::Toolkit::Generator::Interface. This is the class that
+introspects Moose Objects and converts them into a SAX Stream. It defaults to
+XML::Toolkit::Generator::Default.
+
+=back 
+
+=head1 INCOMPATIBILITIES
+
+None reported.
+
+=head1 BUGS AND LIMITATIONS
+
+No bugs have been reported.
+
+Please report any bugs or feature requests to
+C<bug-xml-toolkit@rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org>.
+
+=head1 AUTHOR
+
+Chris Prather  C<< <chris@prather.org> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2008, Chris Prather C<< <chris@prather.org> >>. Some rights reserved.
+
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself. See L<perlartistic>.
