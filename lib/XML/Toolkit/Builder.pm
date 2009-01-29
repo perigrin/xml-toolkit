@@ -55,7 +55,7 @@ __END__
 
 =head1 NAME
 
-XML::Toolkit::Builder - A set of tools for Building XML Classes
+XML::Toolkit::Builder - A set of tools for Building XML Classes via XML::SAX Streams
 
 =head1 SYNOPSIS
 
@@ -64,7 +64,7 @@ XML::Toolkit::Builder - A set of tools for Building XML Classes
     $self->builder->parse_file( $file );
     say $builder->render;
 
-=head1 Attributes
+=head1 ATTRIBUTES
 
 =over
 
