@@ -6,12 +6,6 @@ with qw(XML::Toolkit::Generator::Interface);
 
 after 'xml_decl' => sub { shift->newline };
 
-augment 'parse' => sub {
-    my ( $self, $obj ) = @_;
-    $self->parse_object( $obj->meta, $obj );
-
-};
-
 sub get_element_name {
     my ( $self, $meta ) = @_;
     if ( $meta->can('description') ) {
@@ -55,13 +49,13 @@ sub is_attribute_node {
 sub get_attrs {
     my ( $self, $meta, $obj ) = @_;
     my @attrs = grep { $self->is_attribute_node($_) }
-        grep { defined $_->get_value($obj) }
-        map  { $meta->get_attribute($_) } $meta->get_attribute_list;
+      grep { defined $_->get_value($obj) }
+      map  { $meta->get_attribute($_) } $meta->get_attribute_list;
     return map {
-              '{'
-            . $_->description->{Prefix} . '}'
-            . $_->description->{LocalName} =>
-            { %{ $_->description }, Value => $_->get_value($obj) }
+            '{'
+          . $_->description->{Prefix} . '}'
+          . $_->description->{LocalName} =>
+          { %{ $_->description }, Value => $_->get_value($obj) }
     } @attrs;
 }
 
@@ -78,7 +72,7 @@ sub parse_object {
         my $el = $self->get_element_name($attr);
 
         $self->start_element($el)
-            if $el && !blessed $attr->get_value($obj);
+          if $el && !blessed $attr->get_value($obj);
         for my $child ( $attr->get_value($obj) ) {
             next unless $child;
             if ( blessed $child) {
@@ -91,10 +85,16 @@ sub parse_object {
             }
         }
         $self->end_element($el)
-            if $el && !blessed $attr->get_value($obj);
+          if $el && !blessed $attr->get_value($obj);
     }
     $self->end_element($name);
 }
+
+augment 'parse' => sub {
+    my ( $self, $obj ) = @_;
+    $self->parse_object( $obj->meta, $obj );
+
+};
 
 sub _get_sorted_filtered_attributes {
     my ( $self, $meta ) = @_;
@@ -102,11 +102,74 @@ sub _get_sorted_filtered_attributes {
         return -1 unless exists $a->description->{sort_order};
         return 1  unless exists $b->description->{sort_order};
         return $a->description->{sort_order} <=> $b->description->{sort_order}
-        }
-        grep { !$_->does('XML::Toolkit::Trait::NoXML') }
-        $meta->compute_all_applicable_attributes;
+      }
+      grep { !$_->does('XML::Toolkit::Trait::NoXML') }
+      $meta->compute_all_applicable_attributes;
 }
 
 no Moose;
 1;
 __END__
+
+=head1 NAME
+
+XML::Toolkit::Generator::Default - A Default Moose Object to XML Generator
+
+=head1 SYNOPSIS
+
+    use XML::Toolkit::Generator::Default;
+    XML::Toolkit::Generator::Default->new( Handler => XML::SAX::Writer->new );
+
+=head1 DESCRIPTION
+
+A subclass of XML::Generator::Moose, this class generates SAX events from
+Moose objects.
+    
+=head1 ATTRIBUTES
+
+See XML::Generator::Moose.
+
+=head1 METHODS
+
+=over
+
+=item get_element_name
+
+=item is_node
+
+=item is_child_node
+
+=item is_text_node
+
+=item is_attribute_node
+
+=item get_attrs
+
+=item parse_object
+
+=back
+
+See Also XML::Generator::Moose
+
+=head1 INCOMPATIBILITIES
+
+None reported.
+
+=head1 BUGS AND LIMITATIONS
+
+No bugs have been reported.
+
+Please report any bugs or feature requests to
+C<bug-xml-toolkit@rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org>.
+
+=head1 AUTHOR
+
+Chris Prather  C<< <chris@prather.org> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2008, Chris Prather C<< <chris@prather.org> >>. Some rights reserved.
+
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself. See L<perlartistic>.
