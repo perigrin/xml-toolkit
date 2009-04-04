@@ -69,11 +69,11 @@ use Moose;
 use MooseX::AttributeHelpers;
 
 [% FOREACH attr_name IN meta.get_attribute_list.sort -%]
-[%- attr = meta.get_attribute(attr_name) -%]
+[% attr = meta.get_attribute(attr_name) -%]
 has '[% attr_name %]' => (
      isa         => '[% attr.type_constraint.name %]',
      is          => '[% IF attr.has_accessor %]rw[% ELSE %]ro[%END%]',
-
+     traits      => [ 'MooseX::MetaDescription::Meta::Trait' ],
  [%- IF attr.type_constraint.is_subtype_of("ArrayRef") -%]
      metaclass   => 'Collection::Array',
      lazy        => 1,
@@ -84,7 +84,6 @@ has '[% attr_name %]' => (
          sort_order => [% loop.index() %],
      },
 [% ELSE -%]
- metaclass   => 'MooseX::MetaDescription',
  description => {
 [% FOREACH name IN attr.description.keys -%]
      [% name %] => "[% attr.description.$name %]",
@@ -96,6 +95,8 @@ has '[% attr_name %]' => (
 [% END -%]
 
 no Moose;
+1;
+__END__
 [% END %]
     
 END_TEMPLATE

@@ -15,6 +15,7 @@ requires 'MooseX::Types::Path::Class' => '0.04';
 requires 'XML::SAX::Writer'           => '0.50';
 requires 'Encode'                     => '2.26';
 requires 'Template'                   => '2.20';
+requires 'Devel::PackagePath'         => '0.01';
 
 build_requires 'Test::More' => '0.42';
 
