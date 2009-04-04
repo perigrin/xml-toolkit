@@ -1,0 +1,19 @@
+package XML::Toolkit::RNG::Grammar::Define::Choice::Element::Interleave::Optional::Ref;
+use Moose;
+use MooseX::AttributeHelpers;
+
+has 'name' => (
+    isa         => 'Str',
+    is          => 'ro',
+    metaclass   => 'MooseX::MetaDescription',
+    description => {
+        Prefix       => "",
+        LocalName    => "name",
+        node_type    => "attribute",
+        Name         => "name",
+        NamespaceURI => "",
+        sort_order   => 0,
+    },
+);
+
+no Moose;

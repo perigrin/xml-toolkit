@@ -51,7 +51,13 @@ has tt_config => (
     isa     => 'HashRef',
     is      => 'ro',
     lazy    => 1,
-    default => sub { { EVAL_PERL => 1, POST_CHOMP => 1 } },
+    default => sub {
+        {
+            OUTPUT_PATH => '.',
+            EVAL_PERL   => 1,
+            POST_CHOMP  => 1,
+        };
+    },
 );
 
 has tt => (
@@ -59,7 +65,7 @@ has tt => (
     is      => 'ro',
     lazy    => 1,
     default => sub { Template->new( $_[0]->tt_config ) },
-    handles => [qw(process error)],
+    handles => [qw(error)],
 );
 
 sub render {
@@ -72,9 +78,8 @@ sub render {
 
 sub render_class {
     my ( $self, $class ) = @_;
-    my $template = $self->template;
     my $output;
-    $self->process( \$template, { meta => $class }, \$output )
+    $self->tt->process( \$self->template, { meta => $class }, \$output )
       || die $self->error;
     return $output;
 }
