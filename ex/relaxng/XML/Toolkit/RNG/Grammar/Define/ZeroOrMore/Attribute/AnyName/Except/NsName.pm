@@ -5,7 +5,7 @@ use MooseX::AttributeHelpers;
 has 'ns' => (
     isa         => 'Str',
     is          => 'ro',
-    metaclass   => 'MooseX::MetaDescription',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     description => {
         Prefix       => "",
         LocalName    => "ns",
@@ -17,3 +17,5 @@ has 'ns' => (
 );
 
 no Moose;
+1;
+__END__

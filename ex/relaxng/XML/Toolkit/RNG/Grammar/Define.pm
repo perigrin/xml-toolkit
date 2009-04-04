@@ -5,6 +5,7 @@ use MooseX::AttributeHelpers;
 has 'choice_collection' => (
     isa         => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -15,6 +16,7 @@ has 'choice_collection' => (
 has 'element_collection' => (
     isa         => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Element]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -25,6 +27,7 @@ has 'element_collection' => (
 has 'interleave_collection' => (
     isa         => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Interleave]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -35,7 +38,7 @@ has 'interleave_collection' => (
 has 'name' => (
     isa         => 'Str',
     is          => 'ro',
-    metaclass   => 'MooseX::MetaDescription',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     description => {
         Prefix       => "",
         LocalName    => "name",
@@ -48,6 +51,7 @@ has 'name' => (
 has 'optional_collection' => (
     isa         => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Optional]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -58,6 +62,7 @@ has 'optional_collection' => (
 has 'zeroOrMore_collection' => (
     isa         => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::ZeroOrMore]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -67,3 +72,5 @@ has 'zeroOrMore_collection' => (
 );
 
 no Moose;
+1;
+__END__

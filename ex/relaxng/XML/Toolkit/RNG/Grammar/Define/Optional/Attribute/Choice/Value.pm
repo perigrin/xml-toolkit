@@ -5,8 +5,10 @@ use MooseX::AttributeHelpers;
 has 'text' => (
     isa         => 'Str',
     is          => 'rw',
-    metaclass   => 'MooseX::MetaDescription',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     description => { sort_order => 0, },
 );
 
 no Moose;
+1;
+__END__

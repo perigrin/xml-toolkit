@@ -5,7 +5,7 @@ use MooseX::AttributeHelpers;
 has 'name' => (
     isa         => 'Str',
     is          => 'ro',
-    metaclass   => 'MooseX::MetaDescription',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     description => {
         Prefix       => "",
         LocalName    => "name",
@@ -19,6 +19,7 @@ has 'ref_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Interleave::Optional::Element::Ref]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -28,3 +29,5 @@ has 'ref_collection' => (
 );
 
 no Moose;
+1;
+__END__

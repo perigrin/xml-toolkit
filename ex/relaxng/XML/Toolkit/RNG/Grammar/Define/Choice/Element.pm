@@ -6,6 +6,7 @@ has 'attribute_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Attribute]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -17,6 +18,7 @@ has 'choice_collection' => (
     isa =>
       'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Choice]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -28,6 +30,7 @@ has 'data_collection' => (
     isa =>
       'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Data]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -39,6 +42,7 @@ has 'interleave_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Interleave]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -49,7 +53,7 @@ has 'interleave_collection' => (
 has 'name' => (
     isa         => 'Str',
     is          => 'ro',
-    metaclass   => 'MooseX::MetaDescription',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     description => {
         Prefix       => "",
         LocalName    => "name",
@@ -63,6 +67,7 @@ has 'optional_collection' => (
     isa =>
       'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Optional]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -73,6 +78,7 @@ has 'optional_collection' => (
 has 'ref_collection' => (
     isa => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Ref]',
     is  => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -84,6 +90,7 @@ has 'text_collection' => (
     isa =>
       'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Text]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -93,3 +100,5 @@ has 'text_collection' => (
 );
 
 no Moose;
+1;
+__END__

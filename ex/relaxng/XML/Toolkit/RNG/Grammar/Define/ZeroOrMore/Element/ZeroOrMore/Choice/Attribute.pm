@@ -6,6 +6,7 @@ has 'anyName_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::ZeroOrMore::Element::ZeroOrMore::Choice::Attribute::AnyName]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -15,3 +16,5 @@ has 'anyName_collection' => (
 );
 
 no Moose;
+1;
+__END__

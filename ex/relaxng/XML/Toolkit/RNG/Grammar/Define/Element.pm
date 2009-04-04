@@ -3,8 +3,9 @@ use Moose;
 use MooseX::AttributeHelpers;
 
 has 'anyName_collection' => (
-    isa => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Element::AnyName]',
-    is  => 'ro',
+    isa    => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Element::AnyName]',
+    is     => 'ro',
+    traits => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -15,6 +16,7 @@ has 'anyName_collection' => (
 has 'attribute_collection' => (
     isa => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Element::Attribute]',
     is  => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -25,7 +27,7 @@ has 'attribute_collection' => (
 has 'name' => (
     isa         => 'Str',
     is          => 'ro',
-    metaclass   => 'MooseX::MetaDescription',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     description => {
         Prefix       => "",
         LocalName    => "name",
@@ -38,6 +40,7 @@ has 'name' => (
 has 'ref_collection' => (
     isa         => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Element::Ref]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -48,6 +51,7 @@ has 'ref_collection' => (
 has 'zeroOrMore_collection' => (
     isa => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Element::ZeroOrMore]',
     is  => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -57,3 +61,5 @@ has 'zeroOrMore_collection' => (
 );
 
 no Moose;
+1;
+__END__

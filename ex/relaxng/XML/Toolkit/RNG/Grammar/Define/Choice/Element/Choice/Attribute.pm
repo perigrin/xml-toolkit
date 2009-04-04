@@ -6,6 +6,7 @@ has 'data_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Choice::Attribute::Data]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -16,7 +17,7 @@ has 'data_collection' => (
 has 'name' => (
     isa         => 'Str',
     is          => 'ro',
-    metaclass   => 'MooseX::MetaDescription',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     description => {
         Prefix       => "",
         LocalName    => "name",
@@ -28,3 +29,5 @@ has 'name' => (
 );
 
 no Moose;
+1;
+__END__

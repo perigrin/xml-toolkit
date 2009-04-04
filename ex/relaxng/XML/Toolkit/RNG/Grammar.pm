@@ -5,7 +5,7 @@ use MooseX::AttributeHelpers;
 has 'datatypeLibrary' => (
     isa         => 'Str',
     is          => 'ro',
-    metaclass   => 'MooseX::MetaDescription',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     description => {
         Prefix       => "",
         LocalName    => "datatypeLibrary",
@@ -18,6 +18,7 @@ has 'datatypeLibrary' => (
 has 'define_collection' => (
     isa         => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -28,7 +29,7 @@ has 'define_collection' => (
 has 'ns' => (
     isa         => 'Str',
     is          => 'ro',
-    metaclass   => 'MooseX::MetaDescription',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     description => {
         Prefix       => "",
         LocalName    => "ns",
@@ -41,6 +42,7 @@ has 'ns' => (
 has 'start_collection' => (
     isa         => 'ArrayRef[XML::Toolkit::RNG::Grammar::Start]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -51,7 +53,7 @@ has 'start_collection' => (
 has 'xmlns' => (
     isa         => 'Str',
     is          => 'ro',
-    metaclass   => 'MooseX::MetaDescription',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     description => {
         Prefix       => "",
         LocalName    => "xmlns",
@@ -63,3 +65,5 @@ has 'xmlns' => (
 );
 
 no Moose;
+1;
+__END__

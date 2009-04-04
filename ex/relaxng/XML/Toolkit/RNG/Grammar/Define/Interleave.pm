@@ -6,6 +6,7 @@ has 'oneOrMore_collection' => (
     isa =>
       'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Interleave::OneOrMore]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -16,6 +17,7 @@ has 'oneOrMore_collection' => (
 has 'optional_collection' => (
     isa => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Interleave::Optional]',
     is  => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -24,8 +26,9 @@ has 'optional_collection' => (
     description => { sort_order => 1, },
 );
 has 'ref_collection' => (
-    isa => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Interleave::Ref]',
-    is  => 'ro',
+    isa    => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Interleave::Ref]',
+    is     => 'ro',
+    traits => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -37,6 +40,7 @@ has 'zeroOrMore_collection' => (
     isa =>
       'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Interleave::ZeroOrMore]',
     is          => 'ro',
+    traits      => ['MooseX::MetaDescription::Meta::Trait'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -46,3 +50,5 @@ has 'zeroOrMore_collection' => (
 );
 
 no Moose;
+1;
+__END__
