@@ -8,8 +8,7 @@ has template => (
 );
 
 sub _build_template {
-    return <<'END_TEMPLATE'
-
+    return q[
 package [% meta.name %];
 use Moose;
 use MooseX::AttributeHelpers;
@@ -42,11 +41,8 @@ has '[% attr_name %]' => (
 
 no Moose;
 1;
-__END__
-[% END %]
 
-END_TEMPLATE
-
+]
 }
 
 has tt_config => (

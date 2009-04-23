@@ -104,7 +104,7 @@ sub _get_sorted_filtered_attributes {
         return $a->description->{sort_order} <=> $b->description->{sort_order}
       }
       grep { !$_->does('XML::Toolkit::Trait::NoXML') }
-      $meta->compute_all_applicable_attributes;
+      $meta->get_all_attributes;
 }
 
 no Moose;

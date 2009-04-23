@@ -42,6 +42,8 @@ sub run {
     my $class = $self->builder->render;
     ::ok( defined $class, 'build a class' );
     eval "$class";
+    ::can_ok('XML::Toolkit::Tests::Base::Foo', 'new');
+    ::can_ok('XML::Toolkit::Tests::Base::Foo::Bar', 'new');    
     $self->loader->parse_string('<foo><bar /></foo>');
     my $tree = $self->loader->render;
     ::ok( $tree, 'parse_string' );
@@ -51,7 +53,7 @@ sub run {
             XML::Toolkit::Tests::Base::Foo::Bar->new()
         ]
     );
-
+    
 
 }
 

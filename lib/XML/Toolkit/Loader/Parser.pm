@@ -66,7 +66,7 @@ augment 'start_element' => sub {
     return unless $class;
     my %params =
       map { $_->{Name} => $_->{Value} } values %{ $el->{Attributes} };
-
+    
     my $obj = $class->new(%params);
     $self->add_object($obj);
 };
