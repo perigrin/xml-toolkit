@@ -54,10 +54,10 @@ None reported.
 
 =head1 BUGS AND LIMITATIONS
 
-THIS IS ALPHA QUALITY. USE AT YOUR OWN RISK. 
-
-While XML::Toolkit has been used in two projects in production, it is still
-considered alpha and may cause monkeys to fly out of delicate places. 
+XML::Toolkit has been used in two production projects for over a year. This is
+slightly less than Moose when it was declared 1.0 (aka 'not scary'). Since an
+XML package is sufficiently less world shattering than an Object Orientation
+environment, I'm say we're ready to let the world in.
 
 Currently it only supports Auto-Discovery of class hierarchy from XML
 instances, and does not know anything about DTDs, RelaxNG, XML-Schema or
