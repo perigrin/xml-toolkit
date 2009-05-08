@@ -64,8 +64,6 @@ instances, and does not know anything about DTDs, RelaxNG, XML-Schema or
 anything else. Future work is being considered in this, and patches may be
 accepted if they come with documentation and tests.
 
-No bugs have been reported.
-
 Please report any bugs or feature requests to
 C<bug-xml-toolkit@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org>.
