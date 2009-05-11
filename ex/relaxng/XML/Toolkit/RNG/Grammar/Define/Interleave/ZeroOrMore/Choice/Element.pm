@@ -44,8 +44,6 @@ no Moose;
 1;
 __END__
 
-__END__
-
 =head1 NAME
 
 XML::Toolkit::RNG::Grammar::Define::Interleave::ZeroOrMore::Choice::Element - A class to ...

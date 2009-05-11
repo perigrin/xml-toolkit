@@ -6,8 +6,6 @@ no Moose;
 1;
 __END__
 
-__END__
-
 =head1 NAME
 
 XML::Toolkit::RNG::Grammar::Define::Element::AnyName - A class to ...
