@@ -1,7 +1,7 @@
 package XML::Generator::Moose;
 use Moose;
 
-extends qw(XML::SAX::Base Moose::Object);
+extends qw(XML::Filter::Moose);
 
 has Handler => (
     isa      => 'Object',
