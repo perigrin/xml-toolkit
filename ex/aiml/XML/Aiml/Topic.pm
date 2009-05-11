@@ -3,7 +3,7 @@ use Moose;
 use MooseX::AttributeHelpers;
 
 has 'category_collection' => (
-    isa         => 'ArrayRef[XML::Aiml::Topic::Category]',
+    isa         => 'ArrayRef[XML::Aiml::Category]',
     is          => 'ro',
     traits      => ['XML'],
     metaclass   => 'Collection::Array',
