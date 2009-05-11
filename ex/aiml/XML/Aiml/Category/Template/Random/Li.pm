@@ -2,22 +2,66 @@ package XML::Aiml::Category::Template::Random::Li;
 use Moose;
 use MooseX::AttributeHelpers;
 
-has 'srai_collection' => (
-    isa         => 'ArrayRef[XML::Aiml::Category::Template::Random::Li::Srai]',
+has 'bot_collection' => (
+    isa         => 'ArrayRef[XML::Aiml::Category::Template::Random::Li::Bot]',
     is          => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
     default     => sub { [] },
-    provides    => { push => 'srai' },
+    provides    => { push => 'bot' },
     description => { sort_order => 0, },
+);
+has 'get_collection' => (
+    isa         => 'ArrayRef[XML::Aiml::Category::Template::Random::Li::Get]',
+    is          => 'ro',
+    traits      => ['XML'],
+    metaclass   => 'Collection::Array',
+    lazy        => 1,
+    auto_deref  => 1,
+    default     => sub { [] },
+    provides    => { push => 'get' },
+    description => { sort_order => 1, },
+);
+has 'peron_collection' => (
+    isa         => 'ArrayRef[XML::Aiml::Category::Template::Random::Li::Peron]',
+    is          => 'ro',
+    traits      => ['XML'],
+    metaclass   => 'Collection::Array',
+    lazy        => 1,
+    auto_deref  => 1,
+    default     => sub { [] },
+    provides    => { push => 'peron' },
+    description => { sort_order => 2, },
+);
+has 'person_collection' => (
+    isa        => 'ArrayRef[XML::Aiml::Category::Template::Random::Li::Person]',
+    is         => 'ro',
+    traits     => ['XML'],
+    metaclass  => 'Collection::Array',
+    lazy       => 1,
+    auto_deref => 1,
+    default    => sub { [] },
+    provides   => { push => 'person' },
+    description => { sort_order => 3, },
+);
+has 'set_collection' => (
+    isa         => 'ArrayRef[XML::Aiml::Category::Template::Random::Li::Set]',
+    is          => 'ro',
+    traits      => ['XML'],
+    metaclass   => 'Collection::Array',
+    lazy        => 1,
+    auto_deref  => 1,
+    default     => sub { [] },
+    provides    => { push => 'set' },
+    description => { sort_order => 4, },
 );
 has 'text' => (
     isa         => 'Str',
     is          => 'rw',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
-    description => { sort_order => 1, },
+    traits      => ['XML'],
+    description => { sort_order => 5, },
 );
 
 no Moose;

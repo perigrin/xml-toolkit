@@ -5,7 +5,7 @@ use MooseX::AttributeHelpers;
 has 'text' => (
     isa         => 'Str',
     is          => 'rw',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     description => { sort_order => 0, },
 );
 
