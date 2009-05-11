@@ -6,8 +6,6 @@ no Moose;
 1;
 __END__
 
-__END__
-
 =head1 NAME
 
 XML::Aiml::Category::Template::Random::Think::Set::Set::Set::Person - A class to ...

@@ -39,8 +39,6 @@ no Moose;
 1;
 __END__
 
-__END__
-
 =head1 NAME
 
 XML::Aiml::Category::Template::Random::Li::Get - A class to ...

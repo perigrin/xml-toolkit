@@ -24,8 +24,6 @@ no Moose;
 1;
 __END__
 
-__END__
-
 =head1 NAME
 
 XML::Aiml::Category::Template::Set::Person - A class to ...
