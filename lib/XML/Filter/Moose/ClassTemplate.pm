@@ -18,7 +18,7 @@ use MooseX::AttributeHelpers;
 has '[% attr_name %]' => (
      isa         => '[% attr.type_constraint.name %]',
      is          => '[% IF attr.has_accessor %]rw[% ELSE %]ro[%END%]',
-     traits      => [ 'MooseX::MetaDescription::Meta::Trait' ],
+     traits      => [ 'XML'],
  [%- IF attr.type_constraint.is_subtype_of("ArrayRef") -%]
      metaclass   => 'Collection::Array',
      lazy        => 1,

@@ -6,7 +6,7 @@ has 'attribute_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Interleave::Group::ZeroOrMore::Element::Attribute]',
     is          => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -17,7 +17,7 @@ has 'attribute_collection' => (
 has 'name' => (
     isa         => 'Str',
     is          => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     description => {
         Prefix       => "",
         LocalName    => "name",
@@ -31,7 +31,7 @@ has 'ref_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Interleave::Group::ZeroOrMore::Element::Ref]',
     is          => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -43,7 +43,7 @@ has 'text_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Interleave::Group::ZeroOrMore::Element::Text]',
     is          => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,

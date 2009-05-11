@@ -6,7 +6,7 @@ has 'attribute_collection' => (
     isa =>
       'ArrayRef[XML::Toolkit::RNG::Grammar::Define::ZeroOrMore::Attribute]',
     is          => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -14,10 +14,11 @@ has 'attribute_collection' => (
     provides    => { push => 'attribute' },
     description => { sort_order => 0, },
 );
+
 has 'element_collection' => (
     isa => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::ZeroOrMore::Element]',
     is  => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,

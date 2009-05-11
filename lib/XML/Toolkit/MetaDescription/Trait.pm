@@ -8,6 +8,9 @@ with 'MooseX::MetaDescription::Meta::Trait';
 has '+metadescription_classname' =>
   ( default => 'XML::Toolkit::MetaDescription' );
 
+package Moose::Meta::Attribute::Custom::Trait::XML;
+sub register_implementation { 'XML::Toolkit::MetaDescription::Trait' }
+
 no Moose;
 1;
 __END__

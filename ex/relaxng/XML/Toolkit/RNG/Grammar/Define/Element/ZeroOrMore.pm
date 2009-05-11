@@ -6,7 +6,7 @@ has 'choice_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Element::ZeroOrMore::Choice]',
     is          => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,

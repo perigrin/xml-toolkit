@@ -6,7 +6,7 @@ has 'attribute_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Choice::Attribute]',
     is          => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,
@@ -18,7 +18,7 @@ has 'ref_collection' => (
     isa =>
 'ArrayRef[XML::Toolkit::RNG::Grammar::Define::Choice::Element::Choice::Ref]',
     is          => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     metaclass   => 'Collection::Array',
     lazy        => 1,
     auto_deref  => 1,

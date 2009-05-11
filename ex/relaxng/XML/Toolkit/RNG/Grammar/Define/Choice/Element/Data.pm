@@ -5,7 +5,7 @@ use MooseX::AttributeHelpers;
 has 'type' => (
     isa         => 'Str',
     is          => 'ro',
-    traits      => ['MooseX::MetaDescription::Meta::Trait'],
+    traits      => ['XML'],
     description => {
         Prefix       => "",
         LocalName    => "type",
