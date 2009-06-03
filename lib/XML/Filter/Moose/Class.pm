@@ -9,11 +9,12 @@ with qw(XML::Filter::Moose::ClassRegistry);
 with qw(XML::Filter::Moose::ClassTemplate);
 
 sub get_class_name {
-    my ( $self, $name ) = @_;
-    my $namespace =
-        $self->parent_element
-      ? $self->parent_element->{classname}
-      : $self->namespace;
+    my ( $self, $el ) = @_;
+    my $name = $el->{LocalName};
+    my $namespace
+        = $self->parent_element
+        ? $self->parent_element->{classname}
+        : $self->namespace;
     return $namespace . '::' . ucfirst $name;
 }
 
@@ -24,7 +25,7 @@ sub create_class {
 
 sub add_attribute {
     my ( $self, $class, $type, $attr ) = @_;
-    my $name = $attr->{Name};
+    my $name = $attr->{LocalName};
     $name = $name . '_collection' if $type eq 'child';
     $attr->{isa} ||= 'Str';
     $attr->{traits} = ['XML::Toolkit::MetaDescription::Trait'];
@@ -38,7 +39,7 @@ sub add_attribute {
         };
     }
     $class->add_attribute( $name => $attr )
-      unless $class->has_attribute($name);
+        unless $class->has_attribute($name);
 }
 
 sub add_text_attribute {
@@ -54,20 +55,20 @@ sub add_text_attribute {
 
 augment 'start_element' => sub {
     my ( $self, $el ) = @_;
-    my $classname = $self->get_class_name( $el->{Name} );
+    my $classname = $self->get_class_name($el);
     class_type $classname;
     $el->{classname} = $classname;
     if ( $self->is_root ) {
         my $class = $self->create_class( $classname => $el );
         $self->add_class( $classname => $class );
         $self->add_attribute( $class, 'attribute' => $_ )
-          for values %{ $el->{Attributes} };
+            for values %{ $el->{Attributes} };
         return;
     }
     my $class = $self->create_class( $classname => $el );
     $self->add_class( $classname => $class );
     $self->add_attribute( $class, 'attribute' => $_ )
-      for values %{ $el->{Attributes} };
+        for values %{ $el->{Attributes} };
 
     my $parent_class = $self->get_class( $self->parent_element->{classname} );
     $self->add_attribute(
@@ -87,13 +88,14 @@ augment 'end_element' => sub {
     my ( $self, $el ) = @_;
     my $top = $self->current_element;
     $self->add_text_attribute( $self->get_class( $top->{classname} ) )
-      if $self->has_text;
+        if $self->has_text;
     confess "INVALID PARSE: $el->{Name} ne $top->{Name}"
-      unless $el->{Name} eq $top->{Name};
+        unless $el->{Name} eq $top->{Name};
 
 };
-no Moose;  # unimport Moose's keywords so they won't accidentally become methods
-1;         # Magic true value required at end of module
+no Moose
+    ;    # unimport Moose's keywords so they won't accidentally become methods
+1;       # Magic true value required at end of module
 __END__
 
 =head1 NAME

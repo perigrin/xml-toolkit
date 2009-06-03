@@ -48,18 +48,18 @@ sub load_class {
 }
 
 sub get_class_name {
-    my ( $self, $name ) = @_;
-    my $namespace =
-        $self->parent_element
-      ? $self->parent_element->{classname}
-      : $self->namespace;
+    my ( $self, $el ) = @_;
+    my $name = $el->{LocalName};
+    my $namespace
+        = $self->parent_element
+        ? $self->parent_element->{classname}
+        : $self->namespace;
     return $namespace . '::' . ucfirst $name;
 }
-
 augment 'start_element' => sub {
     my ( $self, $el ) = @_;
 
-    my $classname = $self->get_class_name( $el->{Name} );
+    my $classname = $self->get_class_name( $el );
     $el->{classname} = $classname;
     my $class = $self->load_class($classname);
 
