@@ -24,6 +24,21 @@ has namespace => (
 
 sub _build_namespace { 'MyApp' }
 
+has xmlns => (
+    isa     => 'HashRef',
+    is      => 'ro',
+    lazy    => 1,
+    default => sub { {} },
+);
+
+has filter_class => (
+    isa        => 'Str',
+    is         => 'ro',
+    lazy_build => 1,
+);
+
+sub _build_filter_class { 'XML::Filter::Moose::Class' }
+
 has template => (
     isa        => 'Str',
     is         => 'ro',
@@ -39,9 +54,13 @@ has _builder => (
 );
 
 sub _build__builder {
-    my %params = ( namespace => $_[0]->namespace );
-    $params{template} = $_[0]->template;
-    XML::Toolkit::Builder->new(%params);
+    my ($self) = @_;
+    return XML::Toolkit::Builder->new(
+        namespace     => $self->namespace,
+        template      => $self->template,
+        filter_class  => $self->filter_class,
+        namespace_map => $self->xmlns,
+    );
 }
 
 sub run {

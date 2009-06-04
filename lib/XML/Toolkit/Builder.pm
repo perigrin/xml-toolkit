@@ -1,5 +1,6 @@
 package XML::Toolkit::Builder;
 use Moose;
+use Class::MOP;
 use XML::SAX::Writer;
 use XML::Filter::Moose::Class;
 use XML::SAX::ParserFactory;
@@ -32,10 +33,33 @@ has filter => (
     handles    => [qw(render)],
 );
 
+has filter_class => (
+    isa     => 'Str',
+    is      => 'ro',
+    lazy_build => 1,
+);
+
+sub _build_filter_class { 'XML::Filter::Moose::Class' }
+
+has namespace_map => (
+    isa     => 'HashRef',
+    is      => 'ro',
+    lazy    => 1,
+    default => sub { {} },
+    trigger => sub {
+        my ($self) = @_;
+        unless ( exists( $self->namespace_map->{""} ) ) {
+            $self->namespace_map->{""} = $self->namespace;
+        }
+    },
+);
+
 sub _build_filter {
     my %params = ( namespace => $_[0]->namespace, );
     $params{template} = $_[0]->template if defined $_[0]->template;
-    XML::Filter::Moose::Class->new(%params);
+    $params{namespace_map} = $_[0]->namespace_map;
+    Class::MOP::load_class($_[0]->filter_class);
+    $_[0]->filter_class->new(%params);
 }
 
 has parser => (
