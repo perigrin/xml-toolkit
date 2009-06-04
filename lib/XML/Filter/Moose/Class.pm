@@ -8,14 +8,28 @@ extends qw(XML::Filter::Moose);
 with qw(XML::Filter::Moose::ClassRegistry);
 with qw(XML::Filter::Moose::ClassTemplate);
 
+has class_names => (
+    isa     => 'HashRef',
+    is      => 'ro',
+    lazy    => 1,
+    default => sub { {} },
+);
+
 sub get_class_name {
     my ( $self, $el ) = @_;
+    if ( my $classname = $self->class_names->{ $el->{Name} } ) {
+        return $classname;
+    }
+
     my $name = $el->{LocalName};
     my $namespace
         = $self->parent_element
         ? $self->parent_element->{classname}
         : $self->namespace;
-    return $namespace . '::' . ucfirst $name;
+
+    my $classname = $namespace . '::' . ucfirst $name;
+    $self->class_names->{ $el->{Name} } = $classname;
+    return $classname;
 }
 
 sub create_class {
