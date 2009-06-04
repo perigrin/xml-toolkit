@@ -1,6 +1,12 @@
 Revision history for XML-Toolkit
-0.06	???
-	 + Added documentation
+0.06	2009-06-04
+		+ add support for parsing name-spaced elements
+			- serialization currently does *NOT* work
+			+ added tests 
+		+ Added documentation
+		+ Add more examples
+		+ rename make_classes, and set it up to install
+		+ update Makefile.PL to include Repository info
 	
 0.05   2009-01-29
 	 + Added Documentation

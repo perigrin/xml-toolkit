@@ -1,6 +1,6 @@
 package XML::Toolkit;
 use strict;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 1;    # Magic true value required at end of module
 __END__

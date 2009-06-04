@@ -20,5 +20,9 @@ requires 'Devel::PackagePath'         => '0.01';
 build_requires 'Test::More' => '0.42';
 
 no_index 'directory' => 'ex';
+install_script 'bin/xmltk_make_classes';
 
+auto_set_repository;
+auto_manifest;
+auto_install;
 WriteAll;
