@@ -1,5 +1,6 @@
 package XML::Filter::Moose::ClassNS;
 use Moose;
+use Carp qw(croak);
 
 extends qw(XML::Filter::Moose::Class);
 
@@ -10,9 +11,9 @@ has namespace_map => (
     default => sub { {} },
 );
 
-has class_names => (
+has unresolved_namespace_map => (
     isa     => 'HashRef',
-    is      => 'ro',
+    is      => 'rw',
     lazy    => 1,
     default => sub { {} },
 );
@@ -20,24 +21,31 @@ has class_names => (
 sub get_class_name {
     my ( $self, $el ) = @_;
     
-    return $self->namespace_map->{ $el->{'NamespaceURI'} } . '::' . $el->{'LocalName'};
+    # Get values for element
+    my $xmlns = $el->{'NamespaceURI'};
+    my $namespace = $self->namespace_map->{ $xmlns };
+
+    # Add xmlns to unresolved list
+    unless ( $namespace ) {
+        $self->unresolved_namespace_map->{$xmlns} = 1;
+        # Let's just return the local part here, even though it's wrong
+        return ucfirst $el->{'LocalName'};
+    }
+
+    # Construct class name
+    return $namespace . '::' . ucfirst $el->{'LocalName'};
     
-#    if (my $classname = $self->class_names->{ $el->{Name} }) {
-#        return $classname;
-#    }
-#
-#    warn "Namespace mapping: " . $el->{'NamespaceURI'} . '=' . $self->namespace_map->{ $el->{'NamespaceURI'} } . "\n";
-#    
-#    my $name = $el->{LocalName};
-#    my $namespace
-#        = $self->parent_element#
-#        ? $self->parent_element->{classname}
-#        : ( $self->namespace_map->{ $el->{'NamespaceURI'} } || $self->namespace );
-#
-#    my $classname = $namespace . '::' . ucfirst $name;
-#    $self->class_names->{ $el->{Name} } = $classname;
-#    return $classname;
 }
+
+after 'end_document' => sub {
+    my ($self) = @_;
+    if ( keys %{ $self->unresolved_namespace_map } > 0 ) {
+        die "These XML namespaces has no mapping:\n"
+          . join("\n", sort keys %{ $self->unresolved_namespace_map } )
+          . "\n";
+    }
+};
+
 
 no Moose;# unimport Moose's keywords so they won't accidentally become methods
 1;       # Magic true value required at end of module
