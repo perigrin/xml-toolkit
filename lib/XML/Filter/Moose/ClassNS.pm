@@ -40,7 +40,7 @@ sub get_class_name {
 after 'end_document' => sub {
     my ($self) = @_;
     if ( keys %{ $self->unresolved_namespace_map } > 0 ) {
-        die "These XML namespaces has no mapping:\n"
+        die "These XML namespaces have no mapping:\n"
           . join("\n", sort keys %{ $self->unresolved_namespace_map } )
           . "\n";
     }
