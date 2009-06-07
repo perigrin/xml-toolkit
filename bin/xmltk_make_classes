@@ -7,7 +7,7 @@ use XML::Toolkit::Builder;
 use MooseX::Types::Path::Class qw(File);
 use Moose::Util::TypeConstraints;
 
-with qw(MooseX::Getopt);
+with qw(MooseX::Getopt::Dashes);
 
 has input => (
     isa      => File,
