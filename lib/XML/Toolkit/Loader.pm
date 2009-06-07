@@ -13,6 +13,27 @@ has namespace => (
 
 sub _build_namespace { 'MyApp' }
 
+has namespace_map => (
+    isa     => 'HashRef',
+    is      => 'ro',
+    lazy    => 1,
+    default => sub { {} },
+    trigger => sub {
+        my ($self) = @_;
+        unless ( exists( $self->namespace_map->{""} ) ) {
+            $self->namespace_map->{""} = $self->namespace;
+        }
+    },
+);
+
+has filter_class => (
+    isa     => 'Str',
+    is      => 'ro',
+    lazy_build => 1,
+);
+
+sub _build_filter_class { 'XML::Toolkit::Loader::Parser' }
+
 has filter => (
     isa        => 'XML::Toolkit::Loader::Parser',
     is         => 'ro',
@@ -21,7 +42,17 @@ has filter => (
 );
 
 sub _build_filter {
-    XML::Toolkit::Loader::Parser->new( namespace => shift->namespace );
+    my ($self) = @_;
+    
+    # Load and resolve filter class
+    my $filter_class = $self->filter_class;
+    Class::MOP::load_class($filter_class);
+    
+    # Create instance
+    $filter_class->new(
+        namespace     => $self->namespace,
+        namespace_map => $self->namespace_map,
+    );
 }
 
 has generator => (
