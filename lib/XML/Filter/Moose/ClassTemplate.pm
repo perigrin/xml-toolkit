@@ -12,6 +12,7 @@ sub _build_template {
 package [% meta.name %];
 use Moose;
 use MooseX::AttributeHelpers;
+use XML::Toolkit;
 
 [% FOREACH attr_name IN meta.get_attribute_list.sort -%]
 [% attr = meta.get_attribute(attr_name) -%]

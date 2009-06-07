@@ -2,6 +2,9 @@ package XML::Toolkit;
 use strict;
 our $VERSION = '0.06';
 
+use XML::ToolKit::MetaDescription::Trait;
+
+
 1;    # Magic true value required at end of module
 __END__
 
