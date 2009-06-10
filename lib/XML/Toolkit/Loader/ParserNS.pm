@@ -1,5 +1,7 @@
 package XML::Toolkit::Loader::ParserNS;
 use Moose;
+use Moose::Autobox;
+
 extends qw(XML::Toolkit::Loader::Parser);
 
 has namespace_map => (
@@ -42,6 +44,56 @@ after 'end_document' => sub {
           . "\n";
     }
 };
+
+sub start_element {
+    my ( $self, $el ) = @_;
+
+    my $classname = $self->get_class_name( $el );
+    $el->{classname} = $classname;
+    my $class = $self->load_class($classname);
+
+    unless ($class) {
+
+        # From XML::Filter::Moose
+        $self->stack->push($el);
+
+        return;
+    }
+
+    my %params =
+      map { $_->{LocalName} => $_->{Value} } values %{ $el->{Attributes} };
+
+    my $obj = $class->new(%params);
+    $self->add_object($obj);
+
+    # From XML::Filter::Moose
+    $self->stack->push($el);
+
+}
+
+sub end_element {
+    my ( $self, $el ) = @_;
+
+    if ( my $parent = $self->parent_object ) {
+
+        if ( $self->text ) {
+            $self->current_object->text( $self->text )
+              if $self->current_object->can('text');
+        }
+
+        my $name = $el->{'LocalName'};
+        if ( my $method = $parent->can($name) ) {
+            $parent->$method( $self->current_object );
+        }
+
+    }
+    $self->objects->pop unless $self->current_object == $self->root_object;
+
+    # From XML::Filter::Moose
+    $self->stack->pop;
+    $self->reset_text;
+
+}
 
 no Moose;
 1;
