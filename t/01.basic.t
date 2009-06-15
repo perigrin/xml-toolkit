@@ -73,8 +73,9 @@ sub run {
         ]
     );
     $self->generator->render_object($tree2);
-    ::ok( my @output = $self->generator->output, 'got output' );
-    ::diag @output;
+    ::ok( my $output = join '', $self->generator->output, 'got output' );
+    ::like($output, qr/<foo>/, 'has a <foo>');
+    ::diag $output;
 }
 
 __PACKAGE__->new->run

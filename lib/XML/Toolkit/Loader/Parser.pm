@@ -41,6 +41,8 @@ sub root_object {
     $self->objects->[0];
 }
 
+sub at_root_object { $_[0]->current_object == $_[0]->root_object }
+
 sub load_class {
     my ( $self, $name ) = @_;
     Class::MOP::load_class($name);
@@ -50,44 +52,56 @@ sub load_class {
 sub get_class_name {
     my ( $self, $el ) = @_;
     my $name = $el->{LocalName};
-    my $namespace
-        = $self->parent_element
-        ? $self->parent_element->{classname}
-        : $self->namespace;
+    my $namespace =
+        $self->parent_element
+      ? $self->parent_element->{classname}
+      : $self->namespace;
     return $namespace . '::' . ucfirst $name;
 }
+
+sub create_and_add_object {
+    my ( $self, $class, $el ) = @_;
+    my %params =
+      map { $_->{Name} => $_->{Value} } values %{ $el->{Attributes} };
+
+    my $obj = $class->new(%params);
+    $self->add_object($obj);
+
+}
+
 augment 'start_element' => sub {
     my ( $self, $el ) = @_;
 
-    my $classname = $self->get_class_name( $el );
+    my $classname = $self->get_class_name($el);
     $el->{classname} = $classname;
-    my $class = $self->load_class($classname);
 
-    return unless $class;
-    my %params =
-      map { $_->{Name} => $_->{Value} } values %{ $el->{Attributes} };
-    
-    my $obj = $class->new(%params);
-    $self->add_object($obj);
+    if ( my $class = $self->load_class($classname) ) {
+        $self->create_and_add_object( $class => $el );
+    }
+    return;
 };
+
+sub append_to_parent {
+    my ( $self, $parent, $el ) = @_;
+    $self->append_text if $self->text;
+    return unless exists $el->{Name};
+    if ( my $method = $parent->can( $el->{Name} ) ) {
+        $parent->$method( $self->current_object );
+    }
+}
+
+sub append_text {
+    my ($self) = @_;
+    $self->current_object->text( $self->text )
+      if $self->current_object->can('text');
+}
 
 augment 'end_element' => sub {
     my ( $self, $el ) = @_;
-
     if ( my $parent = $self->parent_object ) {
-
-        if ( $self->text ) {
-            $self->current_object->text( $self->text )
-              if $self->current_object->can('text');
-        }
-
-        my $name = $el->{Name};
-        if ( my $method = $parent->can($name) ) {
-            $parent->$method( $self->current_object );
-        }
-
+        $self->append_to_parent($parent);
     }
-    $self->objects->pop unless $self->current_object == $self->root_object;
+    $self->objects->pop unless $self->at_root_object;
 };
 
 sub render {
