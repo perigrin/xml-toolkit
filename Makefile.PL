@@ -1,5 +1,5 @@
 # Load the Module::Install bundled in ./inc/
-use inc::Module::Install;
+use inc::Module::Install 0.91;
 
 # Define metadata
 name 'XML-Toolkit';
@@ -23,5 +23,4 @@ install_script 'bin/xmltk_make_classes';
 
 auto_set_repository;
 auto_manifest;
-auto_install;
 WriteAll;
