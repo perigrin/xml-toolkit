@@ -1,7 +1,7 @@
 Revision history for XML-Toolkit
 0.07    ???
         + Moved script to `xmltk` and MooseX::App::Cmd
-        + Namespace Aware Loader
+        + Namespace Aware Loader and Builder
         + Update examples to use the new namespace awareness
         + Change the defaults to the namespace aware classes
         
