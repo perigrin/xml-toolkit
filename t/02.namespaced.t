@@ -17,7 +17,7 @@ has test_dir => (
     isa     => Dir,
     is      => 'ro',
     coerce  => 1,
-    default => sub { 't/data' },
+    default => sub {'t/data'},
     handles => [qw(file)],
 );
 
@@ -28,8 +28,15 @@ has builder => (
 );
 
 sub _build_builder {
-    ::ok( my $b = XML::Toolkit::Builder->new( namespace => __PACKAGE__ ),
-        'Build XML::Toolkit::Builder' );
+    ::ok(
+        my $b = XML::Toolkit::Builder->new(
+            namespace     => __PACKAGE__,
+            namespace_map => {
+                'http://example.org/my/' => 'My',
+            }
+        ),
+        'Build XML::Toolkit::Builder'
+    );
     return $b;
 }
 
@@ -40,8 +47,15 @@ has loader => (
 );
 
 sub _build_loader {
-    ::ok( my $l = XML::Toolkit::Loader->new( namespace => __PACKAGE__ ),
-        'Build XML::Toolkit::Loader' );
+    ::ok(
+        my $l = XML::Toolkit::Loader->new(
+            namespace     => __PACKAGE__,
+            namespace_map => {
+                'http://example.org/my/' => 'My',
+            }
+        ),
+        'Build XML::Toolkit::Loader'
+    );
     return $l;
 }
 
@@ -52,7 +66,10 @@ has generator => (
 );
 
 sub _build_generator {
-    ::ok( my $g = XML::Toolkit::Generator->new, 'Build XML::Toolkit::Loader' );
+    ::ok(
+        my $g = XML::Toolkit::Generator->new,
+        'Build XML::Toolkit::Loader'
+    );
     return $g;
 }
 
@@ -63,16 +80,13 @@ sub run {
     my $class = $self->builder->render;
     ::ok( defined $class, 'build a class' );
     eval "$class";
-    ::can_ok( 'XML::Toolkit::Tests::Base::Foo',      'new' );
-    ::can_ok( 'XML::Toolkit::Tests::Base::Foo::Bar', 'new' );
+    ::can_ok( 'XML::Toolkit::Tests::Base::Foo', 'new' );
+    ::can_ok( 'My::Bar',                        'new' );
     $self->loader->parse_string($xml);
     my $tree = $self->loader->render;
     ::ok( $tree, 'parse_string' );
     my $tree2 = XML::Toolkit::Tests::Base::Foo->new(
-        bar_collection => [
-            XML::Toolkit::Tests::Base::Foo::Bar->new()
-        ]
-    );
+        bar_collection => [ My::Bar->new() ] );
     $self->generator->render_object($tree2);
     ::ok( my @output = $self->generator->output, 'got output' );
     ::diag @output;
