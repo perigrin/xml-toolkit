@@ -59,7 +59,7 @@ sub create_and_add_object {
 sub append_to_parent {
     my ( $self, $parent, $el ) = @_;
     $self->append_text if $self->text;
-    if ( my $method = $parent->can( $el->{LocalName} ) ) {
+    if ( my $method = $parent->can("add_$el->{LocalName}") ) {
         $parent->$method( $self->current_object );
     }
 }

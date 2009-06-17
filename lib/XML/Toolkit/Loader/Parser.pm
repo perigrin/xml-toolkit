@@ -84,8 +84,7 @@ augment 'start_element' => sub {
 sub append_to_parent {
     my ( $self, $parent, $el ) = @_;
     $self->append_text if $self->text;
-    return unless exists $el->{Name};
-    if ( my $method = $parent->can( $el->{Name} ) ) {
+    if ( my $method = $parent->can("add_$el->{LocalName}") ) {
         $parent->$method( $self->current_object );
     }
 }
@@ -99,7 +98,7 @@ sub append_text {
 augment 'end_element' => sub {
     my ( $self, $el ) = @_;
     if ( my $parent = $self->parent_object ) {
-        $self->append_to_parent($parent);
+        $self->append_to_parent($parent => $el);
     }
     $self->objects->pop unless $self->at_root_object;
 };
