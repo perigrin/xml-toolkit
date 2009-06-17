@@ -1,6 +1,6 @@
 package XML::Toolkit;
 use strict;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use XML::Toolkit::MetaDescription::Trait;
 
