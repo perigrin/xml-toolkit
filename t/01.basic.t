@@ -17,7 +17,7 @@ has test_dir => (
     isa     => Dir,
     is      => 'ro',
     coerce  => 1,
-    default => sub { 't/data' },
+    default => sub {'t/data'},
     handles => [qw(file)],
 );
 
@@ -28,8 +28,10 @@ has builder => (
 );
 
 sub _build_builder {
-    ::ok( my $b = XML::Toolkit::Builder->new( namespace => __PACKAGE__ ),
-        'Build XML::Toolkit::Builder' );
+    ::ok(
+        my $b = XML::Toolkit::Builder->new( namespace => __PACKAGE__ ),
+        'Build XML::Toolkit::Builder'
+    );
     return $b;
 }
 
@@ -40,8 +42,10 @@ has loader => (
 );
 
 sub _build_loader {
-    ::ok( my $l = XML::Toolkit::Loader->new( namespace => __PACKAGE__ ),
-        'Build XML::Toolkit::Loader' );
+    ::ok(
+        my $l = XML::Toolkit::Loader->new( namespace => __PACKAGE__ ),
+        'Build XML::Toolkit::Loader'
+    );
     return $l;
 }
 
@@ -52,35 +56,35 @@ has generator => (
 );
 
 sub _build_generator {
-    ::ok( my $g = XML::Toolkit::Generator->new, 'Build XML::Toolkit::Loader' );
+    ::ok( my $g = XML::Toolkit::Generator->new,
+        'Build XML::Toolkit::Loader' );
     return $g;
 }
 
 sub run {
     my ( $self, $filename ) = @_;
-    $self->builder->parse_string('<foo><bar /></foo>');
+    my $xml = '<foo><bar /></foo>';
+    $self->builder->parse_string($xml);
     my $class = $self->builder->render;
     ::ok( defined $class, 'build a class' );
-    eval "$class";    
-    ::can_ok( 'XML::Toolkit::Tests::Base::Foo',      'new' );
+    eval "$class";
+    ::can_ok( 'XML::Toolkit::Tests::Base::Foo', 'new' );
     ::can_ok( 'XML::Toolkit::Tests::Base::Bar', 'new' );
-    $self->loader->parse_string('<foo><bar /></foo>');
-    ::isa_ok($self->loader->root_object, 'XML::Toolkit::Tests::Base::Foo');
-    ::can_ok($self->loader->root_object, 'bar_collection');
-    ::ok(my ($bar) = @{ $self->loader->root_object->bar_collection });
-    ::isa_ok($bar, 'XML::Toolkit::Tests::Base::Bar');
+    $self->loader->parse_string($xml);
+    ::isa_ok( $self->loader->root_object, 'XML::Toolkit::Tests::Base::Foo' );
+    ::can_ok( $self->loader->root_object, 'bar_collection' );
+    ::ok( my ($bar) = @{ $self->loader->root_object->bar_collection } );
+    ::isa_ok( $bar, 'XML::Toolkit::Tests::Base::Bar' );
     my $tree = $self->loader->render;
     ::ok( $tree, 'parse_string' );
-    
+
     my $tree2 = XML::Toolkit::Tests::Base::Foo->new(
-        bar_collection => [
-            XML::Toolkit::Tests::Base::Bar->new()
-        ]
-    );
+        bar_collection => [ XML::Toolkit::Tests::Base::Bar->new() ] );
     $self->generator->render_object($tree2);
     ::ok( my $output = join '', $self->generator->output, 'got output' );
-#    ::like($output, qr/<foo>/, 'has a <foo>');
-::diag $output;
+
+    #    ::like($output, qr/<foo>/, 'has a <foo>');
+    ::diag $output;
 }
 
 __PACKAGE__->new->run

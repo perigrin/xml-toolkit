@@ -58,13 +58,14 @@ sub _build_generator {
 
 sub run {
     my ( $self, $filename ) = @_;
-    $self->builder->parse_string('<foo><bar /></foo>');
+    my $xml = '<foo xmlns:my="http://example.org/my/"><my:bar /></foo>';
+    $self->builder->parse_string($xml);
     my $class = $self->builder->render;
     ::ok( defined $class, 'build a class' );
     eval "$class";
     ::can_ok( 'XML::Toolkit::Tests::Base::Foo',      'new' );
     ::can_ok( 'XML::Toolkit::Tests::Base::Foo::Bar', 'new' );
-    $self->loader->parse_string('<foo xmlns:my="http://example.org/my/"><my:bar /></foo>');
+    $self->loader->parse_string($xml);
     my $tree = $self->loader->render;
     ::ok( $tree, 'parse_string' );
     my $tree2 = XML::Toolkit::Tests::Base::Foo->new(
