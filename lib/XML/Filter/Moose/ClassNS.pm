@@ -8,7 +8,15 @@ has namespace_map => (
     isa     => 'HashRef',
     is      => 'ro',
     lazy    => 1,
-    default => sub { {} },
+    default => sub {
+        { '' => $_[0]->namespace, };
+    },
+    trigger => sub {
+        my ($self) = @_;
+        unless ( exists( $self->namespace_map->{''} ) ) {
+            $self->namespace_map->{''} = $self->namespace;
+        }
+    },
 );
 
 has unresolved_namespace_map => (

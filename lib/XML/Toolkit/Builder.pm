@@ -33,6 +33,14 @@ has filter => (
     handles    => [qw(render)],
 );
 
+sub _build_filter {
+    my %params = ( namespace => $_[0]->namespace, );
+    $params{template} = $_[0]->template if defined $_[0]->template;
+    $params{namespace_map} = $_[0]->namespace_map;
+    Class::MOP::load_class($_[0]->filter_class);
+    $_[0]->filter_class->new(%params);
+}
+
 has filter_class => (
     isa     => 'Str',
     is      => 'ro',
@@ -45,23 +53,16 @@ has namespace_map => (
     isa     => 'HashRef',
     is      => 'ro',
     lazy    => 1,
-    default => sub { {} },
+    default => sub {
+        { '' => $_[0]->namespace, };
+    },
     trigger => sub {
         my ($self) = @_;
-        unless ( exists( $self->namespace_map->{""} ) ) {
-            $self->namespace_map->{""} = $self->namespace;
+        unless ( exists( $self->namespace_map->{''} ) ) {
+            $self->namespace_map->{''} = $self->namespace;
         }
     },
 );
-
-sub _build_filter {
-    my %params = ( namespace => $_[0]->namespace, );
-    $params{template} = $_[0]->template if defined $_[0]->template;
-    $params{namespace_map} = $_[0]->namespace_map;
-    Class::MOP::load_class($_[0]->filter_class);
-    $_[0]->filter_class->new(%params);
-}
-
 has parser => (
     is         => 'ro',
     lazy_build => 1,

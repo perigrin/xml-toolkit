@@ -57,6 +57,8 @@ None reported.
 
 =head1 BUGS AND LIMITATIONS
 
+NOTE AT THE MOMENT NAMESPACED SERIALIZATION DOES NOT WORK
+
 XML::Toolkit has been used in two production projects for over a year. This is
 slightly less than Moose when it was declared 1.0 (aka 'not scary'). Since an
 XML package is sufficiently less world shattering than an Object Orientation
