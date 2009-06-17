@@ -83,13 +83,12 @@ augment 'start_element' => sub {
 
 sub append_to_parent {
     my ( $self, $parent, $el ) = @_;
-    $self->append_text if $self->text;
     if ( my $method = $parent->can("add_$el->{LocalName}") ) {
         $parent->$method( $self->current_object );
     }
 }
 
-sub append_text {
+sub set_object_text {
     my ($self) = @_;
     $self->current_object->text( $self->text )
       if $self->current_object->can('text');
@@ -97,6 +96,7 @@ sub append_text {
 
 augment 'end_element' => sub {
     my ( $self, $el ) = @_;
+    $self->set_object_text if $self->has_text;
     if ( my $parent = $self->parent_object ) {
         $self->append_to_parent( $parent => $el );
     }
