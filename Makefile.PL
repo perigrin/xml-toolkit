@@ -12,6 +12,7 @@ requires 'Moose::Autobox'             => '0.08';
 requires 'MooseX::AttributeHelpers'   => '0.13';
 requires 'MooseX::MetaDescription'    => '0.03';
 requires 'MooseX::Types::Path::Class' => '0.04';
+requires 'MooseX::App::Cmd'           => '0.04';
 requires 'Template'                   => '2.20';
 requires 'XML::SAX'                   => '0.96';
 requires 'XML::SAX::Writer'           => '0.50';
