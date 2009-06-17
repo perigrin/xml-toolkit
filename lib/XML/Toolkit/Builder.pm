@@ -1,5 +1,6 @@
 package XML::Toolkit::Builder;
 use Moose;
+use Moose::Util::TypeConstraints;
 use Class::MOP;
 use XML::SAX::Writer;
 use XML::Filter::Moose::Class;
@@ -11,7 +12,7 @@ has namespace => (
     lazy_build => 1,
 );
 
-sub _build_namespace { 'MyApp' }
+sub _build_namespace {'MyApp'}
 
 has template => (
     isa => 'Str',
@@ -37,17 +38,17 @@ sub _build_filter {
     my %params = ( namespace => $_[0]->namespace, );
     $params{template} = $_[0]->template if defined $_[0]->template;
     $params{namespace_map} = $_[0]->namespace_map;
-    Class::MOP::load_class($_[0]->filter_class);
+    Class::MOP::load_class( $_[0]->filter_class );
     $_[0]->filter_class->new(%params);
 }
 
 has filter_class => (
-    isa     => 'Str',
-    is      => 'ro',
+    isa        => 'Str',
+    is         => 'ro',
     lazy_build => 1,
 );
 
-sub _build_filter_class { 'XML::Filter::Moose::ClassNS' }
+sub _build_filter_class {'XML::Filter::Moose::ClassNS'}
 
 has namespace_map => (
     isa     => 'HashRef',
@@ -63,8 +64,11 @@ has namespace_map => (
         }
     },
 );
+
+
 has parser => (
-    is         => 'ro',
+    isa => duck_type([qw(parse_uri parse_file parse_string)]),
+    is => 'ro',
     lazy_build => 1,
     handles    => [qw(parse_uri parse_file parse_string)]
 );
