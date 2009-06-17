@@ -1,7 +1,7 @@
 package XML::Toolkit::Loader;
 use Moose;
 use XML::SAX::Writer;
-use XML::Toolkit::Loader::Parser;
+use XML::Toolkit::Loader::Filter;
 use XML::Toolkit::Generator;
 use XML::SAX::ParserFactory;
 
@@ -34,10 +34,10 @@ has filter_class => (
     lazy_build => 1,
 );
 
-sub _build_filter_class { 'XML::Toolkit::Loader::ParserNS' }
+sub _build_filter_class { 'XML::Toolkit::Loader::FilterNS' }
 
 has filter => (
-    isa        => 'XML::Toolkit::Loader::Parser',
+    isa        => 'XML::Toolkit::Loader::Filter',
     is         => 'ro',
     lazy_build => 1,
     handles    => [qw(root_object)],
@@ -110,7 +110,7 @@ Builder. This defaults to "MyApp".
 =item filter - An XML::SAX Filter
 
 The render method is required. This is the class that renders the parsed
-events into a set of Moose Objects. XML::Toolkit::Loader::Parser documented
+events into a set of Moose Objects. XML::Toolkit::Loader::Filter documented
 elsewhere in this distribution is the default implementation.
 
 =item generator - An XML::Toolkit::Generator
