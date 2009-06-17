@@ -39,7 +39,7 @@ has filter_class => (
     lazy_build => 1,
 );
 
-sub _build_filter_class { 'XML::Filter::Moose::Class' }
+sub _build_filter_class { 'XML::Filter::Moose::ClassNS' }
 
 has namespace_map => (
     isa     => 'HashRef',

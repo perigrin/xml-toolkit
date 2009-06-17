@@ -63,18 +63,18 @@ sub run {
     ::ok( defined $class, 'build a class' );
     eval "$class";    
     ::can_ok( 'XML::Toolkit::Tests::Base::Foo',      'new' );
-    ::can_ok( 'XML::Toolkit::Tests::Base::Foo::Bar', 'new' );
+    ::can_ok( 'XML::Toolkit::Tests::Base::Bar', 'new' );
     $self->loader->parse_string('<foo><bar /></foo>');
     ::isa_ok($self->loader->root_object, 'XML::Toolkit::Tests::Base::Foo');
     ::can_ok($self->loader->root_object, 'bar_collection');
     ::ok(my ($bar) = @{ $self->loader->root_object->bar_collection });
-    ::isa_ok($bar, 'XML::Toolkit::Tests::Base::Foo::Bar');
+    ::isa_ok($bar, 'XML::Toolkit::Tests::Base::Bar');
     my $tree = $self->loader->render;
     ::ok( $tree, 'parse_string' );
     
     my $tree2 = XML::Toolkit::Tests::Base::Foo->new(
         bar_collection => [
-            XML::Toolkit::Tests::Base::Foo::Bar->new()
+            XML::Toolkit::Tests::Base::Bar->new()
         ]
     );
     $self->generator->render_object($tree2);
