@@ -19,7 +19,7 @@ requires 'XML::SAX::Writer'           => '0.50';
 build_requires 'Test::More' => '0.42';
 
 no_index 'directory' => 'ex';
-install_script 'bin/xmltk_make_classes';
+install_script 'bin/xmltk';
 
 auto_set_repository;
 auto_manifest;

@@ -1,6 +1,7 @@
 package XML::Toolkit::RNG::Grammar;
 use Moose;
 use MooseX::AttributeHelpers;
+use XML::Toolkit;
 
 has 'datatypeLibrary' => (
     isa         => 'Str',
@@ -15,9 +16,8 @@ has 'datatypeLibrary' => (
         sort_order   => 0,
     },
 );
-
 has 'define_collection' => (
-    isa         => 'ArrayRef[XML::Toolkit::RNG::Grammar::Define]',
+    isa         => 'ArrayRef[XML::Toolkit::RNG::Define]',
     is          => 'ro',
     traits      => ['XML'],
     metaclass   => 'Collection::Array',
@@ -27,7 +27,6 @@ has 'define_collection' => (
     provides    => { push => 'define' },
     description => { sort_order => 1, },
 );
-
 has 'ns' => (
     isa         => 'Str',
     is          => 'ro',
@@ -41,9 +40,8 @@ has 'ns' => (
         sort_order   => 2,
     },
 );
-
 has 'start_collection' => (
-    isa         => 'ArrayRef[XML::Toolkit::RNG::Grammar::Start]',
+    isa         => 'ArrayRef[XML::Toolkit::RNG::Start]',
     is          => 'ro',
     traits      => ['XML'],
     metaclass   => 'Collection::Array',
@@ -53,7 +51,6 @@ has 'start_collection' => (
     provides    => { push => 'start' },
     description => { sort_order => 3, },
 );
-
 has 'xmlns' => (
     isa         => 'Str',
     is          => 'ro',
@@ -71,49 +68,3 @@ has 'xmlns' => (
 no Moose;
 1;
 __END__
-
-=head1 NAME
-
-XML::Toolkit::RNG::Grammar - A class to ...
-
-=head1 VERSION
-
-This documentation refers to version 0.01.
-
-=head1 SYNOPSIS
-
-use XML::Toolkit::RNG::Grammar;
-
-=head1 DESCRIPTION
-
-The XML::Toolkit::RNG::Grammar class implements ...
-
-=head1 SUBROUTINES / METHODS
-
-=head1 DEPENDENCIES
-
-Modules used, version dependencies, core yes/no
-
-Moose
-
-MooseX::AttributeHelpers
-
-=head1 NOTES
-
-...
-
-=head1 BUGS AND LIMITATIONS
-
-None known currently, please email the author if you find any.
-
-=head1 AUTHOR
-
-Chris Prather (perigrin@domain.tld)
-
-=head1 LICENCE
-
-Copyright 2009 by Chris Prather.
-
-This software is free.  It is licensed under the same terms as Perl itself.
-
-=cut
