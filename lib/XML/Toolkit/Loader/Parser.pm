@@ -98,7 +98,7 @@ sub append_text {
 augment 'end_element' => sub {
     my ( $self, $el ) = @_;
     if ( my $parent = $self->parent_object ) {
-        $self->append_to_parent($parent => $el);
+        $self->append_to_parent( $parent => $el );
     }
     $self->objects->pop unless $self->at_root_object;
 };

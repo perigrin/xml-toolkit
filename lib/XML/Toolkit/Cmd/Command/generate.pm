@@ -97,7 +97,7 @@ has '[% attr_name %]' => (
      lazy        => 1,
      auto_deref  => 1,
      default     => sub { [] },
-     provides    => { push => '[% attr_name.remove("_collection") %]' },
+     provides    => { push => 'add_[% attr_name.remove("_collection") %]' },
      description => {
          sort_order => [% loop.index() %],
      },

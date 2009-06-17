@@ -51,7 +51,7 @@ sub create_and_add_object {
     my %params =
       map { $_->{LocalName} => $_->{Value} } values %{ $el->{Attributes} };
 
-    my $obj = $class->new(%params);
+    my $obj = $class->new(%params);      
     $self->add_object($obj);
 
 }
