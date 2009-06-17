@@ -12,10 +12,15 @@ has namespace_map => (
 );
 
 has unresolved_namespace_map => (
-    isa     => 'HashRef',
-    is      => 'rw',
-    lazy    => 1,
-    default => sub { {} },
+    isa       => 'HashRef',
+    is        => 'rw',
+    lazy      => 1,
+    default   => sub { {} },
+    metaclass => 'Collection::Hash',
+    provides  => {
+        empty => 'has_unresolved_namespaces',
+        keys  => 'unresolved_namespaces',
+    }
 );
 
 sub get_class_name {
@@ -39,19 +44,20 @@ sub get_class_name {
 
 after 'end_document' => sub {
     my ($self) = @_;
-    if ( keys %{ $self->unresolved_namespace_map } > 0 ) {
+    if ( $self->has_unresolved_namespaces ) {
         die "These XML namespaces have no mapping:\n"
-          . join( "\n", sort keys %{ $self->unresolved_namespace_map } ) . "\n";
+            . join( "\n", sort $self->unresolved_namespaces ) . "\n";
     }
 };
 
 sub create_and_add_object {
     my ( $self, $class, $el ) = @_;
 
-    my %params =
-      map { $_->{LocalName} => $_->{Value} } values %{ $el->{Attributes} };
+    my %params
+        = map { $_->{LocalName} => $_->{Value} }
+        values %{ $el->{Attributes} };
 
-    my $obj = $class->new(%params);      
+    my $obj = $class->new(%params);
     $self->add_object($obj);
 
 }

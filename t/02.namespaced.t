@@ -72,6 +72,7 @@ sub _build_generator {
     );
     return $g;
 }
+use Data::Dumper;
 
 sub run {
     my ( $self, $filename ) = @_;
@@ -84,6 +85,7 @@ sub run {
     ::can_ok( 'My::Bar',                        'new' );
     $self->loader->parse_string($xml);
     my $tree = $self->loader->render;
+    ::diag Dumper $tree;
     ::ok( $tree, 'parse_string' );
     my $tree2 = XML::Toolkit::Tests::Base::Foo->new(
         bar_collection => [ My::Bar->new() ] );
