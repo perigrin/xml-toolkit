@@ -1,4 +1,4 @@
-package XML::Toolkit::Loader::Parser;
+package XML::Toolkit::Loader::Filter;
 use Moose;
 use MooseX::AttributeHelpers;
 use Moose::Autobox;
@@ -114,7 +114,7 @@ __END__
 
 =head1 NAME
 
-XML::Toolkit::Loader::Parser - A class to ...
+XML::Toolkit::Loader::Filter - A class to ...
 
 =head1 VERSION
 
@@ -122,11 +122,11 @@ This documentation refers to version 0.01.
 
 =head1 SYNOPSIS
 
-use XML::Toolkit::Loader::Parser;
+use XML::Toolkit::Loader::Filter;
 
 =head1 DESCRIPTION
 
-The XML::Toolkit::Loader::Parser class implements ...
+The XML::Toolkit::Loader::Filter class implements ...
 
 =head1 SUBROUTINES / METHODS
 

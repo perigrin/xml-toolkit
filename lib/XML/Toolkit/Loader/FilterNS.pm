@@ -1,8 +1,8 @@
-package XML::Toolkit::Loader::ParserNS;
+package XML::Toolkit::Loader::FilterNS;
 use Moose;
 use Moose::Autobox;
 
-extends qw(XML::Toolkit::Loader::Parser);
+extends qw(XML::Toolkit::Loader::Filter);
 
 has namespace_map => (
     isa     => 'HashRef',
@@ -70,7 +70,7 @@ __END__
 
 =head1 NAME
 
-XML::Toolkit::Loader::Parser - A class to ...
+XML::Toolkit::Loader::Filter - A class to ...
 
 =head1 VERSION
 
@@ -78,11 +78,11 @@ This documentation refers to version 0.01.
 
 =head1 SYNOPSIS
 
-use XML::Toolkit::Loader::Parser;
+use XML::Toolkit::Loader::Filter;
 
 =head1 DESCRIPTION
 
-The XML::Toolkit::Loader::Parser class implements ...
+The XML::Toolkit::Loader::Filter class implements ...
 
 =head1 SUBROUTINES / METHODS
 
