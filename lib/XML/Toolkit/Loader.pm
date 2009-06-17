@@ -5,6 +5,8 @@ use XML::Toolkit::Loader::Filter;
 use XML::Toolkit::Generator;
 use XML::SAX::ParserFactory;
 
+with qw(XML::Filter::Moose::NamespaceRegistry);
+
 has namespace => (
     isa        => 'Str',
     is         => 'ro',
@@ -12,21 +14,6 @@ has namespace => (
 );
 
 sub _build_namespace { 'MyApp' }
-
-has namespace_map => (
-    isa     => 'HashRef',
-    is      => 'ro',
-    lazy    => 1,
-    default => sub {
-        { '' => $_[0]->namespace, };
-    },
-    trigger => sub {
-        my ($self) = @_;
-        unless ( exists( $self->namespace_map->{''} ) ) {
-            $self->namespace_map->{''} = $self->namespace;
-        }
-    },
-);
 
 has filter_class => (
     isa        => 'Str',

@@ -3,25 +3,7 @@ use Moose;
 use Moose::Autobox;
 
 extends qw(XML::Toolkit::Loader::Filter);
-
-has namespace_map => (
-    isa     => 'HashRef',
-    is      => 'ro',
-    lazy    => 1,
-    default => sub { {} },
-);
-
-has unresolved_namespace_map => (
-    isa       => 'HashRef',
-    is        => 'rw',
-    lazy      => 1,
-    default   => sub { {} },
-    metaclass => 'Collection::Hash',
-    provides  => {
-        empty => 'has_unresolved_namespaces',
-        keys  => 'unresolved_namespaces',
-    }
-);
+with qw(XML::Filter::Moose::NamespaceRegistry);
 
 sub get_class_name {
     my ( $self, $el ) = @_;
@@ -53,8 +35,7 @@ after 'end_document' => sub {
 sub create_and_add_object {
     my ( $self, $class, $el ) = @_;
 
-    my %params
-        = map { $_->{LocalName} => $_->{Value} }
+    my %params = map { $_->{LocalName} => $_->{Value} }
         values %{ $el->{Attributes} };
 
     my $obj = $class->new(%params);

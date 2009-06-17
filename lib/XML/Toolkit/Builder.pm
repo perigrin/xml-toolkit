@@ -6,6 +6,8 @@ use XML::SAX::Writer;
 use XML::Filter::Moose::Class;
 use XML::SAX::ParserFactory;
 
+with qw(XML::Filter::Moose::NamespaceRegistry);
+
 has namespace => (
     isa        => 'Str',
     is         => 'ro',
@@ -50,24 +52,8 @@ has filter_class => (
 
 sub _build_filter_class {'XML::Filter::Moose::ClassNS'}
 
-has namespace_map => (
-    isa     => 'HashRef',
-    is      => 'ro',
-    lazy    => 1,
-    default => sub {
-        { '' => $_[0]->namespace, };
-    },
-    trigger => sub {
-        my ($self) = @_;
-        unless ( exists( $self->namespace_map->{''} ) ) {
-            $self->namespace_map->{''} = $self->namespace;
-        }
-    },
-);
-
-
 has parser => (
-    isa => duck_type([qw(parse_uri parse_file parse_string)]),
+    isa => duck_type( [qw(parse_uri parse_file parse_string)] ),
     is => 'ro',
     lazy_build => 1,
     handles    => [qw(parse_uri parse_file parse_string)]

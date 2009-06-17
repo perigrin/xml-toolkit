@@ -3,59 +3,39 @@ use Moose;
 use Carp qw(croak);
 
 extends qw(XML::Filter::Moose::Class);
-
-has namespace_map => (
-    isa     => 'HashRef',
-    is      => 'ro',
-    lazy    => 1,
-    default => sub {
-        { '' => $_[0]->namespace, };
-    },
-    trigger => sub {
-        my ($self) = @_;
-        unless ( exists( $self->namespace_map->{''} ) ) {
-            $self->namespace_map->{''} = $self->namespace;
-        }
-    },
-);
-
-has unresolved_namespace_map => (
-    isa     => 'HashRef',
-    is      => 'rw',
-    lazy    => 1,
-    default => sub { {} },
-);
+with qw(XML::Filter::Moose::NamespaceRegistry);
 
 sub get_class_name {
     my ( $self, $el ) = @_;
-    
+
     # Get values for element
-    my $xmlns = $el->{'NamespaceURI'};
-    my $namespace = $self->namespace_map->{ $xmlns };
+    my $xmlns     = $el->{'NamespaceURI'};
+    my $namespace = $self->namespace_map->{$xmlns};
 
     # Add xmlns to unresolved list
-    unless ( $namespace ) {
+    unless ($namespace) {
         $self->unresolved_namespace_map->{$xmlns} = 1;
+
         # Let's just return the local part here, even though it's wrong
         return ucfirst $el->{'LocalName'};
     }
 
     # Construct class name
     return $namespace . '::' . ucfirst $el->{'LocalName'};
-    
+
 }
 
 after 'end_document' => sub {
     my ($self) = @_;
     if ( keys %{ $self->unresolved_namespace_map } > 0 ) {
         die "These XML namespaces have no mapping:\n"
-          . join("\n", sort keys %{ $self->unresolved_namespace_map } )
-          . "\n";
+            . join( "\n", sort keys %{ $self->unresolved_namespace_map } )
+            . "\n";
     }
 };
 
-
-no Moose;# unimport Moose's keywords so they won't accidentally become methods
+no Moose
+    ;    # unimport Moose's keywords so they won't accidentally become methods
 1;       # Magic true value required at end of module
 __END__
 
