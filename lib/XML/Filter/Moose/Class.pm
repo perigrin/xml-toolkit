@@ -10,12 +10,7 @@ with qw(XML::Filter::Moose::ClassTemplate);
 
 sub get_class_name {
     my ( $self, $el ) = @_;
-    my $name = $el->{LocalName};
-    my $namespace
-        = $self->parent_element
-        ? $self->parent_element->{classname}
-        : $self->namespace;
-    return $namespace . '::' . ucfirst $name;
+    return $self->namespace . '::' . ucfirst $el->{LocalName};
 }
 
 sub create_class {

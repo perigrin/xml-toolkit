@@ -1,7 +1,6 @@
 package XML::Filter::Moose::NamespaceRegistry;
 use Moose::Role;
 
-
 has namespace_map => (
     isa        => 'HashRef',
     is         => 'ro',
@@ -28,12 +27,12 @@ has unresolved_namespace_map => (
     }
 );
 
-sub end_document {}
+sub end_document { }
 
 after 'end_document' => sub {
     my ($self) = @_;
     if ( $self->has_unresolved_namespaces ) {
-        die "These XML namespaces have no mapping:\n"
+        warn "These XML namespaces have no mapping:\n"
             . join( "\n", sort $self->unresolved_namespaces ) . "\n";
     }
 };
@@ -50,7 +49,7 @@ sub get_class_name {
         $self->unresolved_namespace_map->{$xmlns} = 1;
 
         # Let's just return the local part here, even though it's wrong
-        return ucfirst $el->{'LocalName'};
+        return $self->namespace_map->{''} . '::' . ucfirst $el->{'LocalName'};
     }
 
     # Construct class name

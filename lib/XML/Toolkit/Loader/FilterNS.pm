@@ -3,7 +3,7 @@ use Moose;
 use Moose::Autobox;
 
 extends qw(XML::Toolkit::Loader::Filter);
-with qw(XML::Filter::Moose::NamespaceRegistry);
+with qw(XML::Filter::Moose::NamespaceRegistry); # provides get_class_name
 
 sub create_and_add_object {
     my ( $self, $class, $el ) = @_;
