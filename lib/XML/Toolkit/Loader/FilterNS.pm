@@ -5,33 +5,6 @@ use Moose::Autobox;
 extends qw(XML::Toolkit::Loader::Filter);
 with qw(XML::Filter::Moose::NamespaceRegistry);
 
-sub get_class_name {
-    my ( $self, $el ) = @_;
-
-    # Get values for element
-    my $xmlns     = $el->{'NamespaceURI'};
-    my $namespace = $self->namespace_map->{$xmlns};
-
-    # Add xmlns to unresolved list
-    unless ($namespace) {
-        $self->unresolved_namespace_map->{$xmlns} = 1;
-
-        # Let's just return the local part here, even though it's wrong
-        return ucfirst $el->{'LocalName'};
-    }
-
-    # Construct class name
-    return $namespace . '::' . ucfirst $el->{'LocalName'};
-}
-
-after 'end_document' => sub {
-    my ($self) = @_;
-    if ( $self->has_unresolved_namespaces ) {
-        die "These XML namespaces have no mapping:\n"
-            . join( "\n", sort $self->unresolved_namespaces ) . "\n";
-    }
-};
-
 sub create_and_add_object {
     my ( $self, $class, $el ) = @_;
 
