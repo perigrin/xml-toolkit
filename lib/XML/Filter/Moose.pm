@@ -5,11 +5,16 @@ use Moose::Autobox;
 extends qw(XML::SAX::Base Moose::Object);
 
 has stack => (
-    isa     => 'ArrayRef',
-    is      => 'ro',
-    lazy    => 1,
-    default => sub { [] },
-    clearer => 'reset_stack',
+    isa       => 'ArrayRef',
+    is        => 'ro',
+    lazy      => 1,
+    default   => sub { [] },
+    clearer   => 'reset_stack',
+    metaclass => 'Collection::Array',
+    provides  => {
+        push => 'add_element',
+        pop  => 'pop_element'
+    }
 );
 
 has text => (
@@ -19,7 +24,7 @@ has text => (
     lazy      => 1,
     clearer   => 'reset_text',
     predicate => 'has_text',
-    default   => sub { '' },
+    default   => sub {''},
     provides  => { append => 'append_text', },
 );
 
@@ -50,7 +55,7 @@ sub start_document {
 sub start_element {
     my ( $self, $el ) = @_;
     inner();
-    $self->stack->push($el);
+    $self->add_element($el);
 }
 
 sub characters {
@@ -62,7 +67,7 @@ sub characters {
 sub end_element {
     my ( $self, $el ) = @_;
     inner();
-    $self->stack->pop;
+    $self->pop_element;
     $self->reset_text;
 }
 

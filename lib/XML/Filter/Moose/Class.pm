@@ -49,7 +49,7 @@ sub add_text_attribute {
     );
 }
 
-augment 'start_element' => sub {
+sub start_element {
     my ( $self, $el ) = @_;
     my $classname = $self->get_class_name($el);
     class_type $classname;
@@ -60,23 +60,27 @@ augment 'start_element' => sub {
     $self->add_attribute( $class, 'attribute' => $_ )
         for values %{ $el->{Attributes} };
 
-    return if $self->is_root;
+    unless ( $self->is_root ) {
+        my $parent_class
+            = $self->get_class( $self->parent_element->{classname} );
+        $self->add_attribute(
+            $parent_class,
+            'child',
+            {
+                %$el,
+                isa               => "ArrayRef[$classname]",
+                should_auto_deref => 1,
+                is_lazy           => 1,
+                default           => sub { [] },
+            }
+        );
+    }
 
-    my $parent_class = $self->get_class( $self->parent_element->{classname} );
-    $self->add_attribute(
-        $parent_class,
-        'child',
-        {
-            %$el,
-            isa               => "ArrayRef[$classname]",
-            should_auto_deref => 1,
-            is_lazy           => 1,
-            default           => sub { [] },
-        }
-    );
-};
+    # cribbed from XML::Filter::Moose
+    $self->add_element($el);
+}
 
-augment 'end_element' => sub {
+sub end_element {
     my ( $self, $el ) = @_;
     my $top = $self->current_element;
     $self->add_text_attribute( $self->get_class( $top->{classname} ) )
@@ -84,7 +88,11 @@ augment 'end_element' => sub {
     confess "INVALID PARSE: $el->{Name} ne $top->{Name}"
         unless $el->{Name} eq $top->{Name};
 
-};
+    # cribbed from XML::Filter::Moose
+    $self->pop_element;
+    $self->reset_text;
+
+}
 no Moose
     ;    # unimport Moose's keywords so they won't accidentally become methods
 1;       # Magic true value required at end of module
