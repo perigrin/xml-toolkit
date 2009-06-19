@@ -23,7 +23,7 @@ has namespace => (
     lazy_build => 1,
 );
 
-sub _build_namespace { 'MyApp' }
+sub _build_namespace {'MyApp'}
 
 has xmlns => (
     isa     => 'HashRef',
@@ -38,7 +38,7 @@ has filter_class => (
     lazy_build => 1,
 );
 
-sub _build_filter_class { 'XML::Filter::Moose::ClassNS' }
+sub _build_filter_class {'XML::Toolkit::Builder::FilterNS'}
 
 has template => (
     isa        => 'Str',

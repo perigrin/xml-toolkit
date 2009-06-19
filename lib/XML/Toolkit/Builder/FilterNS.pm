@@ -1,15 +1,15 @@
-package XML::Toolkit::Builder::ClassNS;
+package XML::Toolkit::Builder::FilterNS;
 use Moose;
 use Carp qw(croak);
 
-extends qw(XML::Toolkit::Builder::Class);
+extends qw(XML::Toolkit::Builder::Filter);
 with qw(XML::Toolkit::Builder::NamespaceRegistry);
 
 override add_attribute => sub {
     my ( $next, $self, $class, $type, $attr ) = @_;
     return super() if $type eq 'child';
     return super() unless my $xmlns = $attr->{Prefix};
-    return super() unless $xmlns eq 'xmlns';    
+    return super() unless $xmlns eq 'xmlns';
     my $name = $attr->{LocalName};
     warn $name;
     $attr->{isa}         = 'Str';
@@ -33,14 +33,14 @@ __END__
 
 =head1 NAME
 
-XML::Toolkit::Builder::Class - An XML::SAX Filter that generates Moose Classes
-from SAX events.
+XML::Toolkit::Builder::Filter - An Namespace Aware XML::SAX Filter that
+generates Moose Classes from SAX events.
 
 =head1 SYNOPSIS
 
-    use XML::Toolkit::Builder::Class;
+    use XML::Toolkit::Builder::Filter;
 
-    my $filter = XML::Toolkit::Builder::Class->new( 
+    my $filter = XML::Toolkit::Builder::Filter->new( 
         template => $template, 
         namespace => $namespace 
     );
@@ -52,7 +52,7 @@ from SAX events.
 
 =head1 DESCRIPTION
 
-The XML::Toolkit::Builder::Class class implements an XML::SAX Filter that
+The XML::Toolkit::Builder::Filter class implements an XML::SAX Filter that
 generates Moose Classes from SAX events.
 
 =head1 METHODS

@@ -1,4 +1,4 @@
-package XML::Toolkit::Builder::Class;
+package XML::Toolkit::Builder::Filter;
 use Moose;
 use MooseX::AttributeHelpers;
 use Moose::Util::TypeConstraints;
@@ -101,14 +101,14 @@ __END__
 
 =head1 NAME
 
-XML::Toolkit::Builder::Class - An XML::SAX Filter that generates Moose Classes
+XML::Toolkit::Builder::Filter - An XML::SAX Filter that generates Moose Classes
 from SAX events.
 
 =head1 SYNOPSIS
 
-    use XML::Toolkit::Builder::Class;
+    use XML::Toolkit::Builder::Filter;
 
-    my $filter = XML::Toolkit::Builder::Class->new( 
+    my $filter = XML::Toolkit::Builder::Filter->new( 
         template => $template, 
         namespace => $namespace 
     );
@@ -120,7 +120,7 @@ from SAX events.
 
 =head1 DESCRIPTION
 
-The XML::Toolkit::Builder::Class class implements an XML::SAX Filter that
+The XML::Toolkit::Builder::Filter class implements an XML::SAX Filter that
 generates Moose Classes from SAX events.
 
 =head1 METHODS
