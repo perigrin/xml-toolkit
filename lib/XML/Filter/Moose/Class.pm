@@ -15,6 +15,7 @@ sub get_class_name {
 
 sub create_class {
     my ( $self, $name, $params ) = @_;
+    return $self->get_class($name) if $self->has_class($name);
     return Moose::Meta::Class->create( $name => %$params );
 }
 
@@ -53,17 +54,13 @@ augment 'start_element' => sub {
     my $classname = $self->get_class_name($el);
     class_type $classname;
     $el->{classname} = $classname;
-    if ( $self->is_root ) {
-        my $class = $self->create_class( $classname => $el );
-        $self->add_class( $classname => $class );
-        $self->add_attribute( $class, 'attribute' => $_ )
-            for values %{ $el->{Attributes} };
-        return;
-    }
+
     my $class = $self->create_class( $classname => $el );
     $self->add_class( $classname => $class );
     $self->add_attribute( $class, 'attribute' => $_ )
         for values %{ $el->{Attributes} };
+
+    return if $self->is_root;
 
     my $parent_class = $self->get_class( $self->parent_element->{classname} );
     $self->add_attribute(

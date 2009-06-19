@@ -5,6 +5,27 @@ use Carp qw(croak);
 extends qw(XML::Filter::Moose::Class);
 with qw(XML::Filter::Moose::NamespaceRegistry);
 
+override add_attribute => sub {
+    my ( $next, $self, $class, $type, $attr ) = @_;
+    return super() if $type eq 'child';
+    return super() unless my $xmlns = $attr->{Prefix};
+    return super() unless $xmlns eq 'xmlns';    
+    my $name = $attr->{LocalName};
+    warn $name;
+    $attr->{isa}         = 'Str';
+    $attr->{traits}      = ['XML::Toolkit::MetaDescription::Trait'];
+    $attr->{default}     = $attr->{Value};
+    $attr->{description} = {
+        node_type    => $type,
+        Prefix       => $xmlns,
+        NamespaceURI => $attr->{NamespaceURI},
+        LocalName    => $attr->{LocalName},
+        Name         => $attr->{Name},
+    };
+    $class->add_attribute( $name => $attr )
+        unless $class->has_attribute($name);
+};
+
 no Moose
     ;    # unimport Moose's keywords so they won't accidentally become methods
 1;       # Magic true value required at end of module

@@ -22,6 +22,7 @@ has registry => (
         values => 'classes',
         keys   => 'class_names',
         get    => 'get_class',
+        exists => 'has_class',
     }
 );
 
