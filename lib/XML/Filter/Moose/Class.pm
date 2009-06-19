@@ -16,6 +16,7 @@ sub get_class_name {
 sub create_class {
     my ( $self, $name, $params ) = @_;
     return $self->get_class($name) if $self->has_class($name);
+    class_type $name; # we only need to generate the class type when we build a new
     return Moose::Meta::Class->create( $name => %$params );
 }
 
@@ -52,7 +53,6 @@ sub add_text_attribute {
 sub start_element {
     my ( $self, $el ) = @_;
     my $classname = $self->get_class_name($el);
-    class_type $classname;
     $el->{classname} = $classname;
 
     my $class = $self->create_class( $classname => $el );
