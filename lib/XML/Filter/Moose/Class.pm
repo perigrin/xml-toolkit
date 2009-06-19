@@ -22,8 +22,10 @@ sub create_class {
 
 sub add_attribute {
     my ( $self, $class, $type, $attr ) = @_;
-    my $name = $attr->{LocalName};
-    $name = $name . '_collection' if $type eq 'child';
+    my $name = $attr->{LocalName} . ( $type eq 'child' ? '_collection' : '' );
+    
+    return if $class->has_attribute($name);
+
     $attr->{isa} ||= 'Str';
     $attr->{traits} = ['XML::Toolkit::MetaDescription::Trait'];
     unless ( $type eq 'child' ) {
@@ -35,8 +37,7 @@ sub add_attribute {
             Name         => $attr->{Name},
         };
     }
-    $class->add_attribute( $name => $attr )
-        unless $class->has_attribute($name);
+    $class->add_attribute( $name => $attr );
 }
 
 sub add_text_attribute {
