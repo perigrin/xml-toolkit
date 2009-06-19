@@ -1,4 +1,4 @@
-package XML::Filter::Moose::NamespaceRegistry;
+package XML::Toolkit::Builder::NamespaceRegistry;
 use Moose::Role;
 
 has namespace_map => (

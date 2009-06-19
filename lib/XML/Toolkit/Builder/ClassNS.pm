@@ -1,9 +1,9 @@
-package XML::Filter::Moose::ClassNS;
+package XML::Toolkit::Builder::ClassNS;
 use Moose;
 use Carp qw(croak);
 
-extends qw(XML::Filter::Moose::Class);
-with qw(XML::Filter::Moose::NamespaceRegistry);
+extends qw(XML::Toolkit::Builder::Class);
+with qw(XML::Toolkit::Builder::NamespaceRegistry);
 
 override add_attribute => sub {
     my ( $next, $self, $class, $type, $attr ) = @_;
@@ -33,14 +33,14 @@ __END__
 
 =head1 NAME
 
-XML::Filter::Moose::Class - An XML::SAX Filter that generates Moose Classes
+XML::Toolkit::Builder::Class - An XML::SAX Filter that generates Moose Classes
 from SAX events.
 
 =head1 SYNOPSIS
 
-    use XML::Filter::Moose::Class;
+    use XML::Toolkit::Builder::Class;
 
-    my $filter = XML::Filter::Moose::Class->new( 
+    my $filter = XML::Toolkit::Builder::Class->new( 
         template => $template, 
         namespace => $namespace 
     );
@@ -52,7 +52,7 @@ from SAX events.
 
 =head1 DESCRIPTION
 
-The XML::Filter::Moose::Class class implements an XML::SAX Filter that
+The XML::Toolkit::Builder::Class class implements an XML::SAX Filter that
 generates Moose Classes from SAX events.
 
 =head1 METHODS

@@ -1,12 +1,12 @@
-package XML::Filter::Moose::Class;
+package XML::Toolkit::Builder::Class;
 use Moose;
 use MooseX::AttributeHelpers;
 use Moose::Util::TypeConstraints;
 use Template;
 
 extends qw(XML::Filter::Moose);
-with qw(XML::Filter::Moose::ClassRegistry);
-with qw(XML::Filter::Moose::ClassTemplate);
+with qw(XML::Toolkit::Builder::ClassRegistry);
+with qw(XML::Toolkit::Builder::ClassTemplate);
 
 sub get_class_name {
     my ( $self, $el ) = @_;
@@ -101,14 +101,14 @@ __END__
 
 =head1 NAME
 
-XML::Filter::Moose::Class - An XML::SAX Filter that generates Moose Classes
+XML::Toolkit::Builder::Class - An XML::SAX Filter that generates Moose Classes
 from SAX events.
 
 =head1 SYNOPSIS
 
-    use XML::Filter::Moose::Class;
+    use XML::Toolkit::Builder::Class;
 
-    my $filter = XML::Filter::Moose::Class->new( 
+    my $filter = XML::Toolkit::Builder::Class->new( 
         template => $template, 
         namespace => $namespace 
     );
@@ -120,7 +120,7 @@ from SAX events.
 
 =head1 DESCRIPTION
 
-The XML::Filter::Moose::Class class implements an XML::SAX Filter that
+The XML::Toolkit::Builder::Class class implements an XML::SAX Filter that
 generates Moose Classes from SAX events.
 
 =head1 METHODS

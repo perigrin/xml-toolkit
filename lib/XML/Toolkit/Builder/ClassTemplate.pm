@@ -1,4 +1,4 @@
-package XML::Filter::Moose::ClassTemplate;
+package XML::Toolkit::Builder::ClassTemplate;
 use Moose::Role;
 
 has template => (
@@ -89,7 +89,7 @@ __END__
 
 =head1 NAME
 
-XML::Filter::Moose::ClassTemplate - A class to ...
+XML::Toolkit::Builder::ClassTemplate - A class to ...
 
 =head1 VERSION
 
@@ -97,11 +97,11 @@ This documentation refers to version 0.01.
 
 =head1 SYNOPSIS
 
-use XML::Filter::Moose::ClassTemplate;
+use XML::Toolkit::Builder::ClassTemplate;
 
 =head1 DESCRIPTION
 
-The XML::Filter::Moose::ClassTemplate class implements ...
+The XML::Toolkit::Builder::ClassTemplate class implements ...
 
 =head1 SUBROUTINES / METHODS
 

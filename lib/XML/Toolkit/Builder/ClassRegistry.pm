@@ -1,4 +1,4 @@
-package XML::Filter::Moose::ClassRegistry;
+package XML::Toolkit::Builder::ClassRegistry;
 use Moose::Role;
 
 has namespace => (
@@ -34,7 +34,7 @@ __END__
 
 =head1 NAME
 
-XML::Filter::Moose::ClassRegistry - A class to ...
+XML::Toolkit::Builder::ClassRegistry - A class to ...
 
 =head1 VERSION
 
@@ -42,11 +42,11 @@ This documentation refers to version 0.01.
 
 =head1 SYNOPSIS
 
-use XML::Filter::Moose::ClassRegistry;
+use XML::Toolkit::Builder::ClassRegistry;
 
 =head1 DESCRIPTION
 
-The XML::Filter::Moose::ClassRegistry class implements ...
+The XML::Toolkit::Builder::ClassRegistry class implements ...
 
 =head1 SUBROUTINES / METHODS
 

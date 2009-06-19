@@ -5,7 +5,7 @@ use XML::Toolkit::Loader::Filter;
 use XML::Toolkit::Generator;
 use XML::SAX::ParserFactory;
 
-with qw(XML::Filter::Moose::NamespaceRegistry);
+with qw(XML::Toolkit::Builder::NamespaceRegistry);
 
 has namespace => (
     isa        => 'Str',

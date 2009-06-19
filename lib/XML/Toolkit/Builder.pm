@@ -3,10 +3,10 @@ use Moose;
 use Moose::Util::TypeConstraints;
 use Class::MOP;
 use XML::SAX::Writer;
-use XML::Filter::Moose::Class;
+use XML::Toolkit::Builder::Class;
 use XML::SAX::ParserFactory;
 
-with qw(XML::Filter::Moose::NamespaceRegistry);
+with qw(XML::Toolkit::Builder::NamespaceRegistry);
 
 has namespace => (
     isa        => 'Str',
@@ -30,7 +30,7 @@ has output => (
 );
 
 has filter => (
-    isa        => 'XML::Filter::Moose::Class',
+    isa        => 'XML::Toolkit::Builder::Class',
     is         => 'ro',
     lazy_build => 1,
     handles    => [qw(render)],
@@ -50,7 +50,7 @@ has filter_class => (
     lazy_build => 1,
 );
 
-sub _build_filter_class {'XML::Filter::Moose::ClassNS'}
+sub _build_filter_class {'XML::Toolkit::Builder::ClassNS'}
 
 has parser => (
     isa => duck_type( [qw(parse_uri parse_file parse_string)] ),
@@ -91,10 +91,10 @@ Builder. This defaults to "MyApp".
 =item filter - An XML::SAX Filter
 
 The render method is required. This is the class that renders the parsed
-events into a set of Moose classes. XML::Filter::Moose::Class documented
+events into a set of Moose classes. XML::Toolkit::Builder::Class documented
 elsewhere in this distribution is the default implementation.
 
-=item template - Optionally a template to pass to the XML::Filter::Moose::Class
+=item template - Optionally a template to pass to the XML::Toolkit::Builder::Class
 
 This is to allow customization of the output template for the generated Moose
 classes.

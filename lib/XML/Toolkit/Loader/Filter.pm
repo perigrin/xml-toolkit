@@ -3,7 +3,7 @@ use Moose;
 use MooseX::AttributeHelpers;
 use Moose::Autobox;
 extends qw(XML::Filter::Moose);
-with qw(XML::Filter::Moose::ClassRegistry);
+with qw(XML::Toolkit::Builder::ClassRegistry);
 
 has default_namespace => (
     isa      => 'Str',
