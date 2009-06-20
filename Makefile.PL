@@ -19,6 +19,8 @@ requires 'XML::SAX::Writer'           => '0.50';
 
 build_requires 'Test::More' => '0.42';
 
+tests_recursive;
+
 no_index 'directory' => 'ex';
 install_script 'bin/xmltk';
 
