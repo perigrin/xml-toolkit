@@ -5,12 +5,6 @@ use Moose::Autobox;
 extends qw(XML::Filter::Moose);
 with qw(XML::Toolkit::Builder::ClassRegistry);
 
-has default_namespace => (
-    isa      => 'Str',
-    is       => 'ro',
-    required => 1,
-);
-
 has objects => (
     isa        => 'ArrayRef',
     is         => 'ro',

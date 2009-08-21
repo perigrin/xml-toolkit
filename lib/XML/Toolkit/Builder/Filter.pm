@@ -23,13 +23,14 @@ sub create_class {
 sub add_attribute {
     my ( $self, $class, $type, $attr ) = @_;
     my $name = $attr->{LocalName} . ( $type eq 'child' ? '_collection' : '' );
-    
     return if $class->has_attribute($name);
 
-    $attr->{isa} ||= 'Str';
-    $attr->{traits} = ['XML::Toolkit::MetaDescription::Trait'];
+    my $param = { map { $_ => $attr->{$_} } qw(isa is auto_deref) };
+    $param->{isa} ||= 'Str';
+    $param->{is}     = 'bare';
+    $param->{traits} = ['XML::Toolkit::MetaDescription::Trait'];
     unless ( $type eq 'child' ) {
-        $attr->{description} = {
+        $param->{description} = {
             node_type    => $type,
             NamespaceURI => $attr->{NamespaceURI},
             LocalName    => $attr->{LocalName},
@@ -37,7 +38,7 @@ sub add_attribute {
             Name         => $attr->{Name},
         };
     }
-    $class->add_attribute( $name => $attr );
+    $class->add_attribute( $name => $param );
 }
 
 sub add_text_attribute {
@@ -59,20 +60,20 @@ sub start_element {
     my $class = $self->create_class( $classname => $el );
     $self->add_class( $classname => $class );
     $self->add_attribute( $class, 'attribute' => $_ )
-        for values %{ $el->{Attributes} };
+      for values %{ $el->{Attributes} };
 
     unless ( $self->is_root ) {
-        my $parent_class
-            = $self->get_class( $self->parent_element->{classname} );
+        my $parent_class =
+          $self->get_class( $self->parent_element->{classname} );
         $self->add_attribute(
             $parent_class,
             'child',
             {
                 %$el,
-                isa               => "ArrayRef[$classname]",
-                should_auto_deref => 1,
-                is_lazy           => 1,
-                default           => sub { [] },
+                isa        => "ArrayRef[$classname]",
+                auto_deref => 1,
+                lazy       => 1,
+                default    => sub { [] },
             }
         );
     }
@@ -85,18 +86,17 @@ sub end_element {
     my ( $self, $el ) = @_;
     my $top = $self->current_element;
     $self->add_text_attribute( $self->get_class( $top->{classname} ) )
-        if $self->has_text;
+      if $self->has_text;
     confess "INVALID PARSE: $el->{Name} ne $top->{Name}"
-        unless $el->{Name} eq $top->{Name};
+      unless $el->{Name} eq $top->{Name};
 
     # cribbed from XML::Filter::Moose
     $self->pop_element;
     $self->reset_text;
 
 }
-no Moose
-    ;    # unimport Moose's keywords so they won't accidentally become methods
-1;       # Magic true value required at end of module
+no Moose;  # unimport Moose's keywords so they won't accidentally become methods
+1;         # Magic true value required at end of module
 __END__
 
 =head1 NAME

@@ -4,11 +4,8 @@ use Moose::Role;
 has namespace => (
     isa        => 'Str',
     is         => 'ro',
-    builder    => 'default_namespace',
     lazy_build => 1,
 );
-
-sub default_namespace { 'MyApp::' }
 
 has registry => (
     isa        => 'HashRef',
@@ -49,13 +46,6 @@ use XML::Toolkit::Builder::ClassRegistry;
 The XML::Toolkit::Builder::ClassRegistry class implements ...
 
 =head1 SUBROUTINES / METHODS
-
-=head2 default_namespace
-
-Parameters:
-    none
-
-Insert description of subroutine here...
 
 =head1 DEPENDENCIES
 
