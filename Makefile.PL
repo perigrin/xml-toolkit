@@ -7,7 +7,7 @@ all_from 'lib/XML/Toolkit.pm';
 
 # Specific dependencies
 requires 'Devel::PackagePath'         => '0.01';
-requires 'Moose'                      => '0.74';
+requires 'Moose'                      => '0.90';
 requires 'Moose::Autobox'             => '0.08';
 requires 'MooseX::AttributeHelpers'   => '0.13';
 requires 'MooseX::MetaDescription'    => '0.03';

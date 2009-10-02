@@ -20,12 +20,12 @@ has stack => (
 has text => (
     isa       => 'Str',
     is        => 'rw',
-    metaclass => 'String',
+    traits    => ['String'],
     lazy      => 1,
     clearer   => 'reset_text',
     predicate => 'has_text',
-    default   => sub {''},
-    provides  => { append => 'append_text', },
+    default   => sub { '' },
+    handles   => { append_text => 'append', },
 );
 
 sub root {
