@@ -79,8 +79,6 @@ Modules used, version dependencies, core yes/no
 
 L<Moose|Moose>
 
-L<MooseX::AttributeHelpers|MooseX::AttributeHelpers>
-
 L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
 
 L<Template::Toolkit|Template::Toolkit>

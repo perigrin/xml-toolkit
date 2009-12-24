@@ -83,7 +83,6 @@ sub _build_template {
 [%- FILTER redirect("${filename}") -%]
 package [% meta.name %];
 use Moose;
-use MooseX::AttributeHelpers;
 use XML::Toolkit;
 
 [% FOREACH attr_name IN meta.get_attribute_list.sort -%]
@@ -91,17 +90,18 @@ use XML::Toolkit;
 has '[% attr_name %]' => (
      isa         => '[% attr.type_constraint.name %]',
      is          => '[% IF attr.has_accessor %]rw[% ELSE %]ro[%END%]',
-     traits      => [ 'XML' ],
  [% IF attr.type_constraint.is_subtype_of("ArrayRef") -%]
-     metaclass   => 'Collection::Array',
+
+     traits      => [ 'XML', 'Array' ],
      lazy        => 1,
      auto_deref  => 1,
      default     => sub { [] },
-     provides    => { push => 'add_[% attr_name.remove("_collection") %]' },
+     handels    => { 'add_[% attr_name.remove("_collection") %]' => ['push'] },
      description => {
          sort_order => [% loop.index() %],
      },
 [% ELSE -%]
+ traits      => [ 'XML' ],
  description => {
 [% FOREACH name IN attr.description.keys -%]
      [% name %] => "[% attr.description.$name %]",

@@ -1,6 +1,5 @@
 package XML::Toolkit::Loader::Filter;
 use Moose;
-use MooseX::AttributeHelpers;
 use Moose::Autobox;
 extends qw(XML::Filter::Moose);
 with qw(XML::Toolkit::Builder::ClassRegistry);
@@ -9,12 +8,13 @@ has objects => (
     isa        => 'ArrayRef',
     is         => 'ro',
     auto_deref => 1,
-    lazy       => 1,
-    default    => sub { [] },
-    metaclass  => 'Collection::Array',
-    provides   => { push => 'add_object', }
+    lazy_build => 1,
+    traits     => ['Array'],
+    handles    => { 'add_object' => ['push'], }
 
 );
+
+sub _build_objects { [] }
 
 sub parent_object {
     my ($self) = @_;

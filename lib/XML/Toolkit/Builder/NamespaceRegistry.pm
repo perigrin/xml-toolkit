@@ -16,16 +16,17 @@ has namespace_map => (
 sub _build_namespace_map { { '' => $_[0]->namespace, } }
 
 has unresolved_namespace_map => (
-    isa       => 'HashRef',
-    is        => 'rw',
-    lazy      => 1,
-    default   => sub { {} },
-    metaclass => 'Collection::Hash',
-    provides  => {
-        empty => 'has_unresolved_namespaces',
-        keys  => 'unresolved_namespaces',
+    isa        => 'HashRef',
+    is         => 'rw',
+    lazy_build => 1,
+    traits     => ['Hash'],
+    handles    => {
+        'has_unresolved_namespaces' => ['is_empty'],
+        'unresolved_namespaces'     => ['keys'],
     }
 );
+
+sub _build_unresolved_namespace_map { {} }
 
 sub end_document { }
 
@@ -33,7 +34,7 @@ after 'end_document' => sub {
     my ($self) = @_;
     if ( $self->has_unresolved_namespaces ) {
         warn "These XML namespaces have no mapping:\n"
-            . join( "\n", sort $self->unresolved_namespaces ) . "\n";
+          . join( "\n", sort $self->unresolved_namespaces ) . "\n";
     }
 };
 

@@ -4,10 +4,11 @@ use Moose;
 has output => (
     isa        => 'ArrayRef',
     is         => 'ro',
-    default    => sub { [] },
-    lazy       => 1,
+    lazy_build => 1,
     auto_deref => 1,
 );
+
+sub _build_output { [] }
 
 has handler => (
     isa        => 'Object',

@@ -1,6 +1,5 @@
 package XML::Toolkit::Builder::Filter;
 use Moose;
-use MooseX::AttributeHelpers;
 use Moose::Util::TypeConstraints;
 use Template;
 

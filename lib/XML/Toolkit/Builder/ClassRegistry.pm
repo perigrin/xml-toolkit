@@ -6,25 +6,26 @@ has namespace => (
     is         => 'ro',
     lazy_build => 1,
 );
+sub _build_namespace { '' }
 
 has registry => (
     isa        => 'HashRef',
     is         => 'ro',
-    lazy       => 1,
-    default    => sub { {} },
+    lazy_build => 1,
     auto_deref => 1,
-    metaclass  => 'Collection::Hash',
-    provides   => {
-        set    => 'add_class',
-        values => 'classes',
-        keys   => 'class_names',
-        get    => 'get_class',
-        exists => 'has_class',
+    traits     => ['Hash'],
+    handles    => {
+        'add_class'   => ['set'],
+        'classes'     => ['values'],
+        'class_names' => ['keys'],
+        'get_class'   => ['get'],
+        'has_class'   => ['exists'],
     }
 );
 
+sub _build_registry { {} }
 
-no Moose::Role; 
+no Moose::Role;
 1;
 
 __END__

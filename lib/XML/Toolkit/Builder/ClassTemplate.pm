@@ -61,12 +61,13 @@ has tt_config => (
 );
 
 has tt => (
-    isa     => 'Template',
-    is      => 'ro',
-    lazy    => 1,
-    default => sub { Template->new( $_[0]->tt_config ) },
-    handles => [qw(error)],
+    isa        => 'Template',
+    is         => 'ro',
+    lazy_build => 1,
+    handles    => [qw(error)],
 );
+
+sub _build_tt { Template->new( $_[0]->tt_config ) }
 
 sub render {
     my ($self) = @_;

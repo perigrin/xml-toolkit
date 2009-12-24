@@ -5,17 +5,20 @@ use Moose::Autobox;
 extends qw(XML::SAX::Base Moose::Object);
 
 has stack => (
-    isa       => 'ArrayRef',
-    is        => 'ro',
-    lazy      => 1,
-    default   => sub { [] },
-    clearer   => 'reset_stack',
-    metaclass => 'Collection::Array',
-    provides  => {
-        push => 'add_element',
-        pop  => 'pop_element'
+    isa        => 'ArrayRef',
+    is         => 'ro',
+    lazy_build => 1,
+    clearer    => 'reset_stack',
+    traits     => ['Array'],
+    handles   => {
+        'add_element'     => ['push'],
+        'pop_element'     => ['pop'],
+        'root'            => [ 'get', 0 ],
+        'current_element' => [ 'get', -1 ],
     }
 );
+
+sub _build_stack { [] }
 
 has text => (
     isa       => 'Str',
@@ -27,14 +30,6 @@ has text => (
     default   => sub { '' },
     handles   => { append_text => 'append', },
 );
-
-sub root {
-    shift->stack->[0];
-}
-
-sub current_element {
-    shift->stack->[-1];
-}
 
 sub is_root { return shift->stack->length == 0 }
 
