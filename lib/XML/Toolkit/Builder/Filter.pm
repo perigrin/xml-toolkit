@@ -44,11 +44,12 @@ sub add_attribute {
 sub add_text_attribute {
     my ( $self, $class ) = @_;
     $class->add_attribute(
-        'text' => {
+        'text' => (
             isa         => 'Str',
             is          => 'rw',
+            traits      => ['XML::Toolkit::MetaDescription::Trait'],
             description => { node_type => 'character' },
-        }
+        )
     );
 }
 
