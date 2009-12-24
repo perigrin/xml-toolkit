@@ -8,6 +8,8 @@ extends qw(XML::Filter::Moose);
 with qw(XML::Toolkit::Builder::ClassRegistry);
 with qw(XML::Toolkit::Builder::ClassTemplate);
 
+use aliased 'XML::Toolkit::MetaDescription::Trait' => 'XMLTrait';
+
 sub get_class_name {
     my ( $self, $el ) = @_;
     return $self->namespace . '::' . ucfirst $el->{LocalName};
@@ -28,7 +30,7 @@ sub add_attribute {
     my $param = { map { $_ => $attr->{$_} } qw(isa is auto_deref) };
     $param->{isa} ||= 'Str';
     $param->{is}     = 'bare';
-    $param->{traits} = ['XML::Toolkit::MetaDescription::Trait'];
+    $param->{traits} = [XMLTrait];
     unless ( $type eq 'child' ) {
         $param->{description} = {
             node_type    => $type,
@@ -47,7 +49,7 @@ sub add_text_attribute {
         'text' => (
             isa         => 'Str',
             is          => 'rw',
-            traits      => ['XML::Toolkit::MetaDescription::Trait'],
+            traits      => [XMLTrait],
             description => { node_type => 'character' },
         )
     );
