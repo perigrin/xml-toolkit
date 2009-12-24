@@ -26,19 +26,16 @@ has '[% attr_name %]' => (
      auto_deref  => 1,
      default     => sub { [] },
      handles    => { add_[% attr_name.remove("_collection") %] => ['push'] },
-     description => {
-         sort_order => [% loop.index() %],
-     },
 [%- ELSE %]
    
      traits      => [ 'XML'],
+[% END -%]
      description => {
 [% FOREACH name IN attr.description.keys -%]
         [% name %] => "[% attr.description.$name %]",
 [% END -%]
         sort_order => [% loop.index() %],
      },
-[% END -%]
 );
 [% END -%]
 

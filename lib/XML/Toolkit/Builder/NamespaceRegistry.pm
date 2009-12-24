@@ -1,5 +1,7 @@
 package XML::Toolkit::Builder::NamespaceRegistry;
 use Moose::Role;
+use namespace::autoclean;
+requires 'namespace';
 
 has namespace_map => (
     isa        => 'HashRef',
@@ -21,7 +23,7 @@ has unresolved_namespace_map => (
     lazy_build => 1,
     traits     => ['Hash'],
     handles    => {
-        'has_unresolved_namespaces' => ['is_empty'],
+        'no_unresolved_namespaces' => ['is_empty'],
         'unresolved_namespaces'     => ['keys'],
     }
 );
@@ -32,7 +34,7 @@ sub end_document { }
 
 after 'end_document' => sub {
     my ($self) = @_;
-    if ( $self->has_unresolved_namespaces ) {
+    unless ( $self->no_unresolved_namespaces ) {
         warn "These XML namespaces have no mapping:\n"
           . join( "\n", sort $self->unresolved_namespaces ) . "\n";
     }
@@ -57,5 +59,5 @@ sub get_class_name {
     return $namespace . '::' . ucfirst $el->{'LocalName'};
 }
 
-no Moose::Role;
 1;
+__END__

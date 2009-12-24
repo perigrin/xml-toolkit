@@ -16,32 +16,47 @@ after 'start_document' => sub {
     $self->newline;
 };
 
+sub xml_decl { my ( $self, $data ) = @_; $self->Handler->xml_decl($data) }
+
 sub start_element {
-    my ( $self, $name, $attr ) = @_;
-    $self->SUPER::start_element( { Name => $name, Attributes => $attr } );
+    my ( $self, $name, $attr, $data ) = @_;
+    confess "can't start empty element" unless $name;
+    $self->Handler->start_element(
+        { Name => $name, Attributes => $attr, %$data } );
 }
 
 sub end_element {
     my ( $self, $name ) = @_;
-    $self->SUPER::end_element( { Name => $name } );
+    $self->Handler->end_element( { Name => $name } );
     $self->newline;
 }
 
 sub characters {
     my ( $self, $data ) = @_;
-    $self->SUPER::characters( { Data => $data } );
+    $self->Handler->characters( { Data => $data } );
 }
 
 sub newline {
     my $self = shift;
-    $self->SUPER::characters( { Data => "\n" } );
+    $self->Handler->characters( { Data => "\n" } );
 }
 
 sub cdata {
     my ( $self, $data ) = @_;
     $self->start_cdata();
-    $self->characters($data);
+    $self->Handler->characters( { Data => $data } );
     $self->end_cdata();
+}
+
+sub start_prefix_mapping {
+    my ( $self, $prefix, $uri ) = @_;
+    $self->Handler->start_prefix_mapping(
+        { Prefix => $prefix, NamespaceURI => $uri } );
+}
+
+sub end_prefix_mapping {
+    my ( $self, $prefix ) = @_;
+    $self->Handler->end_prefix_mapping( { Prefix => $prefix } );
 }
 
 sub parse {

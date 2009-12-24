@@ -30,15 +30,14 @@ sub add_attribute {
     $param->{isa} ||= 'Str';
     $param->{is}     = 'bare';
     $param->{traits} = [XMLTrait];
-    unless ( $type eq 'child' ) {
-        $param->{description} = {
-            node_type    => $type,
-            NamespaceURI => $attr->{NamespaceURI},
-            LocalName    => $attr->{LocalName},
-            Prefix       => $attr->{Prefix},
-            Name         => $attr->{Name},
-        };
-    }
+
+    $param->{description} = {
+        node_type    => $type,
+        NamespaceURI => $attr->{NamespaceURI},
+        LocalName    => $attr->{LocalName},
+        Prefix       => $attr->{Prefix},
+        Name         => $attr->{Name},
+    };
     $class->add_attribute( $name => $param );
 }
 

@@ -6,7 +6,6 @@ use XML::SAX::Writer;
 use XML::Toolkit::Builder::Filter;
 use XML::SAX::ParserFactory;
 
-with qw(XML::Toolkit::Builder::NamespaceRegistry);
 
 has namespace => (
     isa        => 'Str',
@@ -15,6 +14,8 @@ has namespace => (
 );
 
 sub _build_namespace {'MyApp'}
+
+with qw(XML::Toolkit::Builder::NamespaceRegistry);
 
 has template => (
     isa => 'Str',

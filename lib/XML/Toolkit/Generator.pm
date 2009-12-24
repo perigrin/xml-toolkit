@@ -1,6 +1,16 @@
 package XML::Toolkit::Generator;
 use Moose;
 
+has namespace => (
+    isa        => 'Str',
+    is         => 'ro',
+    lazy_build => 1,
+);
+
+sub _build_namespace { 'MyApp' }
+
+with qw(XML::Toolkit::Builder::NamespaceRegistry);    # provides get_class_name
+
 has output => (
     isa        => 'ArrayRef',
     is         => 'ro',
@@ -38,7 +48,10 @@ has generator => (
 
 sub _build_generator {
     require XML::Toolkit::Generator::Default;
-    XML::Toolkit::Generator::Default->new( Handler => $_[0]->handler );
+    XML::Toolkit::Generator::Default->new(
+        Handler       => $_[0]->handler,
+        namespace_map => $_[0]->namespace_map
+    );
 }
 
 no Moose;

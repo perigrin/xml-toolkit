@@ -80,7 +80,7 @@ use Test::More;
         $self->generator->render_object($tree2);
         ::ok( my $output = join '', $self->generator->output, 'got output' );
 
-        #    ::like($output, qr/<foo>/, 'has a <foo>');
+#        ::like($output, qr/<foo>/, 'has a <foo>');
         ::diag $output;
     }
 

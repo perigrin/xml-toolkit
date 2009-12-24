@@ -5,8 +5,6 @@ use XML::Toolkit::Loader::Filter;
 use XML::Toolkit::Generator;
 use XML::SAX::ParserFactory;
 
-with qw(XML::Toolkit::Builder::NamespaceRegistry);
-
 has namespace => (
     isa        => 'Str',
     is         => 'ro',
@@ -14,6 +12,8 @@ has namespace => (
 );
 
 sub _build_namespace { 'MyApp' }
+
+with qw(XML::Toolkit::Builder::NamespaceRegistry);
 
 has filter_class => (
     isa        => 'Str',
