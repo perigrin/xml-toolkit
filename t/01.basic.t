@@ -71,7 +71,8 @@ use Test::More;
         ::can_ok( $self->loader->root_object, 'bar_collection' );
         ::ok( my ($bar) = @{ $self->loader->root_object->bar_collection } );
         ::isa_ok( $bar, 'XML::Toolkit::Tests::Base::Bar' );
-        my $tree = $self->loader->render;
+        my $tree = $self->loader->root_object;
+        ::diag $tree;
         ::ok( $tree, 'parse_string' );
 
         my $tree2 =
@@ -79,9 +80,7 @@ use Test::More;
             bar_collection => [ XML::Toolkit::Tests::Base::Bar->new() ] );
         $self->generator->render_object($tree2);
         ::ok( my $output = join '', $self->generator->output, 'got output' );
-
-#        ::like($output, qr/<foo>/, 'has a <foo>');
-        ::diag $output;
+        ::like($output, qr/\Q<foo\E/, 'has a <foo');
     }
 
     __PACKAGE__->new->run;

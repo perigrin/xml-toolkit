@@ -5,8 +5,12 @@ use XML::Toolkit::MetaDescription;
 
 with 'MooseX::MetaDescription::Meta::Trait';
 
-has '+metadescription_classname' =>
-  ( default => 'XML::Toolkit::MetaDescription' );
+has 'metadescription_classname' => (
+    is      => 'rw',
+    isa     => 'Str',
+    lazy    => 1,
+    default => 'XML::Toolkit::MetaDescription',
+);
 
 package Moose::Meta::Attribute::Custom::Trait::XML;
 sub register_implementation { 'XML::Toolkit::MetaDescription::Trait' }

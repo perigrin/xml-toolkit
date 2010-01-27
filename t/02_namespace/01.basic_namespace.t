@@ -84,14 +84,12 @@ sub run {
     ::can_ok( 'XML::Toolkit::Tests::Base::Foo', 'new' );
     ::can_ok( 'My::Bar',                        'new' );
     $self->loader->parse_string($xml);
-    my $tree = $self->loader->render;
-    ::diag Dumper $tree;
+    my $tree = $self->loader->root_object;
     ::ok( $tree, 'parse_string' );
     my $tree2 = XML::Toolkit::Tests::Base::Foo->new(
         bar_collection => [ My::Bar->new() ] );
     $self->generator->render_object($tree2);
     ::ok( my @output = $self->generator->output, 'got output' );
-    ::diag @output;
 }
 
 __PACKAGE__->new->run
