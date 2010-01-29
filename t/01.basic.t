@@ -9,10 +9,9 @@ use aliased 'XML::Toolkit::Generator';
 
 my $xml = '<foo><bar /></foo>';
 
-my $builder = Builder->new();
-ok( $builder, 'Build XML::Toolkit::Builder' );
+ok( my $builder = Builder->new(), 'Build XML::Toolkit::Builder' );
 $builder->parse_string($xml);
-my $code = $builder->render();
+ok( my $code = $builder->render(), 'render code' );
 
 eval $code;
 
@@ -22,17 +21,14 @@ if ($@) {
     exit;
 }
 
-my $loader = Loader->new();
-ok( $loader, 'Build XML::Toolkit::Loader' );
+ok( my $loader = Loader->new(), 'Build XML::Toolkit::Loader' );
 $loader->parse_string($xml);
-my $root = $loader->root_object;
+ok( my $root = $loader->root_object, 'extract root object' );
 
 ok( scalar @{ $root->bar_collection } > 0, 'have entries' );
 
-my $generator = Generator->new( );
-ok( $generator, 'Build XML::Toolkit::Loader' );
+ok( my $generator = Generator->new(), 'Build XML::Toolkit::Loader' );
 $generator->render_object($root);
-my $out_xml = join '', $generator->output;
-is_xml( $out_xml, $xml, 'XML compares' );
+is_xml( $xml, join( '', $generator->output ), 'XML compares' );
 
 done_testing;
