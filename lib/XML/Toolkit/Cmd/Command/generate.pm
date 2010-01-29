@@ -9,6 +9,7 @@ use MooseX::Types::Path::Class qw(File);
 use Moose::Util::TypeConstraints;
 
 with qw(MooseX::Getopt::Dashes);
+with qw(XML::Toolkit::Cmd::ClassTemplate);
 
 has input => (
     isa      => File,
@@ -23,7 +24,7 @@ has namespace => (
     lazy_build => 1,
 );
 
-sub _build_namespace {'MyApp'}
+sub _build_namespace { 'MyApp' }
 
 has xmlns => (
     isa     => 'HashRef',
@@ -38,13 +39,7 @@ has filter_class => (
     lazy_build => 1,
 );
 
-sub _build_filter_class {'XML::Toolkit::Builder::FilterNS'}
-
-has template => (
-    isa        => 'Str',
-    is         => 'ro',
-    lazy_build => 1,
-);
+sub _build_filter_class { 'XML::Toolkit::Builder::FilterNS' }
 
 has _builder => (
     reader     => 'builder',
@@ -56,6 +51,7 @@ has _builder => (
 
 sub _build__builder {
     my ($self) = @_;
+
     return XML::Toolkit::Builder->new(
         namespace     => $self->namespace,
         template      => $self->template,
@@ -70,60 +66,25 @@ sub run {
     print $self->builder->render;
 }
 
-sub _build_template {
-    return <<'END_TEMPLATE'
-
+around _build_template => sub {
+    my ( $next, $self ) = ( shift, shift );
+    my $template = <<'END_TEMPLATE';
+    
 [% PERL %]        
  use Devel::PackagePath;
  my $p = Devel::PackagePath->new( package => "[% meta.name %]");
- my $file  = (split '::', $p->package)[-1];
+ my $file  = (split '::', "[% meta.name %]")[-1];
  $p->create;
  $stash->set(filename => "${\$p->path}/$file.pm");
 [% END %]
 [%- FILTER redirect("${filename}") -%]
-package [% meta.name %];
-use Moose;
-use XML::Toolkit;
-
-[% FOREACH attr_name IN meta.get_attribute_list.sort -%]
-[% attr = meta.get_attribute(attr_name) -%]
-has '[% attr_name %]' => (
-     isa         => '[% attr.type_constraint.name %]',
-     is          => '[% IF attr.has_accessor %]rw[% ELSE %]ro[%END%]',
- [% IF attr.type_constraint.is_subtype_of("ArrayRef") -%]
-
-     traits      => [ 'XML', 'Array' ],
-     lazy        => 1,
-     auto_deref  => 1,
-     default     => sub { [] },
-     handels    => { 'add_[% attr_name.remove("_collection") %]' => ['push'] },
-     description => {
-         sort_order => [% loop.index() %],
-     },
-[% ELSE -%]
- traits      => [ 'XML' ],
- description => {
-[% FOREACH name IN attr.description.keys -%]
-     [% name %] => "[% attr.description.$name %]",
-[% END -%]
-     sort_order => [% loop.index() %],
- },
-[% END -%]
-);
-[% END -%]
-
-no Moose;
-1;
-__END__
-[% END %]
-    
 END_TEMPLATE
 
-}
+    $template .= $self->$next(@_) . '[% END %]';
+    return $template;
+};
 
-no Moose;
 1;
-
 __END__
 
 =head1 NAME

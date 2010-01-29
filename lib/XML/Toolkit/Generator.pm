@@ -1,5 +1,6 @@
 package XML::Toolkit::Generator;
 use Moose;
+use XML::SAX::Writer;
 
 has namespace => (
     isa        => 'Str',

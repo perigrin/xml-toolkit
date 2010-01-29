@@ -87,18 +87,16 @@ sub parse_object {
 
     for my $attr ( $self->_get_sorted_filtered_attributes($meta) ) {
         if ( $self->is_text_node($attr) ) {
-
             $self->characters( $attr->get_value($obj) );
         }
-
-        if ( $self->is_child_node($attr) ) {
+        elsif ( $self->is_child_node($attr) ) {
             next unless my $value = $attr->get_value($obj);
             for my $child ( grep { defined } @$value ) {
                 next unless blessed $child;
                 $self->parse_object( $child->meta, $child, $attr->description );
             }
         }
-
+        else { warn "${\$attr->dump} is funky" }
     }
     $self->end_element($name);
 }
