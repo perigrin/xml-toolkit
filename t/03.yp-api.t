@@ -11,14 +11,14 @@ use LWP::Simple;
 my $xml = get 'http://www.youporn.com/api/iptv/1.0/1/listing/straight/rating/1';
 
 my $map = {
-    'http://www.w3.org/2005/Atom'                 => 'YP::XML::Atom',
-    'http://www.w3.org/1999/02/22-rdf-syntax-ns#' => 'YP::XML::RDF',
-    'http://purl.org/dc/elements/1.1/'            => 'YP::XML::DC',
-    'http://a9.com/-/spec/opensearch/1.1/'        => 'YP::XML::OpenSearch',
-    'http://search.yahoo.com/mrss/'               => 'YP::XML::Media',
-    'http://youporn.com/schemas/2009/'            => 'YP::XML::YP',
-    'http://purl.org/rss/1.0/modules/image/'      => 'YP::XML::Image',
-    'http://xmlns.com/foaf/0.1/'                  => 'YP::XML::Foaf',
+    'http://www.w3.org/2005/Atom'                 => 'XML::Atom',
+    'http://www.w3.org/1999/02/22-rdf-syntax-ns#' => 'XML::RDF',
+    'http://purl.org/dc/elements/1.1/'            => 'XML::DC',
+    'http://a9.com/-/spec/opensearch/1.1/'        => 'XML::OpenSearch',
+    'http://search.yahoo.com/mrss/'               => 'XML::Media',
+    'http://youporn.com/schemas/2009/'            => 'XML::YP',
+    'http://purl.org/rss/1.0/modules/image/'      => 'XML::Image',
+    'http://xmlns.com/foaf/0.1/'                  => 'XML::Foaf',
 };
 
 my $builder = Builder->new( { namespace_map => $map } );
