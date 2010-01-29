@@ -80,7 +80,7 @@ around _build_template => sub {
 [%- FILTER redirect("${filename}") -%]
 END_TEMPLATE
 
-    $template .= $self->$next(@_) . '[% END %]';
+    $template .= $self->$next(@_) . "__END__\n[% END %]";
     return $template;
 };
 

@@ -1,88 +1,38 @@
-#!/usr/bin/env perl
+#!/usr/bin/perl -w
 use strict;
 use Test::More;
+use Test::XML;
 
-{
+use aliased 'XML::Toolkit::Builder';
+use aliased 'XML::Toolkit::Loader';
+use aliased 'XML::Toolkit::Generator';
 
-    package XML::Toolkit::Tests::Base;
-    use Moose;
-    use MooseX::Types::Path::Class qw(Dir);
-    use XML::Toolkit::Builder;
-    use XML::Toolkit::Loader;
+my $xml = '<foo><bar /></foo>';
 
-    has test_dir => (
-        isa     => Dir,
-        is      => 'ro',
-        coerce  => 1,
-        default => sub { 't/data' },
-        handles => [qw(file)],
-    );
+my $builder = Builder->new();
+ok( $builder, 'Build XML::Toolkit::Builder' );
+$builder->parse_string($xml);
+my $code = $builder->render();
 
-    has builder => (
-        isa        => 'XML::Toolkit::Builder',
-        is         => 'ro',
-        lazy_build => 1,
-    );
+eval $code;
 
-    sub _build_builder {
-        ::ok( my $b = XML::Toolkit::Builder->new( namespace => __PACKAGE__ ),
-            'Build XML::Toolkit::Builder' );
-        return $b;
-    }
-
-    has loader => (
-        isa        => 'XML::Toolkit::Loader',
-        is         => 'ro',
-        lazy_build => 1,
-    );
-
-    sub _build_loader {
-        ::ok( my $l = XML::Toolkit::Loader->new( namespace => __PACKAGE__ ),
-            'Build XML::Toolkit::Loader' );
-        return $l;
-    }
-
-    has generator => (
-        isa        => 'XML::Toolkit::Generator',
-        is         => 'ro',
-        lazy_build => 1,
-    );
-
-    sub _build_generator {
-        ::ok(
-            my $g = XML::Toolkit::Generator->new,
-            'Build XML::Toolkit::Loader'
-        );
-        return $g;
-    }
-
-    sub run {
-        my ( $self, $filename ) = @_;
-        my $xml = '<foo><bar /></foo>';
-        $self->builder->parse_string($xml);
-        my $class = $self->builder->render;
-        ::ok( defined $class, 'build a class' );
-        eval "$class";
-        ::can_ok( 'XML::Toolkit::Tests::Base::Foo', 'new' );
-        ::can_ok( 'XML::Toolkit::Tests::Base::Bar', 'new' );
-        $self->loader->parse_string($xml);
-        ::isa_ok( $self->loader->root_object,
-            'XML::Toolkit::Tests::Base::Foo' );
-        ::can_ok( $self->loader->root_object, 'bar_collection' );
-        ::ok( my ($bar) = @{ $self->loader->root_object->bar_collection } );
-        ::isa_ok( $bar, 'XML::Toolkit::Tests::Base::Bar' );
-        my $tree = $self->loader->root_object;
-        ::diag $tree;
-        ::ok( $tree, 'parse_string' );
-
-        my $tree2 =
-          XML::Toolkit::Tests::Base::Foo->new(
-            bar_collection => [ XML::Toolkit::Tests::Base::Bar->new() ] );
-        $self->generator->render_object($tree2);
-        ::ok( my $output = join '', $self->generator->output, 'got output' );
-        ::like($output, qr/\Q<foo\E/, 'has a <foo');
-    }
-
-    __PACKAGE__->new->run;
+if ($@) {
+    diag "Couldn't EVAL code $@";
+    done_testing;
+    exit;
 }
+
+my $loader = Loader->new();
+ok( $loader, 'Build XML::Toolkit::Loader' );
+$loader->parse_string($xml);
+my $root = $loader->root_object;
+
+ok( scalar @{ $root->bar_collection } > 0, 'have entries' );
+
+my $generator = Generator->new( );
+ok( $generator, 'Build XML::Toolkit::Loader' );
+$generator->render_object($root);
+my $out_xml = join '', $generator->output;
+is_xml( $out_xml, $xml, 'XML compares' );
+
 done_testing;

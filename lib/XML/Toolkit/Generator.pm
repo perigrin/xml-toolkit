@@ -8,7 +8,7 @@ has namespace => (
     lazy_build => 1,
 );
 
-sub _build_namespace { 'MyApp' }
+sub _build_namespace { '' }
 
 with qw(XML::Toolkit::Builder::NamespaceRegistry);    # provides get_class_name
 

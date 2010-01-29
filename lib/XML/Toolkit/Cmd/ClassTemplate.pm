@@ -39,7 +39,7 @@ has '[% attr_name %]' => (
 );
 [% END -%]
 1;
-__END__
+
 END_TEMPLATE
 
 }
