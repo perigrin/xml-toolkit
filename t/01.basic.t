@@ -22,7 +22,7 @@ $builder->parse_string($xml);
 ok( my $code = $builder->render(), 'render code' );
 
 eval $code;
-diag $code;
+
 if ($@) {
     diag "Couldn't EVAL code $@";
     done_testing;

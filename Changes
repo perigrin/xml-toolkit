@@ -1,5 +1,5 @@
 Revision history for XML-Toolkit
-0.07    ???
+0.07    2010-01-29
         + Significant reorganization of the class layout
         + Some performance tweaks 
         + Moved script to `xmltk` and MooseX::App::Cmd
