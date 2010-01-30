@@ -4,52 +4,175 @@ our $VERSION = '0.07';
 
 use XML::Toolkit::MetaDescription::Trait;
 
-
 1;    # Magic true value required at end of module
 __END__
 
 =head1 NAME
 
-XML::Toolkit - A set of tools for dealing with XML with the Way of the Moose.
-
+XML::Toolkit - A suit of XML tools with Antlers.
 
 =head1 VERSION
 
-This document describes XML::Toolkit version 0.0.5
-
+This document describes XML::Toolkit version 0.07
 
 =head1 SYNOPSIS
 
-  use XML::Toolkit::Loader;
-  my $loader = XML::Toolkit::Loader->new( namespace => 'MyApp' );
-  $loader->parse_file( $$file );
-  print join '', @{ $loader->render };
+    use XML::Toolkit::Loader;
+    my $loader = XML::Toolkit::Loader->new( namespace => 'MyApp' );
+    $loader->parse_file( $$file );
+    print join '', @{ $loader->render };
 
 or
     use XML::Toolkit::Builder;
     my $builder = XML::Toolkit::Builder->new( namespace => 'MyApp' );
     $self->builder->parse_file( $file );
     say $builder->render;
-  
-  
+
+Typically you would use the C<xmltk> command line script.
+
+    xmltk generate --input mydocument.xml --namespace MyApp
+    
 =head1 DESCRIPTION
 
-XML::Toolkit is less a specific module as it is a suite of related modules 
-that provide a way to interact with XML more like an ORM. 
+XML::Toolkit is a suite of tools that work to make handling XML easier.
+It is designed to marshall XML documents into Moose classes and back
+again with minimal changes.
 
-THIS RELEASE IS CONSIDERED ALPHA QUALITY. USE IT AT YOUR OWN RISK. 
+For example given a xml document like the following
 
-There are no significant tests (beyond bare bones functional ones), and no
-significant documentation (beyond what you're reading now). 
+    <?xml version="1.0"?>
+    <note>
+        <to>Tove</to>
+        <from>Jani</from>
+        <heading>Reminder</heading>
+        <body>Don't forget me this weekend!</body>
+    </note>
 
-=head1 CONFIGURATION AND ENVIRONMENT
+C<XML::Toolkit> will generate classes for each of the elements. The 
+C< <note> > element's class would be something like
 
-XML::Toolkit requires no configuration files or environment variables.
+   package MyApp::Note;
+   use Moose;
+   use namespace::autoclean;
+   use XML::Toolkit;
+   
+   has 'to_collection' => (
+        isa         => 'ArrayRef[MyApp::To]',
+        is          => 'ro',     
+        init_arg    => 'tos',
+        traits      => [qw(XML Array)],
+        lazy        => 1,
+        auto_deref  => 1,
+        default     => sub { [] },
+        handles    => { add_to => ['push'] },     description => {
+           Prefix => "",
+           LocalName => "to",
+           node_type => "child",
+           Name => "to",
+           NamespaceURI => "",
+           sort_order => 0,
+        },
+   );
+  
+   has 'from_collection' => (
+        isa         => 'ArrayRef[MyApp::From]',
+        is          => 'ro',     
+        init_arg    => 'froms',
+        traits      => [qw(XML Array)],
+        lazy        => 1,
+        auto_deref  => 1,
+        default     => sub { [] },
+        handles    => { add_from => ['push'] },     description => {
+           Prefix => "",
+           LocalName => "from",
+           node_type => "child",
+           Name => "from",
+           NamespaceURI => "",
+           sort_order => 1,
+        },
+   );
+   
+   has 'body_collection' => (
+        isa         => 'ArrayRef[MyApp::Body]',
+        is          => 'ro',     
+        init_arg    => 'bodys',
+        traits      => [qw(XML Array)],
+        lazy        => 1,
+        auto_deref  => 1,
+        default     => sub { [] },
+        handles    => { add_body => ['push'] },     description => {
+           Prefix => "",
+           LocalName => "body",
+           node_type => "child",
+           Name => "body",
+           NamespaceURI => "",
+           sort_order => 2,
+        },
+   );
+   
+   has 'heading_collection' => (
+        isa         => 'ArrayRef[MyApp::Heading]',
+        is          => 'ro',     
+        init_arg    => 'headings',
+        traits      => [qw(XML Array)],
+        lazy        => 1,
+        auto_deref  => 1,
+        default     => sub { [] },
+        handles    => { add_heading => ['push'] },     description => {
+           Prefix => "",
+           LocalName => "heading",
+           node_type => "child",
+           Name => "heading",
+           NamespaceURI => "",
+           sort_order => 3,
+        },
+   );
+   
+   1;
+   __END__
+
+You can then use the set of classes to load the original document, or
+create new documents that match this structure.
+
+    my $document = MyApp::Note->new(
+        to_collection => [MyApp::To->new(text => 'Bob')],
+        from_collection => [MyApp::From->new(text => 'Alice')],
+        headings => [MyApp::Heading->new(text => 'Secret' )],
+        body_collection => [MyApp::Body->new(text=>'Shh!')],
+    )
+    
+    my $generator = Generator->new( );
+    $generator->render_object($document);
+    print $document->output;
+    
+    # output
+    #    
+    # <note>
+    #     <to>Bob</to>
+    #     <from>Alice</from>
+    #     <heading>Secret</heading>
+    #     <body>Shhh!</body>
+    # </note>
+
+The original intention of XML::Toolkit was to round-trip XML documents
+with an unkonwn schema through an editor and back out to disk with very
+few semantic or structural changes. 
+
+=head1 SEE ALSO
+
+L<XML::Compile|XML::Compile> and L<XML::Pastor|XML::Pastor> both have
+similarities to C<XML::Toolkit> in scope if not design.
 
 =head1 DEPENDENCIES
 
-'Moose', 'Moose::Autobox','MooseX::AttributeHelpers', 'XML::SAX',
-'MooseX::Types::Path::Class', 'XML::SAX::Writer', 'Encode', 'Template'
+L<Devel::PackagePath|Devel::PackagePath>, L< Moose | Moose >,
+L<Moose::Autobox|Moose::Autobox>,
+L<MooseX::MetaDescription|MooseX::MetaDescription>,
+L<MooseX::Types::Path::Class|MooseX::Types::Path::Class>,
+L<MooseX::App::Cmd|MooseX::App::Cmd>,
+L<Template::Toolkit|Template::Toolkit>, L<XML::SAX|XML::SAX>,
+L<XML::SAX::Writer|XML::SAX::Writer>, and
+L<namespace::autoclean|namespace::autoclean>
 
 =head1 INCOMPATIBILITIES
 
@@ -73,19 +196,18 @@ Please report any bugs or feature requests to
 C<bug-xml-toolkit@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org>.
 
-
 =head1 AUTHOR
 
 Chris Prather  C<< <chris@prather.org> >>
-
+Robin Smidsrød C<< <robin@smidsrod.no> >>
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2008, Chris Prather C<< <chris@prather.org> >>. Some rights reserved.
+Copyright (c) 2008-2010, Chris Prather C<< <chris@prather.org> >>. Some
+rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.
-
 
 =head1 DISCLAIMER OF WARRANTY
 

@@ -7,14 +7,22 @@ use aliased 'XML::Toolkit::Builder';
 use aliased 'XML::Toolkit::Loader';
 use aliased 'XML::Toolkit::Generator';
 
-my $xml = '<foo><bar /></foo>';
+my $xml = <<'END_XML';
+<?xml version="1.0"?>
+<note>
+    <to>Tove</to>
+    <from>Jani</from>
+    <heading>Reminder</heading>
+    <body>Don't forget me this weekend!</body>
+</note>
+END_XML
 
 ok( my $builder = Builder->new(), 'Build XML::Toolkit::Builder' );
 $builder->parse_string($xml);
 ok( my $code = $builder->render(), 'render code' );
 
 eval $code;
-
+diag $code;
 if ($@) {
     diag "Couldn't EVAL code $@";
     done_testing;
@@ -25,7 +33,7 @@ ok( my $loader = Loader->new(), 'Build XML::Toolkit::Loader' );
 $loader->parse_string($xml);
 ok( my $root = $loader->root_object, 'extract root object' );
 
-ok( scalar @{ $root->bar_collection } > 0, 'have entries' );
+ok( scalar @{ $root->to_collection } > 0, 'have entries' );
 
 ok( my $generator = Generator->new(), 'Build XML::Toolkit::Loader' );
 $generator->render_object($root);
