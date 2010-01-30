@@ -5,29 +5,11 @@ use Class::MOP;
 use Sub::Exporter -setup => {
     exports => [
         map { $_ => \&_generator }
-
-          qw{
-          Album
-          Image
-          Location
-          Meta
-          Playlist
-          Title
-          Track
-          TrackList
-          }
+          qw{ Album Image Location Meta Playlist Title Track TrackList }
     ],
     groups => {
         default => [
-            qw(
-              Album
-              Image
-              Location
-              Meta
-              Playlist
-              Title
-              Track
-              TrackList
+            qw( Album Image Location Meta Playlist Title Track TrackList
               )
         ]
     }
