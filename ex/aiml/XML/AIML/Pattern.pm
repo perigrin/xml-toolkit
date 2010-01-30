@@ -1,15 +1,17 @@
 package XML::AIML::Pattern;
 use Moose;
-use MooseX::AttributeHelpers;
+use namespace::autoclean;
 use XML::Toolkit;
 
 has 'text' => (
-    isa         => 'Str',
-    is          => 'rw',
-    traits      => ['XML'],
-    description => { sort_order => 0, },
+     isa         => 'Str',
+     is          => 'rw',   
+     traits      => [ 'XML'],
+     description => {
+        node_type => "character",
+        sort_order => 0,
+     },
 );
-
-no Moose;
 1;
+
 __END__
