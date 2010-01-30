@@ -1,4 +1,4 @@
-package XML::XSPF::Image;
+package XMLTK::XSPF::Image;
 use Moose;
 use namespace::autoclean;
 use XML::Toolkit;

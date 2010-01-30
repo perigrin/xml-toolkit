@@ -1,10 +1,10 @@
-package XML::XSPF::TrackList;
+package XMLTK::XSPF::TrackList;
 use Moose;
 use namespace::autoclean;
 use XML::Toolkit;
 
 has 'track_collection' => (
-     isa         => 'ArrayRef[XML::XSPF::Track]',
+     isa         => 'ArrayRef[XMLTK::XSPF::Track]',
      is          => 'ro',     init_arg    => 'tracks',
      traits      => [qw(XML Array)],
      lazy        => 1,

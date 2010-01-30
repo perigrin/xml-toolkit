@@ -1,4 +1,4 @@
-package XML::XSPF::Meta;
+package XMLTK::XSPF::Meta;
 use Moose;
 use namespace::autoclean;
 use XML::Toolkit;

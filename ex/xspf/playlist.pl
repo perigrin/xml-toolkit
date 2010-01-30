@@ -3,14 +3,7 @@ use strict;
 use 5.10.0;
 use lib qw(lib);
 
-use aliased 'XML::XSPF::Playlist';
-use aliased 'XML::XSPF::TrackList';
-use aliased 'XML::XSPF::Track';
-use aliased 'XML::XSPF::Album';
-use aliased 'XML::XSPF::Title';
-use aliased 'XML::XSPF::Image';
-use aliased 'XML::XSPF::Location';
-use aliased 'XML::XSPF::Meta';
+use XMLTK::XSPF;
 use aliased 'XML::Toolkit::Generator';
 
 my $location_url =

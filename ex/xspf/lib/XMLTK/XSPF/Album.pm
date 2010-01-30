@@ -1,4 +1,4 @@
-package XML::XSPF::Location;
+package XMLTK::XSPF::Album;
 use Moose;
 use namespace::autoclean;
 use XML::Toolkit;

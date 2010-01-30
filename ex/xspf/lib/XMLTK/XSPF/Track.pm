@@ -1,10 +1,10 @@
-package XML::XSPF::Track;
+package XMLTK::XSPF::Track;
 use Moose;
 use namespace::autoclean;
 use XML::Toolkit;
 
 has 'album_collection' => (
-     isa         => 'ArrayRef[XML::XSPF::Album]',
+     isa         => 'ArrayRef[XMLTK::XSPF::Album]',
      is          => 'ro',     init_arg    => 'albums',
      traits      => [qw(XML Array)],
      lazy        => 1,
@@ -20,7 +20,7 @@ has 'album_collection' => (
      },
 );
 has 'image_collection' => (
-     isa         => 'ArrayRef[XML::XSPF::Image]',
+     isa         => 'ArrayRef[XMLTK::XSPF::Image]',
      is          => 'ro',     init_arg    => 'images',
      traits      => [qw(XML Array)],
      lazy        => 1,
@@ -36,7 +36,7 @@ has 'image_collection' => (
      },
 );
 has 'location_collection' => (
-     isa         => 'ArrayRef[XML::XSPF::Location]',
+     isa         => 'ArrayRef[XMLTK::XSPF::Location]',
      is          => 'ro',     init_arg    => 'locations',
      traits      => [qw(XML Array)],
      lazy        => 1,
@@ -52,7 +52,7 @@ has 'location_collection' => (
      },
 );
 has 'meta_collection' => (
-     isa         => 'ArrayRef[XML::XSPF::Meta]',
+     isa         => 'ArrayRef[XMLTK::XSPF::Meta]',
      is          => 'ro',     init_arg    => 'metas',
      traits      => [qw(XML Array)],
      lazy        => 1,
@@ -68,7 +68,7 @@ has 'meta_collection' => (
      },
 );
 has 'title_collection' => (
-     isa         => 'ArrayRef[XML::XSPF::Title]',
+     isa         => 'ArrayRef[XMLTK::XSPF::Title]',
      is          => 'ro',     init_arg    => 'titles',
      traits      => [qw(XML Array)],
      lazy        => 1,

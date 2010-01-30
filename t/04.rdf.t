@@ -22,6 +22,7 @@ my $xml = <<'END_XML';
 END_XML
 
 my $map = {
+    ''                                            => 'XML::RDF::RDF',
     'http://www.w3.org/1999/02/22-rdf-syntax-ns#' => 'XML::RDF',
     'http://purl.org/dc/elements/1.1/'            => 'XML::DC',
 };
@@ -44,6 +45,7 @@ my $root = $loader->root_object;
 my $generator = Generator->new(
     {
         namespace_map => {
+            ''    => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
             'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
             'dc'  => 'http://purl.org/dc/elements/1.1/'
         }
