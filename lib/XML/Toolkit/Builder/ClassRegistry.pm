@@ -1,6 +1,6 @@
 package XML::Toolkit::Builder::ClassRegistry;
 use Moose::Role;
-
+use namespace::autoclean;
 has namespace => (
     isa        => 'Str',
     is         => 'ro',
@@ -22,10 +22,7 @@ has registry => (
         'has_class'   => ['exists'],
     }
 );
-
 sub _build_registry { {} }
-
-no Moose::Role;
 1;
 
 __END__

@@ -1,6 +1,7 @@
 package XML::Toolkit::Generator;
 use Moose;
 use XML::SAX::Writer;
+use namespace::autoclean;
 
 has namespace => (
     isa        => 'Str',
@@ -55,7 +56,7 @@ sub _build_generator {
     );
 }
 
-no Moose;
+__PACKAGE__->meta->make_immutable;
 1;
 __END__
 

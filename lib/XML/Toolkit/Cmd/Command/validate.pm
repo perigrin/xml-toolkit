@@ -1,13 +1,12 @@
 package XML::Toolkit::Cmd::Command::validate;
 use Moose;
-use namespace::autoclean;
-
-extends qw(MooseX::App::Cmd::Command);
-
 use XML::Toolkit::Loader;
 use MooseX::Types::Path::Class qw(File);
 use Moose::Util::TypeConstraints;
 
+use namespace::autoclean;
+
+extends qw(MooseX::App::Cmd::Command);
 with qw(MooseX::Getopt::Dashes);
 
 has input => (
@@ -23,7 +22,7 @@ has namespace => (
     lazy_build => 1,
 );
 
-sub _build_namespace {'MyApp'}
+sub _build_namespace { 'MyApp' }
 
 has _loader => (
     isa        => 'XML::Toolkit::Loader',
@@ -41,9 +40,7 @@ sub run {
     print join '', @{ $self->loader->render };
 }
 
-__PACKAGE__->new_with_options->run unless caller;
-
-no Moose;
+__PACKAGE__->meta->make_immutable;
 1;
 __END__
 

@@ -1,6 +1,6 @@
 package XML::Toolkit::Loader::FilterNS;
 use Moose;
-use Moose::Autobox;
+use namespace::autoclean;
 
 extends qw(XML::Toolkit::Loader::Filter);
 with qw(XML::Toolkit::Builder::NamespaceRegistry); # provides get_class_name
@@ -23,9 +23,8 @@ sub append_to_parent {
     }
 }
 
-no Moose;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
-
 __END__
 
 =head1 NAME

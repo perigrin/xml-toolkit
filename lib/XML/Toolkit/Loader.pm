@@ -4,6 +4,7 @@ use XML::SAX::Writer;
 use XML::Toolkit::Loader::Filter;
 use XML::Toolkit::Generator;
 use XML::SAX::ParserFactory;
+use namespace::autoclean;
 
 has namespace => (
     isa        => 'Str',
@@ -70,7 +71,7 @@ sub render {
     $self->render_object( $self->root_object );
 }
 
-no Moose;
+__PACKAGE__->meta->make_immutable;
 1;
 __END__
 

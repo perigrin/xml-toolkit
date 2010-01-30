@@ -1,6 +1,7 @@
 package XML::Filter::Moose;
 use Moose;
 use Moose::Autobox;
+use namespace::autoclean;
 
 extends qw(XML::SAX::Base Moose::Object);
 
@@ -10,7 +11,7 @@ has stack => (
     lazy_build => 1,
     clearer    => 'reset_stack',
     traits     => ['Array'],
-    handles   => {
+    handles    => {
         'add_element'     => ['push'],
         'pop_element'     => ['pop'],
         'root'            => [ 'get', 0 ],
@@ -71,7 +72,7 @@ sub end_document {
     inner();
 }
 
-no Moose;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 __END__
 

@@ -5,6 +5,7 @@ use Class::MOP;
 use XML::SAX::Writer;
 use XML::Toolkit::Builder::Filter;
 use XML::SAX::ParserFactory;
+use namespace::autoclean;
 
 
 has namespace => (
@@ -13,7 +14,7 @@ has namespace => (
     lazy_build => 1,
 );
 
-sub _build_namespace {'MyApp'}
+sub _build_namespace { 'MyApp' }
 
 with qw(XML::Toolkit::Builder::NamespaceRegistry);
 
@@ -36,7 +37,7 @@ has filter_class => (
     lazy_build => 1,
 );
 
-sub _build_filter_class {'XML::Toolkit::Builder::FilterNS'}
+sub _build_filter_class { 'XML::Toolkit::Builder::FilterNS' }
 
 has filter => (
     isa        => 'XML::Toolkit::Builder::Filter',
@@ -64,7 +65,7 @@ sub _build_parser {
     XML::SAX::ParserFactory->parser( Handler => $_[0]->filter );
 }
 
-no Moose;
+__PACKAGE__->meta->make_immutable();
 1;
 __END__
 

@@ -1,6 +1,6 @@
 package XML::Generator::Moose;
 use Moose;
-
+use namespace::autoclean;
 extends qw(XML::Filter::Moose);
 
 has Handler => (
@@ -66,7 +66,7 @@ sub parse {
     $self->end_document();
 }
 
-no Moose;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 __END__
 

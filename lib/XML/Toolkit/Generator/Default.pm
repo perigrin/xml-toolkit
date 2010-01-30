@@ -1,6 +1,8 @@
 package XML::Toolkit::Generator::Default;
 use Moose;
 use Encode;
+use namespace::autoclean;
+
 extends qw(XML::Generator::Moose);
 with qw(XML::Toolkit::Generator::Interface);
 
@@ -120,7 +122,7 @@ sub _get_sorted_filtered_attributes {
       $meta->get_all_attributes;
 }
 
-no Moose;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 __END__
 

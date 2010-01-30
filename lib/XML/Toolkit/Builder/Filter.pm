@@ -2,12 +2,13 @@ package XML::Toolkit::Builder::Filter;
 use Moose;
 use Moose::Util::TypeConstraints;
 use Template;
+use aliased 'XML::Toolkit::MetaDescription::Trait' => 'XMLTrait';
+
+use namespace::autoclean;
 
 extends qw(XML::Filter::Moose);
 with qw(XML::Toolkit::Builder::ClassRegistry);
 with qw(XML::Toolkit::Builder::ClassTemplate);
-
-use aliased 'XML::Toolkit::MetaDescription::Trait' => 'XMLTrait';
 
 sub get_class_name {
     my ( $self, $el ) = @_;
@@ -24,6 +25,7 @@ sub create_class {
 sub add_attribute {
     my ( $self, $class, $type, $attr ) = @_;
     my $name = $attr->{LocalName} . ( $type eq 'child' ? '_collection' : '' );
+
     return if $class->has_attribute($name);
 
     my $param = { map { $_ => $attr->{$_} } qw(isa is auto_deref) };
@@ -96,8 +98,9 @@ sub end_element {
     $self->reset_text;
 
 }
-no Moose;  # unimport Moose's keywords so they won't accidentally become methods
-1;         # Magic true value required at end of module
+
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+1;    # Magic true value required at end of module
 __END__
 
 =head1 NAME

@@ -1,14 +1,13 @@
 package XML::ToolKit::MetaDescription;
 use Moose;
 use Moose::Util::TypeConstraints;
-
+use namespace::autoclean;
 extends 'MooseX::MetaDescription::Description';
 
 has 'sort_order' => ( is => 'ro', isa => 'Int', default => sub { 0 } );
 
-no Moose;
+__PACKAGE__->meta->make_immutable;
 1;
-
 __END__
 
 =head1 NAME

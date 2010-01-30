@@ -1,6 +1,9 @@
 package XML::Toolkit::Loader::Filter;
 use Moose;
-use Moose::Autobox;
+use MooseX::AttributeHelpers;
+use Moose::Autobox;             
+use namespace::autoclean;
+
 extends qw(XML::Filter::Moose);
 with qw(XML::Toolkit::Builder::ClassRegistry);
 
@@ -96,9 +99,8 @@ sub render {
     warn shift->root_object->dump;
 }
 
-no Moose;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
-
 __END__
 
 =head1 NAME

@@ -1,13 +1,13 @@
 package XML::Toolkit::MetaDescription::Attribute;
 use Moose;
-
 use XML::Toolkit::MetaDescription;
+use namespace::autoclean;
 
 extends 'MooseX::MetaDescription::Meta::Attribute';
 with 'XML::Toolkit::MetaDescription::Trait';
 
 
-no Moose;
+__PACKAGE__->meta->make_immutable;
 1;
 __END__
 

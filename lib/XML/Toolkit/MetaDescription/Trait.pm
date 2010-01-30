@@ -1,5 +1,6 @@
 package XML::Toolkit::MetaDescription::Trait;
 use Moose::Role;
+use namespace::autoclean;
 
 use XML::Toolkit::MetaDescription;
 
@@ -15,7 +16,6 @@ has 'metadescription_classname' => (
 package Moose::Meta::Attribute::Custom::Trait::XML;
 sub register_implementation { 'XML::Toolkit::MetaDescription::Trait' }
 
-no Moose;
 1;
 __END__
 

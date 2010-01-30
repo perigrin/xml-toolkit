@@ -1,7 +1,7 @@
 package XML::Toolkit::Trait::NoXML;
 use Moose::Role;
+use namespace::autoclean;
 
-no Moose::Role; 
 1;
 __END__
 

@@ -1,6 +1,14 @@
 package XML::Toolkit::Builder::ClassTemplate;
 use Moose::Role;
+use namespace::autoclean;
+
 with qw(XML::Toolkit::Cmd::ClassTemplate);
+
+has template => (
+    isa        => 'Str',
+    is         => 'ro',
+    lazy_build => 1,
+);
 
 has tt_config => (
     isa     => 'HashRef',
@@ -40,7 +48,6 @@ sub render_class {
     return $output;
 }
 
-no Moose::Role;
 1;
 __END__
 

@@ -84,6 +84,7 @@ END_TEMPLATE
     return $template;
 };
 
+__PACKAGE__->meta->make_immutable;
 1;
 __END__
 

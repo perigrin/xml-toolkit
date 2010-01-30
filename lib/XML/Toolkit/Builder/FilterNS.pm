@@ -1,6 +1,7 @@
 package XML::Toolkit::Builder::FilterNS;
 use Moose;
 use Carp qw(croak);
+use namespace::autoclean;
 
 extends qw(XML::Toolkit::Builder::Filter);
 with qw(XML::Toolkit::Builder::NamespaceRegistry);
@@ -23,12 +24,11 @@ override add_attribute => sub {
         Name         => $attr->{Name},
     };
     $class->add_attribute( $name => $attr )
-        unless $class->has_attribute($name);
+      unless $class->has_attribute($name);
 };
 
-no Moose
-    ;    # unimport Moose's keywords so they won't accidentally become methods
-1;       # Magic true value required at end of module
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+1;    # Magic true value required at end of module
 __END__
 
 =head1 NAME
