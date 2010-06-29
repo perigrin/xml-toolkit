@@ -32,7 +32,7 @@ $builder->parse_string($xml);
 my $code = $builder->render();
 
 eval $code;
-diag $code;
+#diag $code;
 if ($@) {
     diag "Couldn't EVAL code $@";
     done_testing;
