@@ -5,6 +5,7 @@ BEGIN {
     use_ok('XML::Toolkit::Builder');
     use_ok('XML::Toolkit::Loader');
     use_ok('XML::Toolkit::Generator');
+    use_ok('MooseX::MetaDescription');
 }
 
 diag("Testing XML::Toolkit $XML::Toolkit::VERSION");
