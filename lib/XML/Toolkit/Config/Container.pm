@@ -55,7 +55,7 @@ sub BUILD {
         container Loader => as {
             service filter => (
                 lifecycle    => 'Singleton',
-                class        => 'XML::Toolkit::Loader::FilterNS',
+                class        => 'XML::Toolkit::Loader::Filter',
                 dependencies => {
                     namespace     => depends_on('/namespace'),
                     template      => depends_on('/template'),

@@ -48,22 +48,16 @@ sub load_class {
     return $name;
 }
 
-sub get_class_name {
-    my ( $self, $el ) = @_;
-    return $self->namespace . '::' . ucfirst $el->{LocalName};
-}
-
 sub create_and_add_object {
     my ( $self, $class, $el ) = @_;
     my %params =
-      map { $_->{Name} => $_->{Value} } values %{ $el->{Attributes} };
-
+      map { $_->{LocalName} => $_->{Value} } values %{ $el->{Attributes} };
     my $obj = $class->new(%params);
     $self->add_object($obj);
 
 }
 
-augment 'start_element' => sub {
+sub start_element {
     my ( $self, $el ) = @_;
 
     my $classname = $self->get_class_name($el);
@@ -72,8 +66,9 @@ augment 'start_element' => sub {
     if ( my $class = $self->load_class($classname) ) {
         $self->create_and_add_object( $class => $el );
     }
+    $self->add_element($el);
     return;
-};
+}
 
 sub append_to_parent {
     my ( $self, $parent, $el ) = @_;
@@ -88,14 +83,16 @@ sub set_object_text {
       if $self->current_object->can('text');
 }
 
-augment 'end_element' => sub {
+sub end_element {
     my ( $self, $el ) = @_;
     $self->set_object_text if $self->has_text;
     if ( my $parent = $self->parent_object ) {
         $self->append_to_parent( $parent => $el );
     }
     $self->pop_object unless $self->at_root_object;
-};
+    $self->pop_element;
+    $self->reset_text;
+}
 
 sub render {
     warn shift->root_object->dump;
