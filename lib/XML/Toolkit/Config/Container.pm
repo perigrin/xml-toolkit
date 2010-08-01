@@ -11,14 +11,9 @@ with qw(
 
 has '+name' => ( default => 'XML::Toolkit::Application' );
 
-has filter_class => (
-    isa     => 'Str',
-    is      => 'ro',
-    default => 'XML::Toolkit::Builder::Filter'
-);
-
 sub BUILD {
     my $self = shift;
+
     container $self => as {
 
         service 'template' => $self->template;
@@ -31,36 +26,66 @@ sub BUILD {
             dependencies => { namespace => depends_on('namespace'), },
         );
 
-        service filter_class => $self->filter_class;
-        service filter       => (
-            lifecycle    => 'Singleton',
-            class        => $self->filter_class,
-            dependencies => {
-                namespace     => depends_on('namespace'),
-                template      => depends_on('template'),
-                namespace_map => depends_on('namespace_map'),
-            }
-        );
+        container Builder => as {
+            service filter => (
+                lifecycle    => 'Singleton',
+                class        => 'XML::Toolkit::Builder::Filter',
+                dependencies => {
+                    namespace     => depends_on('/namespace'),
+                    template      => depends_on('/template'),
+                    namespace_map => depends_on('/namespace_map'),
+                }
+            );
 
-        service parser => (
-            class            => 'XML::SAX::ParserFactory',
-            constructor_name => 'parser',
-            dependencies     => { Handler => depends_on('filter') },
-        );
+            service parser => (
+                class            => 'XML::SAX::ParserFactory',
+                constructor_name => 'parser',
+                dependencies     => { Handler => depends_on('filter') },
+            );
 
-        service builder => (
-            class        => 'XML::Toolkit::Builder',
-            dependencies => {
-                filter => depends_on('filter'),
-                parser => depends_on('parser'),
+            service instance => (
+                class        => 'XML::Toolkit::Builder',
+                dependencies => {
+                    filter => depends_on('filter'),
+                    parser => depends_on('parser'),
 
-            },
-          )
+                },
+            );
+        };
+        container Loader => as {
+            service filter => (
+                lifecycle    => 'Singleton',
+                class        => 'XML::Toolkit::Loader::FilterNS',
+                dependencies => {
+                    namespace     => depends_on('/namespace'),
+                    template      => depends_on('/template'),
+                    namespace_map => depends_on('/namespace_map'),
+                }
+            );
+
+            service parser => (
+                class            => 'XML::SAX::ParserFactory',
+                constructor_name => 'parser',
+                dependencies     => { Handler => depends_on('filter') },
+            );
+
+            service generator => ( class => 'XML::Toolkit::Generator', );
+
+            service instance => (
+                class        => 'XML::Toolkit::Loader',
+                dependencies => {
+                    filter    => depends_on('filter'),
+                    parser    => depends_on('parser'),
+                    generator => depends_on('generator'),
+                }
+            );
+        };
 
     };
 }
 
-sub builder { shift->fetch('builder')->get }
+sub builder { shift->fetch('Builder/instance')->get }
+sub loader  { shift->fetch('Loader/instance')->get }
 
 1;
 __END__

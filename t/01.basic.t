@@ -6,7 +6,6 @@ use Test::XML;
 
 use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
 
-use aliased 'XML::Toolkit::Loader';
 use aliased 'XML::Toolkit::Generator';
 
 my $xml = <<'END_XML';
@@ -18,8 +17,7 @@ my $xml = <<'END_XML';
     <body>Don't forget me this weekend!</body>
 </note>
 END_XML
-ok( my $app     = XMLTK::App->new, 'got new Config Container' );
-ok( my $builder = $app->builder,   'Build XML::Toolkit::Builder' );
+ok( my $builder = XMLTK::App->new->builder, 'Build XML::Toolkit::Builder' );
 lives_ok { $builder->parse_string($xml) } 'parsed the xml';
 ok( my $code = $builder->render(), 'render code' );
 
@@ -30,7 +28,7 @@ if ($@) {
     exit;
 }
 
-ok( my $loader = Loader->new(), 'Build XML::Toolkit::Loader' );
+ok( my $loader = XMLTK::App->new->loader, 'Build XML::Toolkit::Loader' );
 $loader->parse_string($xml);
 ok( my $root = $loader->root_object, 'extract root object' );
 

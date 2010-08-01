@@ -27,14 +27,15 @@ eval $class;
 ::can_ok( 'My::Bar',          'new' );
 
 ok(
-    my $loader = Loader->new(
+    my $loader = XMLTK::App->new(
+        namespace     => 'XMLTK::Test',
         namespace_map => {
             ''                       => 'XMLTK::Test',
             'http://example.org/my/' => 'My'
         }
-    )
+      )->loader,
+    'Build XML::Toolkit::Loader'
 );
-
 $loader->parse_string($xml);
 my $tree = $loader->root_object;
 ::ok( $tree, 'parse_string' );

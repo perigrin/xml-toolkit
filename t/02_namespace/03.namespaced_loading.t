@@ -6,7 +6,6 @@ use warnings;
 use Test::More tests => 2;
 
 use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
-use XML::Toolkit::Loader  ();
 
 my $xml1 = <<'END_XML';
 <root xmlns:a="a" xmlns:b="b">
@@ -43,7 +42,7 @@ eval {
 };
 
 eval {
-    my $loader = XML::Toolkit::Loader->new($args);
+    my $loader = XMLTK::App->new($args)->loader;
     $loader->parse_string($xml1);
     my $root = $loader->root_object;
     isa_ok( $root, $root_class_name );
@@ -53,7 +52,7 @@ eval {
 };
 
 eval {
-    my $loader = XML::Toolkit::Loader->new($args);
+    my $loader = XMLTK::App->new($args)->loader;
     $loader->parse_string($xml2);
     my $root = $loader->root_object;
     isa_ok( $root, $root_class_name );

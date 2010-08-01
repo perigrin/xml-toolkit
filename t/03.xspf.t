@@ -4,7 +4,7 @@ use Test::More;
 use Test::XML;
 
 use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
-use aliased 'XML::Toolkit::Loader';
+
 use aliased 'XML::Toolkit::Generator';
 
 my $xml =<<'END_XML';
@@ -43,7 +43,7 @@ if ($@) {
     done_testing;
     exit;
 }
-my $loader = Loader->new( { namespace_map => $map } );
+my $loader = XMLTK::App->new( { namespace_map => $map } )->loader;
 $loader->parse_string($xml);
 my $root = $loader->root_object;
 

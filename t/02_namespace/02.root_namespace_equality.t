@@ -7,8 +7,6 @@ use Test::More tests => 10;
 
 use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
 
-use XML::Toolkit::Loader  ();
-
 my $xml1 = '<root xmlns="abc">test1</root>';
 my $xml2 = '<my:root xmlns:my="abc">test2</my:root>';
 
@@ -24,7 +22,7 @@ my $args = { namespace_map => { 'abc' => 'ABC' } };
 };
 
 {
-    my $loader = XML::Toolkit::Loader->new($args);
+    my $loader = XMLTK::App->new($args)->loader;
     $loader->parse_string($xml1);
     my $root = $loader->root_object;
     isa_ok( $root, 'ABC::Root' );
@@ -32,7 +30,7 @@ my $args = { namespace_map => { 'abc' => 'ABC' } };
 };
 
 {
-    my $loader = XML::Toolkit::Loader->new($args);
+    my $loader = XMLTK::App->new($args)->loader;
     $loader->parse_string($xml2);
     my $root = $loader->root_object;
     isa_ok( $root, 'ABC::Root' );
@@ -52,7 +50,7 @@ $args = { namespace_map => { 'abc' => 'XYZ' } };
 };
 
 {
-    my $loader = XML::Toolkit::Loader->new($args);
+    my $loader = XMLTK::App->new($args)->loader;
     $loader->parse_string($xml1);
     my $root = $loader->root_object;
     isa_ok( $root, 'XYZ::Root' );
@@ -60,7 +58,7 @@ $args = { namespace_map => { 'abc' => 'XYZ' } };
 };
 
 {
-    my $loader = XML::Toolkit::Loader->new($args);
+    my $loader = XMLTK::App->new($args)->loader;
     $loader->parse_string($xml2);
     my $root = $loader->root_object;
     isa_ok( $root, 'XYZ::Root' );
