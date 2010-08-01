@@ -9,7 +9,6 @@ all_from 'lib/XML/Toolkit.pm';
 requires 'aliased' => undef;
 requires 'Devel::PackagePath'         => '0.01';
 requires 'Moose'                      => '0.92';
-requires 'Moose::Autobox'             => '0.08';
 requires 'MooseX::MetaDescription'    => '0.03';
 requires 'MooseX::Types::Path::Class' => '0.04';
 requires 'namespace::autoclean'       => undef;

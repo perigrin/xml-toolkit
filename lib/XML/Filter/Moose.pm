@@ -1,6 +1,5 @@
 package XML::Filter::Moose;
 use Moose;
-use Moose::Autobox;
 use namespace::autoclean;
 
 extends qw(XML::SAX::Base Moose::Object);
@@ -16,6 +15,7 @@ has stack => (
         'pop_element'     => ['pop'],
         'root'            => [ 'get', 0 ],
         'current_element' => [ 'get', -1 ],
+        'stack_length'    => ['count'],
     }
 );
 
@@ -32,11 +32,11 @@ has text => (
     handles   => { append_text => 'append', },
 );
 
-sub is_root { return shift->stack->length == 0 }
+sub is_root { return shift->stack_length == 0 }
 
 sub parent_element {
     my ($self) = @_;
-    if ( $self->stack->length > 1 ) {
+    if ( $self->stack_length > 1 ) {
         return $self->stack->[-1];
     }
     $self->root;
@@ -72,7 +72,7 @@ sub end_document {
     inner();
 }
 
-__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 1;
 __END__
 
@@ -146,8 +146,6 @@ Fires at the end of a document.
 =head1 DEPENDENCIES
 
 L<Moose|Moose>
-
-L<Moose::Autobox|Moose::Autobox>
 
 L<XML::SAX::Base|XML::SAX::Base>
 

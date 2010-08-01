@@ -93,13 +93,7 @@ Insert description of subroutine here...
 
 =head1 DEPENDENCIES
 
-Modules used, version dependencies, core yes/no
-
 Moose
-
-MooseX::AttributeHelpers
-
-Moose::Autobox
 
 =head1 NOTES
 

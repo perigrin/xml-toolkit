@@ -165,7 +165,6 @@ similarities to C<XML::Toolkit> in scope if not design.
 =head1 DEPENDENCIES
 
 L<Devel::PackagePath|Devel::PackagePath>, L< Moose | Moose >,
-L<Moose::Autobox|Moose::Autobox>,
 L<MooseX::MetaDescription|MooseX::MetaDescription>,
 L<MooseX::Types::Path::Class|MooseX::Types::Path::Class>,
 L<MooseX::App::Cmd|MooseX::App::Cmd>,

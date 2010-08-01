@@ -1,7 +1,5 @@
 package XML::Toolkit::Loader::Filter;
 use Moose;
-use MooseX::AttributeHelpers;
-use Moose::Autobox;             
 use namespace::autoclean;
 
 extends qw(XML::Filter::Moose);
@@ -13,7 +11,11 @@ has objects => (
     auto_deref => 1,
     lazy_build => 1,
     traits     => ['Array'],
-    handles    => { 'add_object' => ['push'], }
+    handles    => {
+        'pop_object'    => ['pop'],
+        'add_object'    => ['push'],
+        'objects_count' => ['count'],
+      }
 
 );
 
@@ -21,10 +23,10 @@ sub _build_objects { [] }
 
 sub parent_object {
     my ($self) = @_;
-    if ( $self->objects->length >= 2 ) {
+    if ( $self->objects_count >= 2 ) {
         return $self->objects->[-2];
     }
-    return undef if $self->objects->length == 1;
+    return undef if $self->objects_count == 1;
     return $self->objects->[-1];
 }
 
@@ -92,14 +94,14 @@ augment 'end_element' => sub {
     if ( my $parent = $self->parent_object ) {
         $self->append_to_parent( $parent => $el );
     }
-    $self->objects->pop unless $self->at_root_object;
+    $self->pop_object unless $self->at_root_object;
 };
 
 sub render {
     warn shift->root_object->dump;
 }
 
-__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 1;
 __END__
 
@@ -169,13 +171,7 @@ Insert description of subroutine here...
 
 =head1 DEPENDENCIES
 
-Modules used, version dependencies, core yes/no
-
 Moose
-
-MooseX::AttributeHelpers
-
-Moose::Autobox
 
 =head1 NOTES
 
