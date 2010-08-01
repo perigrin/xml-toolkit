@@ -1,7 +1,12 @@
 package XML::Toolkit::Builder::NamespaceRegistry;
 use Moose::Role;
 use namespace::autoclean;
-requires 'namespace';
+
+has namespace => (
+    isa     => 'Str',
+    is      => 'ro',
+    default => 'MyApp',
+);
 
 has namespace_map => (
     isa        => 'HashRef',
@@ -24,7 +29,7 @@ has unresolved_namespace_map => (
     traits     => ['Hash'],
     handles    => {
         'no_unresolved_namespaces' => ['is_empty'],
-        'unresolved_namespaces'     => ['keys'],
+        'unresolved_namespaces'    => ['keys'],
     }
 );
 

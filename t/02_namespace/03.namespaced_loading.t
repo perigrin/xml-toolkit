@@ -5,7 +5,7 @@ use warnings;
 
 use Test::More tests => 2;
 
-use XML::Toolkit::Builder ();
+use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
 use XML::Toolkit::Loader  ();
 
 my $xml1 = <<'END_XML';
@@ -32,7 +32,7 @@ my $args = {
 my $root_class_name = 'MyApp::Root';
 
 eval {
-    my $builder = XML::Toolkit::Builder->new($args);
+    my $builder = XMLTK::App->new($args)->builder;
     $builder->parse_string($xml2);
     my $code = $builder->render();
     eval $code;

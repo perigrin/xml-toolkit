@@ -5,7 +5,8 @@ use warnings;
 
 use Test::More tests => 10;
 
-use XML::Toolkit::Builder ();
+use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
+
 use XML::Toolkit::Loader  ();
 
 my $xml1 = '<root xmlns="abc">test1</root>';
@@ -14,7 +15,7 @@ my $xml2 = '<my:root xmlns:my="abc">test2</my:root>';
 my $args = { namespace_map => { 'abc' => 'ABC' } };
 
 {
-    my $builder = XML::Toolkit::Builder->new($args);
+    my $builder = XMLTK::App->new($args)->builder;
     $builder->parse_string($xml1);
     my $code = $builder->render();
     eval $code;
@@ -42,7 +43,7 @@ $args = { namespace_map => { 'abc' => 'XYZ' } };
 
 {
     
-    my $builder = XML::Toolkit::Builder->new($args);
+    my $builder = XMLTK::App->new($args)->builder;
     $builder->parse_string($xml2);
     my $code = $builder->render();
     eval $code;

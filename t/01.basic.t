@@ -1,9 +1,11 @@
 #!/usr/bin/perl -w
 use strict;
 use Test::More;
+use Test::Exception;
 use Test::XML;
 
-use aliased 'XML::Toolkit::Builder';
+use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
+
 use aliased 'XML::Toolkit::Loader';
 use aliased 'XML::Toolkit::Generator';
 
@@ -16,13 +18,12 @@ my $xml = <<'END_XML';
     <body>Don't forget me this weekend!</body>
 </note>
 END_XML
-
-ok( my $builder = Builder->new(), 'Build XML::Toolkit::Builder' );
-$builder->parse_string($xml);
+ok( my $app     = XMLTK::App->new, 'got new Config Container' );
+ok( my $builder = $app->builder,   'Build XML::Toolkit::Builder' );
+lives_ok { $builder->parse_string($xml) } 'parsed the xml';
 ok( my $code = $builder->render(), 'render code' );
 
 eval $code;
-
 if ($@) {
     diag "Couldn't EVAL code $@";
     done_testing;

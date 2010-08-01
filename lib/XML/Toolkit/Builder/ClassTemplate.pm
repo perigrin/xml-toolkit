@@ -1,14 +1,9 @@
 package XML::Toolkit::Builder::ClassTemplate;
 use Moose::Role;
+use Template;
 use namespace::autoclean;
 
 with qw(XML::Toolkit::Cmd::ClassTemplate);
-
-has template => (
-    isa        => 'Str',
-    is         => 'ro',
-    lazy_build => 1,
-);
 
 has tt_config => (
     isa     => 'HashRef',
@@ -33,11 +28,7 @@ has tt => (
 sub _build_tt { Template->new( $_[0]->tt_config ) }
 
 sub render {
-    my ($self) = @_;
-    my $output;
-    $output .= $self->render_class($_)
-      for ( sort { $a->name cmp $b->name } $self->classes );
-    return $output;
+    return join '', map { $_[0]->render_class($_) } $_[0]->classes;
 }
 
 sub render_class {

@@ -1,30 +1,30 @@
 package XML::Toolkit::Builder::ClassRegistry;
 use Moose::Role;
 use namespace::autoclean;
-has namespace => (
-    isa        => 'Str',
-    is         => 'ro',
-    lazy_build => 1,
-);
-sub _build_namespace { '' }
 
-has registry => (
-    isa        => 'HashRef',
-    is         => 'ro',
-    lazy_build => 1,
-    auto_deref => 1,
-    traits     => ['Hash'],
-    handles    => {
-        'add_class'   => ['set'],
-        'classes'     => ['values'],
-        'class_names' => ['keys'],
-        'get_class'   => ['get'],
-        'has_class'   => ['exists'],
+with qw(XML::Toolkit::Builder::NamespaceRegistry);
+
+has class_registry => (
+    isa     => 'HashRef',
+    is      => 'ro',
+    lazy    => 1,
+    default => sub { {} },
+    traits  => ['Hash'],
+    handles => {
+        'add_class'   => 'set',
+        'classes'     => 'values',
+        'class_names' => 'keys',
+        'get_class'   => 'get',
+        'has_class'   => 'exists',
     }
 );
-sub _build_registry { {} }
-1;
 
+sub create_class {
+    my $self = shift;
+    Moose::Meta::Class->create(@_);
+}
+
+1;
 __END__
 
 =head1 NAME

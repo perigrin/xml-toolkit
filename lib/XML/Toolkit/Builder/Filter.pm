@@ -1,46 +1,43 @@
 package XML::Toolkit::Builder::Filter;
 use Moose;
 use Moose::Util::TypeConstraints;
-use Template;
 use aliased 'XML::Toolkit::MetaDescription::Trait' => 'XMLTrait';
 
 use namespace::autoclean;
 
 extends qw(XML::Filter::Moose);
-with qw(XML::Toolkit::Builder::ClassRegistry);
-with qw(XML::Toolkit::Builder::ClassTemplate);
 
-sub get_class_name {
-    my ( $self, $el ) = @_;
-    return $self->namespace . '::' . ucfirst $el->{LocalName};
-}
+with qw(
+  XML::Toolkit::Builder::ClassRegistry
+  XML::Toolkit::Builder::ClassTemplate
+);
 
-sub create_class {
-    my ( $self, $name, $params ) = @_;
+around create_class => sub {
+    my ( $next, $self, $name, $params ) = @_;
     return $self->get_class($name) if $self->has_class($name);
-    class_type $name; # we only need to generate the class type when we build a new
-    return Moose::Meta::Class->create( $name => %$params );
-}
+    class_type $name; # we only need to generate the class type when we build a new class
+    $self->$next( $name => %$params );
+};
 
 sub add_attribute {
     my ( $self, $class, $type, $attr ) = @_;
     my $name = $attr->{LocalName} . ( $type eq 'child' ? '_collection' : '' );
-
     return if $class->has_attribute($name);
 
     my $param = { map { $_ => $attr->{$_} } qw(isa is auto_deref) };
-    $param->{isa} ||= 'Str';
-    $param->{is}     = 'bare';
-    $param->{traits} = [XMLTrait];
-
+    $param->{isa} //= 'Str';
+    $param->{is}          = 'bare';
+    $param->{traits}      = [XMLTrait];
+    $param->{default}     = $attr->{Value};
     $param->{description} = {
         node_type    => $type,
+        Prefix       => $attr->{Prefix},
         NamespaceURI => $attr->{NamespaceURI},
         LocalName    => $attr->{LocalName},
-        Prefix       => $attr->{Prefix},
         Name         => $attr->{Name},
     };
-    $class->add_attribute( $name => $param );
+    $class->add_attribute( $name => $param )
+      unless $class->has_attribute($name);
 }
 
 sub add_text_attribute {
@@ -57,7 +54,9 @@ sub add_text_attribute {
 
 sub start_element {
     my ( $self, $el ) = @_;
+
     my $classname = $self->get_class_name($el);
+
     $el->{classname} = $classname;
 
     my $class = $self->create_class( $classname => $el );
@@ -66,11 +65,9 @@ sub start_element {
       for values %{ $el->{Attributes} };
 
     unless ( $self->is_root ) {
-        my $parent_class =
-          $self->get_class( $self->parent_element->{classname} );
+        my $parent = $self->get_class( $self->parent_element->{classname} );
         $self->add_attribute(
-            $parent_class,
-            'child',
+            $parent, 'child',
             {
                 %$el,
                 isa        => "ArrayRef[$classname]",
@@ -87,7 +84,9 @@ sub start_element {
 
 sub end_element {
     my ( $self, $el ) = @_;
+
     my $top = $self->current_element;
+
     $self->add_text_attribute( $self->get_class( $top->{classname} ) )
       if $self->has_text;
     confess "INVALID PARSE: $el->{Name} ne $top->{Name}"
@@ -99,7 +98,7 @@ sub end_element {
 
 }
 
-__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 1;    # Magic true value required at end of module
 __END__
 
@@ -154,8 +153,6 @@ L<Moose|Moose>
 L<MooseX::AttributeHelpers|MooseX::AttributeHelpers>
 
 L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
-
-L<Template::Toolkit|Template::Toolkit>
 
 L<XML::Filter::Moose|XML::Filter::Moose>
 

@@ -3,7 +3,7 @@ use strict;
 use Test::More;
 use Test::XML;
 
-use aliased 'XML::Toolkit::Builder';
+use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
 use aliased 'XML::Toolkit::Loader';
 use aliased 'XML::Toolkit::Generator';
 
@@ -33,7 +33,7 @@ END_XML
 
 my $map = { 'http://xspf.org/ns/0/' => 'XML::XSPF', };
 
-my $builder = Builder->new( { namespace_map => $map } );
+my $builder = XMLTK::App->new( { namespace_map => $map } )->builder;
 $builder->parse_string($xml);
 my $code = $builder->render();
 
