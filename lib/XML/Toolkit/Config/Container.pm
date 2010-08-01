@@ -69,23 +69,51 @@ sub BUILD {
                 dependencies     => { Handler => depends_on('filter') },
             );
 
-            service generator => ( class => 'XML::Toolkit::Generator', );
-
             service instance => (
                 class        => 'XML::Toolkit::Loader',
                 dependencies => {
                     filter    => depends_on('filter'),
                     parser    => depends_on('parser'),
-                    generator => depends_on('generator'),
+                    generator => depends_on('/Generator/instance'),
                 }
             );
         };
 
+        container Generator => as {
+            service output => (
+                block     => sub { [] },
+                lifecycle => 'Singleton',
+            );
+            service quote_charecter => q['];
+            service handler         => (
+                class        => 'XML::SAX::Writer',
+                dependencies => {
+                    Output         => depends_on('output'),
+                    QuoteCharacter => depends_on('quote_charecter'),
+                }
+            );
+            service engine => (
+                class        => 'XML::Toolkit::Generator::Default',
+                dependencies => {
+                    Handler       => depends_on('handler'),
+                    namespace_map => depends_on('/namespace_map'),
+                }
+            );
+            service instance => (
+                class        => 'XML::Toolkit::Generator',
+                dependencies => {
+                    output => depends_on('output'),
+                    engine => depends_on('engine'),
+                }
+            );
+        }
+
     };
 }
 
-sub builder { shift->fetch('Builder/instance')->get }
-sub loader  { shift->fetch('Loader/instance')->get }
+sub builder   { shift->fetch('Builder/instance')->get }
+sub loader    { shift->fetch('Loader/instance')->get }
+sub generator { shift->fetch('Generator/instance')->get }
 
 1;
 __END__

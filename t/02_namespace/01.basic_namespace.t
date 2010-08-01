@@ -42,7 +42,9 @@ my $tree = $loader->root_object;
 
 my $tree2 = XMLTK::Test::Foo->new( bar_collection => [ My::Bar->new() ] );
 
-ok( my $generator = Generator->new() );
+ok(
+    my $generator = XMLTK::App->new->generator
+);
 $generator->render_object($tree2);
 ::ok( my @output = $generator->output, 'got output' );
 

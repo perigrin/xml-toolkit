@@ -5,9 +5,7 @@ use Test::XML;
 
 use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
 
-use aliased 'XML::Toolkit::Generator';
-
-my $xml =<<'END_XML';
+my $xml = <<'END_XML';
 <?xml version="1.0" encoding="utf-8"?>
 <playlist version="1" xmlns="http://xspf.org/ns/0/">
 	<trackList>
@@ -47,14 +45,14 @@ my $loader = XMLTK::App->new( { namespace_map => $map } )->loader;
 $loader->parse_string($xml);
 my $root = $loader->root_object;
 
- ok( scalar @{ $root->trackList_collection } > 0, 'have entries' );
+ok( scalar @{ $root->trackList_collection } > 0, 'have entries' );
 
-my $generator = Generator->new(
+my $generator = XMLTK::App->new(
     {
         namespace     => 'http://xspf.org/ns/0/',
         namespace_map => { '' => 'http://xspf.org/ns/0/', }
     }
-);
+)->generator;
 
 $generator->render_object($root);
 
