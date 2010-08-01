@@ -4,7 +4,7 @@ use namespace::autoclean;
 
 extends qw(MooseX::App::Cmd::Command);
 
-use XML::Toolkit::Builder;
+use XML::Toolkit::Config::Container;
 use MooseX::Types::Path::Class qw(File);
 use Moose::Util::TypeConstraints;
 
@@ -33,14 +33,6 @@ has xmlns => (
     default => sub { {} },
 );
 
-has filter_class => (
-    isa        => 'Str',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-sub _build_filter_class { 'XML::Toolkit::Builder::FilterNS' }
-
 has _builder => (
     reader     => 'builder',
     isa        => 'XML::Toolkit::Builder',
@@ -52,12 +44,11 @@ has _builder => (
 sub _build__builder {
     my ($self) = @_;
 
-    return XML::Toolkit::Builder->new(
+    return XML::Toolkit::Config::Container->new(
         namespace     => $self->namespace,
         template      => $self->template,
-        filter_class  => $self->filter_class,
         namespace_map => $self->xmlns,
-    );
+    )->builder;
 }
 
 sub run {

@@ -1,10 +1,10 @@
 package XML::Toolkit::Cmd::Command::validate;
 use Moose;
-use XML::Toolkit::Loader;
+use namespace::autoclean;
+
+use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
 use MooseX::Types::Path::Class qw(File);
 use Moose::Util::TypeConstraints;
-
-use namespace::autoclean;
 
 extends qw(MooseX::App::Cmd::Command);
 with qw(MooseX::Getopt::Dashes);
@@ -31,7 +31,7 @@ has _loader => (
 );
 
 sub _build__loader {
-    XML::Toolkit::Loader->new( namespace => $_[0]->namespace );
+    XMLTK::App->new( namespace => $_[0]->namespace )->loader;
 }
 
 sub run {
