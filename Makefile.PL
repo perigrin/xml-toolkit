@@ -6,6 +6,7 @@ name 'XML-Toolkit';
 all_from 'lib/XML/Toolkit.pm';
 
 # Specific dependencies
+requires 'aliased' => undef;
 requires 'Devel::PackagePath'         => '0.01';
 requires 'Moose'                      => '0.92';
 requires 'Moose::Autobox'             => '0.08';
