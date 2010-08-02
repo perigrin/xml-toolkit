@@ -48,7 +48,7 @@ sub run {
     )->builder;
 
     $builder->parse_file( $self->input->stringify );
-    print $self->builder->render;
+    print $builder->render;
 }
 
 __PACKAGE__->meta->make_immutable;
