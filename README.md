@@ -11,14 +11,15 @@ For example given a xml document like the following
         <heading>Reminder</heading>
         <body>Don't forget me this weekend!</body>
     </note>
+    
 XML::Toolkit will generate classes for each of the elements. The <note > element's class would be something like
 
-   package MyApp::Note;
-   use Moose;
-   use namespace::autoclean;
-   use XML::Toolkit;
-   
-   has 'to_collection' => (
+    package MyApp::Note;
+    use Moose;
+    use namespace::autoclean;
+    use XML::Toolkit;
+
+    has 'to_collection' => (
         isa         => 'ArrayRef[MyApp::To]',
         is          => 'ro',     
         init_arg    => 'tos',
@@ -34,9 +35,9 @@ XML::Toolkit will generate classes for each of the elements. The <note > element
            NamespaceURI => "",
            sort_order => 0,
         },
-   );
-  
-   has 'from_collection' => (
+    );
+
+    has 'from_collection' => (
         isa         => 'ArrayRef[MyApp::From]',
         is          => 'ro',     
         init_arg    => 'froms',
@@ -52,9 +53,9 @@ XML::Toolkit will generate classes for each of the elements. The <note > element
            NamespaceURI => "",
            sort_order => 1,
         },
-   );
-   
-   has 'body_collection' => (
+    );
+
+    has 'body_collection' => (
         isa         => 'ArrayRef[MyApp::Body]',
         is          => 'ro',     
         init_arg    => 'bodys',
@@ -70,9 +71,9 @@ XML::Toolkit will generate classes for each of the elements. The <note > element
            NamespaceURI => "",
            sort_order => 2,
         },
-   );
-   
-   has 'heading_collection' => (
+    );
+
+    has 'heading_collection' => (
         isa         => 'ArrayRef[MyApp::Heading]',
         is          => 'ro',     
         init_arg    => 'headings',
@@ -88,10 +89,11 @@ XML::Toolkit will generate classes for each of the elements. The <note > element
            NamespaceURI => "",
            sort_order => 3,
         },
-   );
+    );
+
+    1;
+    __END__
    
-   1;
-   __END__
 You can then use the set of classes to load the original document, or create new documents that match this structure.
 
     my $document = MyApp::Note->new(
@@ -113,5 +115,6 @@ You can then use the set of classes to load the original document, or create new
     #     <heading>Secret</heading>
     #     <body>Shhh!</body>
     # </note>
+    
 The original intention of XML::Toolkit was to round-trip XML documents with an unkonwn schema through an editor and back out to disk with very few semantic or structural changes.
 
