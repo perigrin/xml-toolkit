@@ -4,6 +4,7 @@ use namespace::autoclean;
 use Bread::Board;
 
 extends qw(Bread::Board::Container);
+
 with qw(
   XML::Toolkit::Cmd::ClassTemplate
   XML::Toolkit::Builder::NamespaceRegistry
@@ -18,22 +19,15 @@ sub BUILD {
 
         service 'template' => $self->template;
 
-        service 'namespace'     => $self->namespace;
-        service 'namespace_map' => (
-            block => sub {
-                $self->namespace_map || { '' => $_[0]->param('namespace') };
-            },
-            dependencies => { namespace => depends_on('namespace'), },
-        );
+        service 'xmlns'     => $self->xmlns;
 
         container Builder => as {
             service filter => (
                 lifecycle    => 'Singleton',
                 class        => 'XML::Toolkit::Builder::Filter',
                 dependencies => {
-                    namespace     => depends_on('/namespace'),
-                    template      => depends_on('/template'),
-                    namespace_map => depends_on('/namespace_map'),
+                    template  => depends_on('/template'),
+                    xmlns     => depends_on('/xmlns'),
                 }
             );
 
@@ -53,13 +47,13 @@ sub BUILD {
             );
         };
         container Loader => as {
+            
             service filter => (
                 lifecycle    => 'Singleton',
                 class        => 'XML::Toolkit::Loader::Filter',
                 dependencies => {
-                    namespace     => depends_on('/namespace'),
-                    template      => depends_on('/template'),
-                    namespace_map => depends_on('/namespace_map'),
+                    template  => depends_on('/template'),
+                    xmlns     => depends_on('/xmlns'),
                 }
             );
 
@@ -95,8 +89,8 @@ sub BUILD {
             service engine => (
                 class        => 'XML::Toolkit::Generator::Default',
                 dependencies => {
-                    Handler       => depends_on('handler'),
-                    namespace_map => depends_on('/namespace_map'),
+                    Handler => depends_on('handler'),
+                    xmlns   => depends_on('/xmlns'),
                 }
             );
             service instance => (

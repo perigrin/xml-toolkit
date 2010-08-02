@@ -23,6 +23,7 @@ END_XML
 
 my $args = {
     namespace_map => {
+        ''  => 'MyApp',
         'a' => 'A',
         'b' => 'B',
     },

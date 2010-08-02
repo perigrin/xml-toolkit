@@ -34,7 +34,8 @@ ok( my $root = $loader->root_object, 'extract root object' );
 
 ok( scalar @{ $root->to_collection } > 0, 'have entries' );
 
-ok( my $generator = XMLTK::App->new(namespace => '')->generator, 'Build XML::Toolkit::Loader' );
+ok( my $generator = XMLTK::App->new(xmlns => { '' => '' })->generator,
+    'Build XML::Toolkit::Loader' );
 $generator->render_object($root);
 is_xml( $xml, join( '', $generator->output ), 'XML compares' );
 

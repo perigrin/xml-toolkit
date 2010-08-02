@@ -9,7 +9,10 @@ use MooseX::Types::Path::Class qw(File);
 use Moose::Util::TypeConstraints;
 
 with qw(MooseX::Getopt::Dashes);
-with qw(XML::Toolkit::Cmd::ClassTemplate);
+with qw(
+  XML::Toolkit::Cmd::ClassTemplate
+  XML::Toolkit::Builder::NamespaceRegistry
+);
 
 has input => (
     isa      => File,
@@ -17,45 +20,6 @@ has input => (
     coerce   => 1,
     required => 1,
 );
-
-has namespace => (
-    isa        => 'Str',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-sub _build_namespace { 'MyApp' }
-
-has xmlns => (
-    isa     => 'HashRef',
-    is      => 'ro',
-    lazy    => 1,
-    default => sub { {} },
-);
-
-has _builder => (
-    reader     => 'builder',
-    isa        => 'XML::Toolkit::Builder',
-    is         => 'ro',
-    lazy_build => 1,
-    handles    => [qw(build_class)],
-);
-
-sub _build__builder {
-    my ($self) = @_;
-
-    return XML::Toolkit::Config::Container->new(
-        namespace     => $self->namespace,
-        template      => $self->template,
-        namespace_map => $self->xmlns,
-    )->builder;
-}
-
-sub run {
-    my ($self) = @_;
-    $self->builder->parse_file( $self->input->stringify );
-    print $self->builder->render;
-}
 
 around _build_template => sub {
     my ( $next, $self ) = ( shift, shift );
@@ -74,6 +38,18 @@ END_TEMPLATE
     $template .= $self->$next(@_) . "__END__\n[% END %]";
     return $template;
 };
+
+sub run {
+    my ($self) = @_;
+    my $builder = XML::Toolkit::Config::Container->new(
+        namespace     => $self->namespace,
+        namespace_map => $self->xmlns,
+        template      => $self->template,
+    )->builder;
+
+    $builder->parse_file( $self->input->stringify );
+    print $self->builder->render;
+}
 
 __PACKAGE__->meta->make_immutable;
 1;

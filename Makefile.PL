@@ -9,13 +9,13 @@ all_from 'lib/XML/Toolkit.pm';
 requires 'aliased'                    => undef;
 requires 'Devel::PackagePath'         => '0.01';
 requires 'Moose'                      => '0.92';
+requires 'MooseX::Aliases'            => undef;
 requires 'MooseX::MetaDescription'    => '0.03';
 requires 'MooseX::Types::Path::Class' => '0.04';
 requires 'namespace::autoclean'       => undef;
 requires 'Template'                   => '2.20';
 requires 'XML::SAX'                   => '0.96';
 requires 'XML::SAX::Writer'           => '0.50';
-requires 'namespace::autoclean';
 
 build_requires 'Test::More' => '0.94';
 build_requires 'Test::XML';

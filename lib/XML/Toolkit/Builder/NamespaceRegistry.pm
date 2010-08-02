@@ -1,17 +1,19 @@
 package XML::Toolkit::Builder::NamespaceRegistry;
 use Moose::Role;
+use MooseX::Aliases;
 use namespace::autoclean;
 
-has namespace => (
-    isa     => 'Str',
-    is      => 'ro',
-    default => 'MyApp',
-);
+sub namespace {
+    return $_[0]->xmlns->{''} = $_[1] if defined $_[1];
+    return $_[0]->xmlns->{''};
+}
 
-has namespace_map => (
+has xmlns => (
     isa        => 'HashRef',
     is         => 'ro',
     lazy_build => 1,
+    traits     => [qw(MooseX::Aliases::Meta::Trait::Attribute)],
+    alias      => ['namespace_map'],
     trigger    => sub {
         my ($self) = @_;
         unless ( exists( $self->namespace_map->{''} ) ) {
@@ -20,20 +22,20 @@ has namespace_map => (
     },
 );
 
-sub _build_namespace_map { { '' => $_[0]->namespace, } }
+sub _build_xmlns { { '' => 'MyApp', } }
 
-has unresolved_namespace_map => (
-    isa        => 'HashRef',
-    is         => 'rw',
-    lazy_build => 1,
-    traits     => ['Hash'],
-    handles    => {
+has _unresolved_namespace_map => (
+    isa      => 'HashRef',
+    accessor => 'unresolved_namespace_map',
+    lazy     => 1,
+    default  => sub { {} },
+    traits   => [qw(Hash MooseX::Aliases::Meta::Trait::Attribute)],
+    alias    => ['unresolved_xmln'],
+    handles  => {
         'no_unresolved_namespaces' => ['is_empty'],
         'unresolved_namespaces'    => ['keys'],
     }
 );
-
-sub _build_unresolved_namespace_map { {} }
 
 sub end_document { }
 
@@ -57,7 +59,8 @@ sub get_class_name {
         $self->unresolved_namespace_map->{$xmlns} = 1;
 
         # Let's just return the local part here, even though it's wrong
-        return $self->namespace_map->{''} . '::' . ucfirst $el->{'LocalName'};
+        warn $self->xmlns->{''} . '::' . ucfirst $el->{'LocalName'};
+        return $self->xmlns->{''} . '::' . ucfirst $el->{'LocalName'};
     }
 
     # Construct class name
