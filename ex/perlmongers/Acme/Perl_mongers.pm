@@ -1,20 +1,26 @@
 package Acme::Perl_mongers;
 use Moose;
-use MooseX::AttributeHelpers;
+use namespace::autoclean;
+use XML::Toolkit;
 
 has 'group_collection' => (
-     isa         => 'ArrayRef[Acme::Perl_mongers::Group]',
-     is          => 'ro',
-     traits      => [ 'MooseX::MetaDescription::Meta::Trait' ],     metaclass   => 'Collection::Array',
-     lazy        => 1,
-     auto_deref  => 1,
-     default     => sub { [] },
-     provides    => { push => 'group' },
-     description => {
-         sort_order => 0,
-     },
+    isa         => 'ArrayRef[Acme::Group]',
+    is          => 'ro',
+    init_arg    => 'groups',
+    traits      => [qw(XML Array)],
+    lazy        => 1,
+    auto_deref  => 1,
+    default     => sub { [] },
+    handles     => { add_group => ['push'] },
+    description => {
+        LocalName    => "group",
+        Prefix       => "",
+        node_type    => "child",
+        Name         => "group",
+        NamespaceURI => "",
+        sort_order   => 0,
+    },
 );
-
-no Moose;
 1;
+
 __END__
