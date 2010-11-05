@@ -122,7 +122,7 @@ sub _get_sorted_filtered_attributes {
       $meta->get_all_attributes;
 }
 
-__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+__PACKAGE__->meta->make_immutable;
 1;
 __END__
 

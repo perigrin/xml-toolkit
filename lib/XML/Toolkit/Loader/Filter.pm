@@ -98,7 +98,7 @@ sub render {
     warn shift->root_object->dump;
 }
 
-__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
+__PACKAGE__->meta->make_immutable;
 1;
 __END__
 

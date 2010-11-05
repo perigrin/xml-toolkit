@@ -66,7 +66,7 @@ sub parse {
     $self->end_document();
 }
 
-__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+__PACKAGE__->meta->make_immutable;
 1;
 __END__
 

@@ -2,7 +2,9 @@ package XML::Filter::Moose;
 use Moose;
 use namespace::autoclean;
 
-extends qw(XML::SAX::Base Moose::Object);
+use MooseX::NonMoose;
+
+extends qw(XML::SAX::Base);
 
 has stack => (
     isa        => 'ArrayRef',
@@ -72,7 +74,7 @@ sub end_document {
     inner();
 }
 
-__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
+__PACKAGE__->meta->make_immutable;
 1;
 __END__
 
