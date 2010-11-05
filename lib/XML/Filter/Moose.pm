@@ -34,6 +34,8 @@ has text => (
     handles   => { append_text => 'append', },
 );
 
+has cdata => ( isa => 'Bool', is => 'rw', );
+
 sub is_root { return shift->stack_length == 0 }
 
 sub parent_element {

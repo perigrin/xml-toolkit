@@ -59,6 +59,13 @@ sub is_text_node {
     return 0;
 }
 
+sub is_cdata_node {
+    my ( $self, $attr ) = @_;
+    return 0 unless $self->is_node($attr);
+    return 1 if $attr->description->{cdata};
+    return 0;
+}
+
 sub is_attribute_node {
     my ( $self, $attr ) = @_;
     return 0 unless $self->is_node($attr);
@@ -89,7 +96,10 @@ sub parse_object {
 
     for my $attr ( $self->_get_sorted_filtered_attributes($meta) ) {
         if ( $self->is_text_node($attr) ) {
-            $self->characters( $attr->get_value($obj) );
+            my $data = $attr->get_value($obj);
+            $self->is_cdata_node($attr)
+              ? $self->cdata($data)
+              : $self->characters($data);
         }
         elsif ( $self->is_child_node($attr) ) {
             next unless my $value = $attr->get_value($obj);

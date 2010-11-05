@@ -47,9 +47,22 @@ sub add_text_attribute {
             isa         => 'Str',
             is          => 'rw',
             traits      => [XMLTrait],
-            description => { node_type => 'character' },
+            description => {
+                node_type => 'character',
+                cdata     => $self->cdata,
+            },
         )
     );
+}
+
+sub start_cdata {
+    my ( $self, $el ) = @_;
+    $self->cdata(1);
+}
+
+sub end_cdata {
+    my ( $self, $el ) = @_;
+#    $self->cdata(0);
 }
 
 sub start_element {
