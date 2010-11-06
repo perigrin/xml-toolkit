@@ -6,15 +6,18 @@ extends qw(XML::Filter::Moose);
 with qw(XML::Toolkit::Builder::ClassRegistry);
 
 has objects => (
-    isa        => 'ArrayRef',
-    is         => 'ro',
-    auto_deref => 1,
-    lazy_build => 1,
-    traits     => ['Array'],
-    handles    => {
-        'pop_object'    => ['pop'],
-        'add_object'    => ['push'],
-        'objects_count' => ['count'],
+    isa     => 'ArrayRef',
+    is      => 'ro',
+    traits  => ['Array'],
+    lazy    => 1,
+    builder => '_build_objects',
+    clearer => 'reset_state',
+    handles => {
+        pop_object     => ['pop'],
+        add_object     => ['push'],
+        objects_count  => ['count'],
+        current_object => [ 'get', -1 ],
+        root_object    => [ 'get', 0 ],
       }
 
 );
@@ -28,16 +31,6 @@ sub parent_object {
     }
     return undef if $self->objects_count == 1;
     return $self->objects->[-1];
-}
-
-sub current_object {
-    my ($self) = @_;
-    $self->objects->[-1];
-}
-
-sub root_object {
-    my ($self) = @_;
-    $self->objects->[0];
 }
 
 sub at_root_object { $_[0]->current_object == $_[0]->root_object }

@@ -22,6 +22,9 @@ has parser => (
     handles  => [qw(parse_uri parse_file parse_string)]
 );
 
+before [qw(parse_uri parse_file parse_string)] =>
+  sub { shift->filter->reset_state };
+
 sub render {
     my ($self) = @_;
     $self->render_object( $self->root_object );
