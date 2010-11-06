@@ -4,22 +4,15 @@ use Encode;
 use namespace::autoclean;
 
 extends qw(XML::Generator::Moose);
-with qw(XML::Toolkit::Generator::Interface);
-
-has namespace => (
-    isa        => 'Str',
-    is         => 'ro',
-    lazy_build => 1,
+with qw(
+  XML::Toolkit::Generator::Interface
+  XML::Toolkit::Builder::NamespaceRegistry
 );
-
-sub _build_namespace { 'MyApp' }
-
-with qw(XML::Toolkit::Builder::NamespaceRegistry);
 
 after 'xml_decl' => sub {
     my $self = shift;
-    for my $prefix ( keys %{ $self->namespace_map } ) {
-        my $uri = $self->namespace_map->{$prefix};
+    for my $pair ( $self->xmlns_pairs ) {
+        my ( $prefix, $uri ) = @$pair;
         $self->start_prefix_mapping( $prefix => $uri, );
     }
     $self->newline;
@@ -115,8 +108,7 @@ sub parse_object {
 
 augment 'parse' => sub {
     my ( $self, $obj ) = @_;
-    $self->parse_object( $obj->meta, $obj,
-        { Name => $self->get_element_name( $obj->meta ) } );
+    $self->parse_object( $obj->meta, $obj, { Name => $self->get_element_name( $obj->meta ) } );
 
 };
 

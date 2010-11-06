@@ -3,26 +3,22 @@ use Moose::Role;
 use MooseX::Aliases;
 use namespace::autoclean;
 
-sub namespace {
-    return $_[0]->xmlns->{''} = $_[1] if defined $_[1];
-    return $_[0]->xmlns->{''};
-}
-
 has xmlns => (
-    isa        => 'HashRef',
-    is         => 'ro',
-    lazy_build => 1,
-    traits     => [qw(MooseX::Aliases::Meta::Trait::Attribute)],
-    alias      => ['namespace_map'],
-    trigger    => sub {
-        my ($self) = @_;
-        unless ( exists( $self->namespace_map->{''} ) ) {
-            $self->namespace_map->{''} = $self->namespace;
-        }
+    isa     => 'HashRef',
+    is      => 'ro',
+    lazy    => 1,
+    builder => 'default_xmlns',
+    traits  => [qw(Hash MooseX::Aliases::Meta::Trait::Attribute)],
+    alias   => ['namespace_map'],
+    handles => {
+        namespace   => [ 'get', q[''] ],
+        get_xmlns   => ['get'],
+        xmlns_pairs => ['kv'],
     },
 );
 
-sub _build_xmlns { { '' => 'MyApp', } }
+sub default_xmlns { { 'MyApp' => '', } }
+
 
 has _unresolved_namespace_map => (
     isa      => 'HashRef',
