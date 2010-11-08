@@ -1,6 +1,6 @@
 package XML::Toolkit;
 use strict;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 use XML::Toolkit::MetaDescription::Trait;
 
 1;    # Magic true value required at end of module
@@ -12,20 +12,23 @@ XML::Toolkit - A suit of XML tools with Antlers.
 
 =head1 VERSION
 
-This document describes XML::Toolkit version 0.07
+This document describes XML::Toolkit version 0.09. 
+
+THIS VERSION BREAKS BACKWARDS COMPATIBILITY.
 
 =head1 SYNOPSIS
 
-    use XML::Toolkit::Loader;
-    my $loader = XML::Toolkit::Loader->new( namespace => 'MyApp' );
+    use XML::Toolkit::App;
+    my $loader = XML::Toolkit::App->new( xmlns => { '' => 'MyApp' } )->loader;
     $loader->parse_file( $$file );
     print join '', @{ $loader->render };
 
 or
-    use XML::Toolkit::Builder;
-    my $builder = XML::Toolkit::Builder->new( namespace => 'MyApp' );
-    $self->builder->parse_file( $file );
-    say $builder->render;
+
+    use XML::Toolkit::App;
+    my $builder = my $builder = XML::Toolkit::App->new( xmlns => { '' => 'MyApp' } )->builder
+    $builder->parse_string($xml)
+    say $builder->render()
 
 Typically you would use the C<xmltk> command line script.
 
@@ -140,9 +143,9 @@ create new documents that match this structure.
         body_collection => [MyApp::Body->new(text=>'Shh!')],
     )
     
-    my $generator = Generator->new( );
-    $generator->render_object($document);
-    print $document->output;
+    my $generator = XMLTK::App->new( xmlns => { '' => '' } )->generator;
+    $generator->render_object($root);
+    my $output = join( '', $generator->output );
     
     # output
     #    
@@ -159,18 +162,17 @@ few semantic or structural changes.
 
 =head1 SEE ALSO
 
-L<XML::Compile|XML::Compile> and L<XML::Pastor|XML::Pastor> both have
-similarities to C<XML::Toolkit> in scope if not design.
+L<PRANG|PRANG>, L<XML::Compile|XML::Compile> and L<XML::Pastor|XML::Pastor>
+have similarities to C<XML::Toolkit> in scope if not design.
 
 =head1 DEPENDENCIES
 
 L<Devel::PackagePath|Devel::PackagePath>, L< Moose | Moose >,
 L<MooseX::MetaDescription|MooseX::MetaDescription>,
 L<MooseX::Types::Path::Class|MooseX::Types::Path::Class>,
-L<MooseX::App::Cmd|MooseX::App::Cmd>,
-L<Template::Toolkit|Template::Toolkit>, L<XML::SAX|XML::SAX>,
-L<XML::SAX::Writer|XML::SAX::Writer>, and
-L<namespace::autoclean|namespace::autoclean>
+L<MooseX::App::Cmd|MooseX::App::Cmd>, L<Template::Toolkit|Template::Toolkit>,
+L<XML::SAX|XML::SAX>, L<XML::SAX::Writer|XML::SAX::Writer>,
+L<Bread::Board|Bread::Board> and L<namespace::autoclean|namespace::autoclean>
 
 =head1 INCOMPATIBILITIES
 
@@ -178,21 +180,14 @@ None reported.
 
 =head1 BUGS AND LIMITATIONS
 
-NOTE AT THE MOMENT NAMESPACED SERIALIZATION DOES NOT WORK
-
-XML::Toolkit has been used in two production projects for over a year. This is
-slightly less than Moose when it was declared 1.0 (aka 'not scary'). Since an
-XML package is sufficiently less world shattering than an Object Orientation
-environment, I'm say we're ready to let the world in.
-
-Currently it only supports Auto-Discovery of class hierarchy from XML
-instances, and does not know anything about DTDs, RelaxNG, XML-Schema or
+Currently XML::Toolkit only supports Auto-Discovery of class hierarchy from
+XML instances, and does not know anything about DTDs, RelaxNG, XML-Schema or
 anything else. Future work is being considered in this, and patches may be
 accepted if they come with documentation and tests.
 
-Please report any bugs or feature requests to
-C<bug-xml-toolkit@rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org>.
+Please report any bugs or feature requests to C<bug-xml-toolkit@rt.cpan.org>,
+or through the web interface at L<http://rt.cpan.org>. Additional support may
+be available via C<#xml-toolkit> on C<irc.perl.org>.
 
 =head1 AUTHOR
 

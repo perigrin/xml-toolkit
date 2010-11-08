@@ -1,4 +1,9 @@
 Revision history for XML-Toolkit
+0.09    2010-11-08
+        + Fix support for namespace serialization
+        + Re-organize to use Bread::Board 
+        + Remove non-namespace support
+
 0.08    2010-06-29
         + Alpha support for serializing Namespaces
         

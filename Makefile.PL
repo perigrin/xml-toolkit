@@ -7,6 +7,7 @@ all_from 'lib/XML/Toolkit.pm';
 
 # Specific dependencies
 requires 'aliased'                    => undef;
+requires 'Bread::Board'               => undef;
 requires 'Devel::PackagePath'         => '0.01';
 requires 'Moose'                      => '0.92';
 requires 'MooseX::Aliases'            => undef;
