@@ -1,4 +1,4 @@
-package XML::ToolKit::MetaDescription;
+package XML::Toolkit::MetaDescription;
 use Moose;
 use Moose::Util::TypeConstraints;
 use namespace::autoclean;
@@ -12,7 +12,7 @@ __END__
 
 =head1 NAME
 
-XML::ToolKit::MetaDescription - A class to ...
+XML::Toolkit::MetaDescription - A class to ...
 
 =head1 VERSION
 
@@ -20,11 +20,11 @@ This documentation refers to version 0.01.
 
 =head1 SYNOPSIS
 
-use XML::ToolKit::MetaDescription;
+use XML::Toolkit::MetaDescription;
 
 =head1 DESCRIPTION
 
-The XML::ToolKit::MetaDescription class implements ...
+The XML::Toolkit::MetaDescription class implements ...
 
 =head1 SUBROUTINES / METHODS
 
