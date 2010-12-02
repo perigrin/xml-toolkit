@@ -1,4 +1,8 @@
 Revision history for XML-Toolkit
+
+0.10    2010-12-02
+        + s/ToolKit/Toolkit/g (doy)
+
 0.09    2010-11-08
         + Fix support for namespace serialization
         + Re-organize to use Bread::Board 

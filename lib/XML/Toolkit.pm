@@ -1,6 +1,6 @@
 package XML::Toolkit;
 use strict;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 use XML::Toolkit::MetaDescription::Trait;
 
 1;    # Magic true value required at end of module
@@ -12,7 +12,7 @@ XML::Toolkit - A suit of XML tools with Antlers.
 
 =head1 VERSION
 
-This document describes XML::Toolkit version 0.09. 
+This document describes XML::Toolkit version 0.10. 
 
 THIS VERSION BREAKS BACKWARDS COMPATIBILITY.
 
