@@ -1,6 +1,6 @@
 package XML::Toolkit;
 use strict;
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 use XML::Toolkit::MetaDescription::Trait;
 
 1;    # Magic true value required at end of module
@@ -12,7 +12,7 @@ XML::Toolkit - A suit of XML tools with Antlers.
 
 =head1 VERSION
 
-This document describes XML::Toolkit version 0.10. 
+This document describes XML::Toolkit version 0.12. 
 
 THIS VERSION BREAKS BACKWARDS COMPATIBILITY.
 
@@ -189,10 +189,11 @@ Please report any bugs or feature requests to C<bug-xml-toolkit@rt.cpan.org>,
 or through the web interface at L<http://rt.cpan.org>. Additional support may
 be available via C<#xml-toolkit> on C<irc.perl.org>.
 
-=head1 AUTHOR
+=head1 AUTHORS
 
 Chris Prather  C<< <chris@prather.org> >>
 Robin Smidsrød C<< <robin@smidsrod.no> >>
+Jesse Luehrs C<< <doy@cpan.org> >>
 
 =head1 LICENCE AND COPYRIGHT
 
