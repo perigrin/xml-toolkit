@@ -6,6 +6,7 @@ use Bread::Board;
 extends qw(Bread::Board::Container);
 
 with qw(
+  XML::Toolkit::Config
   XML::Toolkit::Cmd::ClassTemplate
   XML::Toolkit::Builder::NamespaceRegistry
 );
@@ -19,15 +20,15 @@ sub BUILD {
 
         service 'template' => $self->template;
 
-        service 'xmlns'     => $self->xmlns;
+        service 'xmlns' => $self->xmlns;
 
         container Builder => as {
             service filter => (
                 lifecycle    => 'Singleton',
                 class        => 'XML::Toolkit::Builder::Filter',
                 dependencies => {
-                    template  => depends_on('/template'),
-                    xmlns     => depends_on('/xmlns'),
+                    template => depends_on('/template'),
+                    xmlns    => depends_on('/xmlns'),
                 }
             );
 
@@ -47,13 +48,13 @@ sub BUILD {
             );
         };
         container Loader => as {
-            
+
             service filter => (
                 lifecycle    => 'Singleton',
                 class        => 'XML::Toolkit::Loader::Filter',
                 dependencies => {
-                    template  => depends_on('/template'),
-                    xmlns     => depends_on('/xmlns'),
+                    template => depends_on('/template'),
+                    xmlns    => depends_on('/xmlns'),
                 }
             );
 
