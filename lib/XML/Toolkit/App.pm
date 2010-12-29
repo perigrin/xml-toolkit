@@ -43,7 +43,7 @@ This documentation refers to version 0.02.
 or
 
     use XML::Toolkit::App;
-    my $builder = my $builder = XML::Toolkit::App->new( xmlns => { '' => 'MyApp' } )->builder
+    my $builder = XML::Toolkit::App->new( xmlns => { '' => 'MyApp' } )->builder
     $builder->parse_string($xml)
     say $builder->render()
     

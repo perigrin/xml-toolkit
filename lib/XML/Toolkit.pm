@@ -1,6 +1,6 @@
 package XML::Toolkit;
 use strict;
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 use XML::Toolkit::MetaDescription::Trait;
 
 1;    # Magic true value required at end of module
@@ -26,7 +26,7 @@ THIS VERSION BREAKS BACKWARDS COMPATIBILITY.
 or
 
     use XML::Toolkit::App;
-    my $builder = my $builder = XML::Toolkit::App->new( xmlns => { '' => 'MyApp' } )->builder
+    my $builder = XML::Toolkit::App->new( xmlns => { '' => 'MyApp' } )->builder
     $builder->parse_string($xml)
     say $builder->render()
 

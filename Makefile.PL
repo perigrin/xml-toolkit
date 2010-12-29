@@ -11,6 +11,7 @@ requires 'Bread::Board'               => undef;
 requires 'Devel::PackagePath'         => '0.01';
 requires 'Moose'                      => '0.92';
 requires 'MooseX::Aliases'            => undef;
+requires 'MooseX::App::Cmd'           => undef;
 requires 'MooseX::MetaDescription'    => '0.03';
 requires 'MooseX::Types::Path::Class' => '0.04';
 requires 'namespace::autoclean'       => undef;
