@@ -4,20 +4,16 @@ our $VERSION = '0.02';
 
 use XML::Toolkit::Config::Container;
 
-has xmlns => (
-    isa     => 'HashRef',
-    is      => 'ro',
-    lazy    => 1,
-    builder => 'default_xmlns',
-);
+with qw( XML::Toolkit::Builder::NamespaceRegistry );
 
-sub default_xmlns { { 'MyApp' => '', } }
+sub default_xmlns { { '' => 'MyApp', } }
 
-has config_container => (
-    does    => 'XML::Toolkit::Config',
-    handles => 'XML::Toolkit::Config',
-    lazy    => 1,
-    builder => '_build_config_container',
+has _config => (
+    does     => 'XML::Toolkit::Config',
+    handles  => 'XML::Toolkit::Config',
+    lazy     => 1,
+    init_arg => 'config',
+    builder  => '_build_config_container',
 );
 
 sub _build_config_container {
@@ -41,7 +37,7 @@ This documentation refers to version 0.02.
     use XML::Toolkit::App;
     
     my $loader = XML::Toolkit::App->new( xmlns => { '' => 'MyApp' } )->loader;
-    $loader->parse_file( $$file );
+    $loader->parse_file( $file );
     print join '', @{ $loader->render };
 
 or

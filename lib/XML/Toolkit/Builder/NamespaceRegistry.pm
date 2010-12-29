@@ -45,7 +45,6 @@ after 'end_document' => sub {
 
 sub get_class_name {
     my ( $self, $el ) = @_;
-
     # Get values for element
     my $xmlns     = $el->{'NamespaceURI'};
     my $namespace = $self->namespace_map->{$xmlns};
@@ -55,8 +54,8 @@ sub get_class_name {
         $self->unresolved_namespace_map->{$xmlns} = 1;
 
         # Let's just return the local part here, even though it's wrong
-        warn $self->xmlns->{''} . '::' . ucfirst $el->{'LocalName'};
-        return $self->xmlns->{''} . '::' . ucfirst $el->{'LocalName'};
+        warn $self->get_xmlns('') . '::' . ucfirst $el->{'LocalName'};
+        return $self->get_xmlns('') . '::' . ucfirst $el->{'LocalName'};
     }
 
     # Construct class name

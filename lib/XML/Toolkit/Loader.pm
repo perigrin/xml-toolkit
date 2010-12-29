@@ -42,7 +42,7 @@ XML::Toolkit::Loader - A set of tools for Loading XML into Moose Objects
 
     use XML::Toolkit::Loader;
     my $loader = XML::Toolkit::Loader->new( namespace => 'MyApp' );
-    $loader->parse_file( $$file );
+    $loader->parse_file( $file );
     print join '', @{ $loader->render };
 
 =head1 ATTRIBUTES

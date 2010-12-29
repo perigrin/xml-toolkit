@@ -2,16 +2,15 @@ package XML::Toolkit::Cmd::Command::generate;
 use Moose;
 use namespace::autoclean;
 
-extends qw(MooseX::App::Cmd::Command);
+extends qw(MooseX::App::Cmd::Command XML::Toolkit::App);
 
 use XML::Toolkit::Config::Container;
 use MooseX::Types::Path::Class qw(File);
 use Moose::Util::TypeConstraints;
 
-with qw(MooseX::Getopt::Dashes);
 with qw(
+  MooseX::Getopt::Dashes
   XML::Toolkit::Cmd::ClassTemplate
-  XML::Toolkit::Builder::NamespaceRegistry
 );
 
 has input => (
@@ -42,9 +41,9 @@ END_TEMPLATE
 sub run {
     my ($self) = @_;
     my $builder = XML::Toolkit::Config::Container->new(
-        namespace     => $self->namespace,
-        namespace_map => $self->xmlns,
-        template      => $self->template,
+        namespace => $self->namespace,
+        xmlns     => $self->xmlns,
+        template  => $self->template,
     )->builder;
 
     $builder->parse_file( $self->input->stringify );

@@ -20,7 +20,7 @@ THIS VERSION BREAKS BACKWARDS COMPATIBILITY.
 
     use XML::Toolkit::App;
     my $loader = XML::Toolkit::App->new( xmlns => { '' => 'MyApp' } )->loader;
-    $loader->parse_file( $$file );
+    $loader->parse_file( $file );
     print join '', @{ $loader->render };
 
 or

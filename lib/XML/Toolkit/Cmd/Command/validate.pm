@@ -6,8 +6,11 @@ use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
 use MooseX::Types::Path::Class qw(File);
 use Moose::Util::TypeConstraints;
 
-extends qw(MooseX::App::Cmd::Command);
-with qw(MooseX::Getopt::Dashes);
+extends qw(MooseX::App::Cmd::Command XML::Toolkit::App);
+
+with qw(
+  MooseX::Getopt::Dashes
+);
 
 has input => (
     isa      => File,
@@ -24,20 +27,13 @@ has namespace => (
 
 sub _build_namespace { 'MyApp' }
 
-has _loader => (
-    isa        => 'XML::Toolkit::Loader',
-    reader     => 'loader',
-    lazy_build => 1,
-);
-
-sub _build__loader {
-    XMLTK::App->new( namespace => $_[0]->namespace )->loader;
-}
-
 sub run {
     my ($self) = @_;
-    $self->loader->parse_file( $self->input->stringify );
-    print join '', @{ $self->loader->render };
+    my $loader = $self->loader;
+    $loader->parse_file( $self->input->stringify );
+    my $generator = $self->generator;
+    $generator->render_object($loader->root_object);
+    print $generator->output;
 }
 
 __PACKAGE__->meta->make_immutable;
