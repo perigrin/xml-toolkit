@@ -1,4 +1,8 @@
 Revision history for XML-Toolkit
+
+0.14    011-06-08
+	* Fix dep for MX::NonMoose finally
+
 0.13    2010-12-29
         * Fix missing dep on MooseX::App::Cmd spotted by mateu
         * Fix bad synopsis code spotted by mateu

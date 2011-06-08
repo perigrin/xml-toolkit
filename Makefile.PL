@@ -10,6 +10,7 @@ requires 'aliased'                    => undef;
 requires 'Bread::Board'               => undef;
 requires 'Devel::PackagePath'         => '0.01';
 requires 'Moose'                      => '0.92';
+requires 'MooseX::NonMoose'           => undef;
 requires 'MooseX::Aliases'            => undef;
 requires 'MooseX::App::Cmd'           => undef;
 requires 'MooseX::MetaDescription'    => '0.03';
@@ -22,6 +23,7 @@ requires 'XML::SAX::Writer'           => '0.50';
 build_requires 'Test::More' => '0.94';
 build_requires 'Test::XML';
 build_requires 'Test::Exception';
+build_requires 'Test::Deep';
 
 tests_recursive;
 
