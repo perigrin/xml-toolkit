@@ -32,7 +32,7 @@ or
 
 Typically you would use the C<xmltk> command line script.
 
-    xmltk generate --input mydocument.xml --namespace MyApp
+    xmltk generate --input mydocument.xml --xmlns ''=MyApp
     
 =head1 DESCRIPTION
 
