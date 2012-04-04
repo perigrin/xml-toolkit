@@ -23,10 +23,6 @@ __END__
 
 XML::Toolkit::MetaDescription::Trait - A class to ...
 
-=head1 VERSION
-
-This documentation refers to version 0.01.
-
 =head1 SYNOPSIS
 
 use XML::Toolkit::MetaDescription::Trait;

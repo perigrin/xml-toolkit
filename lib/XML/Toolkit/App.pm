@@ -1,6 +1,5 @@
 package XML::Toolkit::App;
 use Moose;
-our $VERSION = '0.02';
 
 use XML::Toolkit::Config::Container;
 
@@ -25,10 +24,6 @@ __END__
 =head1 NAME
 
 XML::Toolkit::App - An XML::Toolkit Application
-
-=head1 VERSION
-
-This documentation refers to version 0.02.
 
 =head1 SYNOPSIS
 

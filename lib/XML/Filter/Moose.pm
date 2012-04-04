@@ -84,10 +84,6 @@ __END__
 
 XML::Filter::Moose - A Moose-ified base class for XML::SAX 
 
-=head1 VERSION
-
-This documentation refers to version 0.01.
-
 =head1 SYNOPSIS
 
     package MyFilter;

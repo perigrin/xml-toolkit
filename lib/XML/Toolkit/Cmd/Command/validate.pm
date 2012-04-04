@@ -41,10 +41,6 @@ __END__
 
 XML::Toolkit::Cmd::Command::validate - validate XML round tripping
 
-=head1 VERSION
-
-This documentation refers to version 0.01.
-
 =head1 SYNOPSIS
 
      xmltk generate 

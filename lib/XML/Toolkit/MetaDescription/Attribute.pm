@@ -6,18 +6,13 @@ use namespace::autoclean;
 extends 'MooseX::MetaDescription::Meta::Attribute';
 with 'XML::Toolkit::MetaDescription::Trait';
 
-
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 1;
 __END__
 
 =head1 NAME
 
 XML::Toolkit::MetaDescription::Attribute - A class to ...
-
-=head1 VERSION
-
-This documentation refers to version 0.01.
 
 =head1 SYNOPSIS
 
