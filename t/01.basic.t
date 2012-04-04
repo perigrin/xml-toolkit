@@ -5,8 +5,6 @@ use Test::Exception;
 use Test::XML;
 use XML::Toolkit::App;
 
-use aliased 'XML::Toolkit::Generator';
-
 my $xml = <<'END_XML';
 <?xml version="1.0"?>
 <note>
