@@ -2,15 +2,12 @@ package XML::Toolkit::Cmd::Command::validate;
 use Moose;
 use namespace::autoclean;
 
-use aliased 'XML::Toolkit::Config::Container' => 'XMLTK::App';
 use MooseX::Types::Path::Class qw(File);
-use Moose::Util::TypeConstraints;
+use XML::Toolkit::App;
 
-extends qw(MooseX::App::Cmd::Command XML::Toolkit::App);
+extends qw(MooseX::App::Cmd::Command);
 
-with qw(
-  MooseX::Getopt::Dashes
-);
+with qw(MooseX::Getopt::Dashes);
 
 has input => (
     isa      => File,
@@ -19,20 +16,20 @@ has input => (
     required => 1,
 );
 
-has namespace => (
-    isa        => 'Str',
-    is         => 'ro',
-    lazy_build => 1,
+has package => (
+    isa      => 'Str',
+    is       => 'ro',
+    required => 1,
 );
-
-sub _build_namespace { 'MyApp' }
 
 sub run {
     my ($self) = @_;
-    my $loader = $self->loader;
+    
+    my $loader = XML::Toolkit::App->new(xmlns => { '' => $self->package})->loader;
     $loader->parse_file( $self->input->stringify );
-    my $generator = $self->generator;
-    $generator->render_object($loader->root_object);
+    
+    my $generator = XML::Toolkit::App->new( xmlns => { '' => '' } )->generator;
+    $generator->render_object( $loader->root_object );
     print $generator->output;
 }
 

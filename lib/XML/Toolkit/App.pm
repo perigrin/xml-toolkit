@@ -6,8 +6,6 @@ use XML::Toolkit::Config::Container;
 
 with qw( XML::Toolkit::Builder::NamespaceRegistry );
 
-sub default_xmlns { { '' => 'MyApp', } }
-
 has _config => (
     does     => 'XML::Toolkit::Config',
     handles  => 'XML::Toolkit::Config',

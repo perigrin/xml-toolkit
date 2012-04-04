@@ -2,16 +2,19 @@ package XML::Toolkit::Cmd::Command::generate;
 use Moose;
 use namespace::autoclean;
 
-extends qw(MooseX::App::Cmd::Command XML::Toolkit::App);
+extends qw(MooseX::App::Cmd::Command);
 
 use XML::Toolkit::Config::Container;
 use MooseX::Types::Path::Class qw(File);
 use Moose::Util::TypeConstraints;
 
 with qw(
-  MooseX::Getopt::Dashes
-  XML::Toolkit::Cmd::ClassTemplate
+    MooseX::Getopt::Dashes
+    XML::Toolkit::App::Config
+    XML::Toolkit::Cmd::ClassTemplate
 );
+
+sub default_xmlns { { '' => 'MyApp', } }
 
 has input => (
     isa      => File,

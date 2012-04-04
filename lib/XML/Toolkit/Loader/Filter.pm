@@ -3,6 +3,7 @@ use Moose;
 use namespace::autoclean;
 
 extends qw(XML::Filter::Moose);
+
 with qw(XML::Toolkit::Builder::ClassRegistry);
 
 has objects => (
