@@ -1,4 +1,4 @@
-package XML::Toolkit;
+﻿package XML::Toolkit;
 use strict;
 use XML::Toolkit::MetaDescription::Trait;
 
@@ -19,21 +19,22 @@ XML::Toolkit - A suit of XML tools with Antlers.
 or
 
     use XML::Toolkit::App;
-    my $builder = XML::Toolkit::App->new( xmlns => { '' => 'MyApp' } )->builder
-    $builder->parse_string($xml)
-    say $builder->render()
+    my $builder = XML::Toolkit::App->new( xmlns => { '' => 'MyApp' } )->builder;
+    $builder->parse_string($xml);
+    say $builder->render();
 
-Typically you would use the C<xmltk> command line script.
+XML::Toolkit comes with a command line utility C<xmltk> for generating your classes
+Remember to set your name space with the C<--xmlns> parameter
 
     xmltk generate --input mydocument.xml --xmlns ''=MyApp
     
 =head1 DESCRIPTION
 
 XML::Toolkit is a suite of tools that work to make handling XML easier.
-It is designed to marshall XML documents into Moose classes and back
+It is designed to marshal XML documents into Moose classes and back
 again with minimal changes.
 
-For example given a xml document like the following
+For example given a xml document like the following:
 
     <?xml version="1.0"?>
     <note>
@@ -43,8 +44,12 @@ For example given a xml document like the following
         <body>Don't forget me this weekend!</body>
     </note>
 
+First, generate the class using the built in C<xmltk> utility:
+
+    xmltk generate --input mydocument.xml --xmlns ''=MyApp
+    
 C<XML::Toolkit> will generate classes for each of the elements. The 
-C< <note> > element's class would be something like
+C< <note> > element's class would be something like:
 
    package MyApp::Note;
    use Moose;
@@ -150,10 +155,12 @@ create new documents that match this structure.
     # </note>
 
 The original intention of XML::Toolkit was to round-trip XML documents
-with an unkonwn schema through an editor and back out to disk with very
+with an unknown schema through an editor and back out to disk with very
 few semantic or structural changes. 
 
 =head1 SEE ALSO
+
+L<XML::Toolkit::Cmd> - Documentation on the xmltk command
 
 L<PRANG|PRANG>, L<XML::Compile|XML::Compile> and L<XML::Pastor|XML::Pastor>
 have similarities to C<XML::Toolkit> in scope if not design.
