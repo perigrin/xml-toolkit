@@ -1,4 +1,4 @@
-package XML::Toolkit::Cmd;
+﻿package XML::Toolkit::Cmd;
 use Moose;
 use namespace::autoclean;
 extends qw(MooseX::App::Cmd);
@@ -9,7 +9,7 @@ __END__
 
 =head1 NAME
 
-xmltk - A Perl utility for generating XML::Toolkit compatabile classes from an XML Schema Document 
+xmltk - A Perl utility for generating XML::Toolkit compatible classes from an XML Schema Document 
 
 =head1 SYNOPSIS
 
@@ -22,7 +22,7 @@ or
 
 =head1 DESCRIPTION
 
-xmlns is a commandline utility for generating XML::Toolkit compatible classes from an XML Schema Document.
+xmlns is a command line utility for generating XML::Toolkit compatible classes from an XML Schema Document.
 It can also be used to validate generated XML.
 
 =head2 Commands
@@ -48,7 +48,7 @@ C<validate> is used to validate round tripping, it requires both the C<--input> 
 
     usage:  xmltk validate [long options...]
     --input (required)      specify the input XSD
-    --package (required)    specify the XML::Toolkit compatable package name
+    --package (required)    specify the XML::Toolkit compatible package name
 
 =back
 

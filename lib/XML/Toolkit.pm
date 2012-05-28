@@ -1,4 +1,4 @@
-package XML::Toolkit;
+﻿package XML::Toolkit;
 use strict;
 use XML::Toolkit::MetaDescription::Trait;
 
@@ -23,15 +23,15 @@ or
     $builder->parse_string($xml);
     say $builder->render();
 
-XML::Toolkit comes with a commanline utility C<xmltk> for generating your classes
-Remeber to set your namespace with the C<--xmlns> parameter
+XML::Toolkit comes with a command line utility C<xmltk> for generating your classes
+Remember to set your name space with the C<--xmlns> parameter
 
     xmltk generate --input mydocument.xml --xmlns ''=MyApp
     
 =head1 DESCRIPTION
 
 XML::Toolkit is a suite of tools that work to make handling XML easier.
-It is designed to marshall XML documents into Moose classes and back
+It is designed to marshal XML documents into Moose classes and back
 again with minimal changes.
 
 For example given a xml document like the following:
@@ -44,7 +44,7 @@ For example given a xml document like the following:
         <body>Don't forget me this weekend!</body>
     </note>
 
-First, generate the class using the builtin C<xmltk> utility:
+First, generate the class using the built in C<xmltk> utility:
 
     xmltk generate --input mydocument.xml --xmlns ''=MyApp
     
@@ -155,7 +155,7 @@ create new documents that match this structure.
     # </note>
 
 The original intention of XML::Toolkit was to round-trip XML documents
-with an unkonwn schema through an editor and back out to disk with very
+with an unknown schema through an editor and back out to disk with very
 few semantic or structural changes. 
 
 =head1 SEE ALSO
