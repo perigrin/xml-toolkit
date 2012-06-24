@@ -185,10 +185,8 @@ Oooh, that's better.
 
     Scrivener::BinderItem (type=DraftFolder) 
     Scrivener::BinderItem (type=ResearchFolder) Research
-    
-Scrivener::BinderItem (type=TrashFolder) Trash
-    
-Scrivener::BinderItem (type=Text) cxr
+    Scrivener::BinderItem (type=TrashFolder) Trash
+    Scrivener::BinderItem (type=Text) cxr
 
 Or is it?  Have you noticed the issue here?  Perl sure did:
 
