@@ -10,7 +10,13 @@ objects (with Moose), then XML::Toolkit is for you.  XML::Toolkit
 turns an XML document into an approximate representation of the schema
 through a hierachy of classes.
 
-=head1 FIRST STEPS
+=head1 THE WALKTHROUGH
+
+The rest of this document walks you through the process of creating an
+application with XML::Toolkit, pointing out crevasses and pitfalls for
+the unwary developer.
+
+=head2 FIRST STEPS
 
 Given an XML document, use the C<xmltk> command to generate the class
 hierachy.
@@ -42,7 +48,7 @@ gleans from the XML document given to it.
 Congratulations!  You've now got an OO representation of your XML
 document.
 
-=head1 CREATING AN APPLICATION
+=head2 CREATING AN APPLICATION
 
 First, create a stub module, Scrivener.pm, than just defines a
 package. This gets around unpleasantness later.
@@ -73,9 +79,11 @@ exists, for that matter), otherwise error messages go everywhere.
     
     die "not a file: $xmlfile" unless -f $xmlfile;
     
+    no strict;
     my $loader = XML::Toolkit::App->new(
         xmlns => { '' => Scrivener }
       )->loader;
+    use strict;
     $loader->parse_file($xmlfile);
 
 Go ahead, run it on your XML document. It won't bite.
@@ -84,28 +92,28 @@ That's as simple as it gets to import and parse your XML document.
 
 Oh, you wanted to do something with it?  Okay, then.
 
-=head1 TRAVERSING THE OBJECT HIERARCHY
+=head2 TRAVERSING THE OBJECT HIERARCHY
 
-We can use the very awesome Data::Dumper to dump the hierarchy.
+We can use Data::Dumper to try to dump the hierarchy. Continuing on
+from our last example,
 
     use Data::Dumper;
     
     print Dumper($loader->root_object);
 
-Ewwww. That output is horribly ugly, and Perl is above horribly ugly.
+Ewww.  That output is horribly ugly, and Perl is above horribly ugly.
 So instead, let's write our own hierarchy dumper.
 
 Now, a Scrivener document contains one Binder with lots of child
 BinderItems; any BinderItem can be the root of a hierarchy of child
 BinderItems.  Let's get the root Binder, then:
 
-    my $binder = $loader->root_object->Binder_collection;
+    my $binder = $loader->root_object->Binder_collection->[0];
 
 Well, actually, that's silly. We don't have a collection of Binders.
-But that'll do for now. See "OPTIMIZING THE HIERARCHY" for more
-information.
+So how do we fix this?
 
-=head1 OPTIMIZING THE HIERARCHY
+=head2 OPTIMIZING THE HIERARCHY
 
 XML::Toolkit guesses that every element can be repeated and thus makes
 them all collections; in many cases they don't need to be, and this
@@ -134,13 +142,13 @@ BinderItem has a 'Title_collection' field which is defined as
 But there's an obvious problem with this. A BinderItem only has one
 Title. To optimize this we convert Scrivener::BinderItem's
 C<Title_collection> to just a C<Title>, by changing the C<isa>, C<is>,
-and C<traits>.
+and C<traits>.  We also need to attach a C<writer>.
 
     has 'Title' => (
         isa         => 'Scrivener::Title',
         is          => 'ro',
         traits      => [qw(XML)],
-        lazy        => 1,
+        writer      => 'add_Binder',
         description => {
             LocalName => "Title",
             Prefix => "",
@@ -153,15 +161,83 @@ and C<traits>.
 
 And there we have it.
 
-
 XXX see http://gist.github.com/2981483
+
+=head2 LISTING BINDERITEMS
+
+So, after optimizing ScrivenerProject's C<Binder>, I can do
+
+    my $binder = $loader->root_object->Binder;
+    foreach my $binderItem (@{ $binder->BinderItem_collection }) {
+      print ref $binderItem, "\n";
+    }
+
+This spits a line of ref names at me.  That's a good start.
+
+Let's try something a little fiddlier:
+
+    foreach my $binderItem (@{ $binder->BinderItem_collection }) {
+      print ref $binderItem, " ", $binderItem->Title->text, "\n";
+    }
+
+Oooh, that's better.
+
+    Scrivener::BinderItem (type=DraftFolder) 
+    Scrivener::BinderItem (type=ResearchFolder) Research
+    Scrivener::BinderItem (type=TrashFolder) Trash
+    Scrivener::BinderItem (type=Text) cxr
+
+Or is it?  Have you noticed the issue here?  Perl sure did:
+
+    Use of uninitialized value in print at scrivener.pl line 41
+
+Adding a default field to C<Scrivener::Title>'s C<text> would be a
+fairly safe assumption -- Scrivener allows one to have blank names in
+the Title field -- but a better way would be to sanity check the
+values returned and inject an empty string if it's not defined.
+
+=head2 WHEELS WITHIN WHEELS: RECURSING BINDERITEMS
+
+If you recall, we said that any BinderItem can be the root of a tree
+of child BinderItems. Well, I lied. A Binder contains a BinderItem
+collection. Each BinderItem can contain a Children, which contains a
+BinderItem collection. Nonetheless, this doesn't change the code too
+much.
+
+    my $binder = $loader->root_object->Binder;
+    foreach my $binderItem (@{ $binder->BinderItem_collection }) {
+      &recurseBinderItem($binderItem);
+    }
+    
+    sub recurseBinderItem {
+      my ($binderItem, $level) = @_;
+      $level = 0 unless defined $level;
+      
+      print "  "x$level,
+          " (type=", $binderItem->Type,
+          ", id=", defined($binderItem->ID) ?
+              $binderItem->ID : "<ID>", ") ",
+          defined($binderItem->Title->text) ?
+              $binderItem->Title->text : "<no title>",
+          "\n";
+      if (defined($binderItem->Children)) {
+        foreach my $childItem (@{ $binderItem->Children->BinderItem_collection }) {
+          &recurseBinderItem($childItem, $level+1);
+        }
+      }
+    }
+
+=head2 ENDGAME
+
+And there we have it, a quick tutorial on how to create a reasonably
+complex reader using a real-world XML dataset.
 
 =head1 AUTHOR
 
 This walkthrough was nurtured from random bit mutations by Jashank
-Jeremy (jashank@rulingia.com).  Much was gleaned from discussions with
-Chris Prather (chris@prather.org) and the occasional camel-shaped
-glyphs scattered throughout the code.
+Jeremy (jashank@rulingia.com). Much was gleaned from discussions with
+Chris Prather (chris@prather.org) and Jesse Luehrs (doy@cpan.org) and
+the occasional camel-shaped glyphs scattered throughout the code.
 
 =head1 LICENCE
 
