@@ -148,7 +148,7 @@ and C<traits>.  We also need to attach a C<writer>.
         isa         => 'Scrivener::Title',
         is          => 'ro',
         traits      => [qw(XML)],
-        writer      => 'add_Binder',
+        writer      => 'add_Title',
         description => {
             LocalName => "Title",
             Prefix => "",
