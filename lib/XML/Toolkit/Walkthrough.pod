@@ -1,0 +1,46 @@
+=head1 NAME
+
+XML::Toolkit::Walkthrough - quick walkthrough to get up and running
+with XML::Toolkit
+
+=head1 WHY XML::TOOLKIT?
+
+If you have an XML document which you want to be able to manipulate as
+objects (with Moose), then XML::Toolkit is for you.  XML::Toolkit
+turns an XML document into an approximate representation of the schema
+through a hierachy of classes.
+
+=head1 FIRST STEPS
+
+Given an XML document, use the C<xmltk> command to generate the class
+hierachy. 
+
+    $ xmltk generate --input axiom.scriv/axiom.scrivx --xmlns ''\=Scrivener
+
+This will generate a large number of files in the 'Scrivener'
+directory, one for each element that C<xmltk> gleans from the XML
+document given to it. 
+
+    $ ls Scrivener/*
+    Scrivener/ScrivenerProject.pm
+    Scrivener/Binder.pm
+    Scrivener/BinderItem.pm
+    [... many other files elided ...]
+
+Congratulations!  You've now got an OO representation of your XML
+document. 
+
+=head1 AUTHOR
+
+This walkthrough was nurtured from random bit mutations by Jashank
+Jeremy (jashank@rulingia.com).  Much was gleaned from discussions with
+Chris Prather (chris@prather.org) and the occasional camel-shaped
+glyphs scattered throughout the code.
+
+=head1 LICENCE
+
+Copyright (c) 2012 Jashank Jeremy.
+
+This software is free.  It is licensed under the same terms as Perl itself.
+
+=cut
