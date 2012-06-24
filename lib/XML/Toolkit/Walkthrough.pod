@@ -14,7 +14,9 @@ through a hierachy of classes.
 
 The rest of this document walks you through the process of creating an
 application with XML::Toolkit, pointing out crevasses and pitfalls for
-the unwary developer.
+the unwary developer. The XML file is a project file from Literature
+and Latte's Scrivener, and XML::Toolkit is in no way associated with
+Literature and Latte.
 
 =head2 FIRST STEPS
 
@@ -183,8 +185,10 @@ Oooh, that's better.
 
     Scrivener::BinderItem (type=DraftFolder) 
     Scrivener::BinderItem (type=ResearchFolder) Research
-    Scrivener::BinderItem (type=TrashFolder) Trash
-    Scrivener::BinderItem (type=Text) cxr
+    
+Scrivener::BinderItem (type=TrashFolder) Trash
+    
+Scrivener::BinderItem (type=Text) cxr
 
 Or is it?  Have you noticed the issue here?  Perl sure did:
 
