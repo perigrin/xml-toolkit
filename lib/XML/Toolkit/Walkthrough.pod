@@ -226,10 +226,28 @@ much.
       }
     }
 
+You could also easily add things such as sanity checks and other such
+niceties to this; not listing the contents of BinderItems with type
+TrashFolder is one such easy one. Before the print, simply add
+something like
+
+    return if ($binderItem->Type eq "TrashFolder");
+
+It's equally straightforward to only list things that have a certain
+flag set or (given a creation or modification time) were only modified
+or created before or after a certain point. There are a myriad of
+possibilities from here.
+    
 =head2 ENDGAME
 
 And there we have it, a quick tutorial on how to create a reasonably
 complex reader using a real-world XML dataset.
+
+From here, it's probably worthwhile having a look at the class
+definitions in more detail to see if you can pick up anything obvious
+or obscure. Building applications to go the other way, given an
+XML::Toolkit, is reasonably straightforward, and the bare bones are
+covered in the documentation for XML::Toolkit itself.
 
 =head1 AUTHOR
 
