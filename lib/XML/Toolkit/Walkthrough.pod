@@ -159,9 +159,8 @@ and C<traits>.  We also need to attach a C<writer>.
         },
     );
 
-And there we have it.
-
-XXX see http://gist.github.com/2981483
+Thus, we have an optimized and sanity-checking adjustment to our
+BinderItem.
 
 =head2 LISTING BINDERITEMS
 
