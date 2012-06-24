@@ -14,9 +14,9 @@ through a hierachy of classes.
 
 The rest of this document walks you through the process of creating an
 application with XML::Toolkit, pointing out crevasses and pitfalls for
-the unwary developer. The XML file is a project file from Literature
-and Latte's Scrivener, and XML::Toolkit is in no way associated with
-Literature and Latte.
+the unwary developer. The XML document used as an example here is a
+project file from Literature and Latte's Scrivener; XML::Toolkit is in
+no way associated with Literature and Latte.
 
 =head2 FIRST STEPS
 
