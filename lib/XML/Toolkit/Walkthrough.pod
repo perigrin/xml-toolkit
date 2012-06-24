@@ -238,7 +238,7 @@ flag set or (given a creation or modification time) were only modified
 or created before or after a certain point. There are a myriad of
 possibilities from here.
     
-=head2 ENDGAME
+=head2 NEXT STEPS
 
 And there we have it, a quick tutorial on how to create a reasonably
 complex reader using a real-world XML dataset.
