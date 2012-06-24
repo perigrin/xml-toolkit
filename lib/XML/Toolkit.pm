@@ -194,6 +194,7 @@ be available via C<#xml-toolkit> on C<irc.perl.org>.
 Chris Prather  C<< <chris@prather.org> >>
 Robin Smidsrød C<< <robin@smidsrod.no> >>
 Jesse Luehrs C<< <doy@cpan.org> >>
+Jashank Jeremy C<< <jashank@rulingia.com> >>
 
 =head1 LICENCE AND COPYRIGHT
 

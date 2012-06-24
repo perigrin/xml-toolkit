@@ -42,7 +42,36 @@ or
     
 =head1 DESCRIPTION
 
+C<XML::Toolkit::App> is the primary point of entry for applications
+based on XML::Toolkit.
+
+Once one has a class hierarchy (see XML::Toolkit for instructions on
+how to do this), loading XML into this hierarchy is done by using
+either C<loader> or C<builder> instance, which accept a filename and
+an XML string, respectively. 
+
 =head1 SUBROUTINES / METHODS
+
+=over 4
+
+=item C<new>
+
+Creates a new instance of XML::Toolkit::App.  Should be passed the
+xmlns mapping specified in the call to C<xmltk generate>.
+
+=item C<loader>
+
+C<loader> creates a new instance of XML::Toolkit::Loader and returns
+it; this is used to parse XML files given a filename.  See
+XML::Toolkit::Loader. 
+
+=item C<builder>
+
+C<builder> creates a new instance of XML::Toolkit::Builder and returns
+it; this is used to parse XML passed as a string.  See
+XML::Toolkit::Builder. 
+
+=back
 
 =head1 DEPENDENCIES
 
@@ -51,6 +80,9 @@ Moose
 =head1 AUTHOR
 
 Chris Prather (chris@prather.org)
+
+Documentation nurtured from random bit mutations by Jashank Jeremy
+(jashank@rulingia.com).
 
 =head1 LICENCE
 
