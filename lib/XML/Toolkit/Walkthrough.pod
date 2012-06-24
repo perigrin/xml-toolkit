@@ -13,13 +13,25 @@ through a hierachy of classes.
 =head1 FIRST STEPS
 
 Given an XML document, use the C<xmltk> command to generate the class
-hierachy. 
+hierachy.
 
-    $ xmltk generate --input axiom.scriv/axiom.scrivx --xmlns ''\=Scrivener
+    $ xmltk generate --input axiom.scriv/axiom.scrivx --xmlns ''=Scrivener
 
-This will generate a large number of files in the 'Scrivener'
-directory, one for each element that C<xmltk> gleans from the XML
-document given to it. 
+Be aware of the root element of your XML document; it isn't given any
+particularly special treatment, but you need to know what it's called.
+In this case, it's 'ScrivenerProject'.
+
+Also be aware of the XML namespace; in our example, we don't have one,
+but you could just as easily have one (such as, say,
+C<http://www.w3.org/1999/xhtml>) -- you need to be aware of the
+namespace that you specify here.
+
+Some Bourne shells will react badly to C<''=App>; in this case, add
+a backslash before the equals, so: C<''\=App>.
+
+C<xmltk generate> will automagically generate a large number of files
+in the 'Scrivener' directory, one for each element that C<xmltk>
+gleans from the XML document given to it.
 
     $ ls Scrivener/*
     Scrivener/ScrivenerProject.pm
@@ -28,7 +40,64 @@ document given to it.
     [... many other files elided ...]
 
 Congratulations!  You've now got an OO representation of your XML
-document. 
+document.
+
+=head1 CREATING AN APPLICATION
+
+First, create a stub module, Scrivener.pm, than just defines a
+package. This gets around unpleasantness later.
+
+Next, create a small Perl script that C<use>s XML::Toolkit::App. You
+may need to add the current directory to your C<@INC>.
+
+    BEGIN { push @INC, '.' }
+    
+    use strict;
+    use warnings;
+    use diagnostics;
+    $|++;
+    
+    use XML::Toolkit::App;
+    use Scrivener;
+
+The next thing you need to do is find out what your XML file is, then
+feed it into XML::Toolkit::App. Once again, you need to be aware of
+what your root element is called and what the namespace you specified
+earlier is; in this case, we have no namespace, and the root element
+is defined in Scrivener.
+
+It's probably also good form to check that C<$xmlfile> is a file (and
+exists, for that matter), otherwise error messages go everywhere.
+
+    my ($xmlfile) = @ARGV unless scalar @ARGV == 1
+    
+    die "not a file: $xmlfile" unless -f $xmlfile;
+    
+    my $loader = XML::Toolkit::App->new(
+        xmlns => { '' => Scrivener }
+      )->loader;
+    $loader->parse_file($xmlfile);
+
+Go ahead, run it on your XML document. It won't bite.
+
+That's as simple as it gets to import and parse your XML document.
+
+Oh, you wanted to do something with it?  Okay, then.
+
+=head1 TRAVERSING THE OBJECT HIERARCHY
+
+We can use the very awesome Data::Dumper to dump the hierarchy.
+
+    use Data::Dumper;
+    
+    print Dumper($loader->root_object);
+
+Ewwww. That output is horribly ugly, and Perl is above horribly ugly.
+So instead, let's write our own hierarchy dumper.
+
+Now, a Scrivener document contains one Binder with lots of child
+BinderItems; any BinderItem can be the root of a hierarchy of child
+BinderItems.
 
 =head1 AUTHOR
 
