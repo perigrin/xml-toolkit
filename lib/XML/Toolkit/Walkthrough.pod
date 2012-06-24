@@ -97,7 +97,64 @@ So instead, let's write our own hierarchy dumper.
 
 Now, a Scrivener document contains one Binder with lots of child
 BinderItems; any BinderItem can be the root of a hierarchy of child
-BinderItems.
+BinderItems.  Let's get the root Binder, then:
+
+    my $binder = $loader->root_object->Binder_collection;
+
+Well, actually, that's silly. We don't have a collection of Binders.
+But that'll do for now. See "OPTIMIZING THE HIERARCHY" for more
+information.
+
+=head1 OPTIMIZING THE HIERARCHY
+
+XML::Toolkit guesses that every element can be repeated and thus makes
+them all collections; in many cases they don't need to be, and this
+can be tweaked to do better data validation and to make your code
+nicer.
+
+BinderItem has a 'Title_collection' field which is defined as
+
+    has 'Title_collection' => (
+        isa         => 'ArrayRef[Scrivener::Title]',
+        is          => 'ro', init_arg    => 'Titles',
+        traits      => [qw(XML Array)],
+        lazy        => 1,
+        auto_deref  => 1,
+        default     => sub { [] },
+        handles    => { add_Title => ['push'] },     description => {
+            LocalName => "Title",
+            Prefix => "",
+            node_type => "child",
+            Name => "Title",
+            NamespaceURI => "",
+            sort_order => 7,
+        },
+    ); 
+
+But there's an obvious problem with this. A BinderItem only has one
+Title. To optimize this we convert Scrivener::BinderItem's
+C<Title_collection> to just a C<Title>, by changing the C<isa>, C<is>,
+and C<traits>.
+
+    has 'Title' => (
+        isa         => 'Scrivener::Title',
+        is          => 'ro',
+        traits      => [qw(XML)],
+        lazy        => 1,
+        description => {
+            LocalName => "Title",
+            Prefix => "",
+            node_type => "child",
+            Name => "Title",
+            NamespaceURI => "",
+            sort_order => 7,
+        },
+    );
+
+And there we have it.
+
+
+XXX see http://gist.github.com/2981483
 
 =head1 AUTHOR
 
