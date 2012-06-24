@@ -44,7 +44,6 @@ END_TEMPLATE
 sub run {
     my ($self) = @_;
     my $builder = XML::Toolkit::Config::Container->new(
-        namespace => $self->namespace,
         xmlns     => $self->xmlns,
         template  => $self->template,
     )->builder;
